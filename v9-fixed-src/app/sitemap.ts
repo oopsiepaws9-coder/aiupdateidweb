@@ -27,8 +27,8 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     supabase.from("articles").select("slug,updated_at,published_at").eq("status","published"),
     supabase.from("ai_tools").select("slug,updated_at").eq("status","published"),
     supabase.from("ai_models").select("slug,updated_at").eq("status","published"),
-    supabase.from("ai_glossary").select("slug,updated_at").eq("status","published"),
-    supabase.from("ai_comparisons").select("slug,updated_at").eq("status","published")
+    supabase.from("glossary_terms").select("slug,updated_at").eq("status","published"),
+    supabase.from("comparisons").select("slug,updated_at").eq("status","published")
   ]);
 
   const dynamic: MetadataRoute.Sitemap = [
