@@ -1,0 +1,21 @@
+{
+  "name": "AIUpdateId",
+  "short_name": "AIUpdateId",
+  "description": "Portal AI Indonesia",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#06182f",
+  "theme_color": "#0a67d8",
+  "icons": [
+    {
+      "src": "/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}

@@ -1,0 +1,1 @@
+import V9Detail from "@/components/V9Detail";export default function Page({params}:{params:{slug:string}}){return <V9Detail table="glossary_terms" slug={params.slug} back="/glossary"/>}

@@ -1,0 +1,1 @@
+import V9Directory from "@/components/V9Directory";export default function Page(){return <V9Directory table="ai_models" title="Database Model AI" base="/models"/>}

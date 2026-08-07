@@ -1,0 +1,7 @@
+AIUpdateId V8.2.4.1 Hotfix
+
+Perbaikan:
+- Excerpt tidak lagi menutupi gambar hero.
+- Judul dan excerpt tampil di panel bawah gambar.
+- Gambar hero rasio 16:9 dengan object-fit contain.
+- Tidak perlu menjalankan SQL baru.
