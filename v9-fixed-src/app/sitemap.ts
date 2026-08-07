@@ -13,7 +13,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     { url: `${base}/models`, changeFrequency: "weekly", priority: 0.9 },
     { url: `${base}/glossary`, changeFrequency: "weekly", priority: 0.8 },
     { url: `${base}/compare`, changeFrequency: "weekly", priority: 0.8 },
-    { url: `${base}/prompt`, changeFrequency: "weekly", priority: 0.8 },
+    { url: `${base}/prompts`, changeFrequency: "weekly", priority: 0.9 },
     { url: `${base}/tag`, changeFrequency: "weekly", priority: 0.7 },
     { url: `${base}/tentang`, changeFrequency: "monthly", priority: 0.5 },
     { url: `${base}/kontak`, changeFrequency: "monthly", priority: 0.4 },
@@ -23,12 +23,13 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
 
   if (!supabase) return staticPages;
 
-  const [articles, tools, models, glossary, comparisons] = await Promise.all([
+  const [articles, tools, models, glossary, comparisons, prompts] = await Promise.all([
     supabase.from("articles").select("slug,updated_at,published_at").eq("status","published"),
     supabase.from("ai_tools").select("slug,updated_at").eq("status","published"),
     supabase.from("ai_models").select("slug,updated_at").eq("status","published"),
     supabase.from("glossary_terms").select("slug,updated_at").eq("status","published"),
-    supabase.from("comparisons").select("slug,updated_at").eq("status","published")
+    supabase.from("comparisons").select("slug,updated_at").eq("status","published"),
+    supabase.from("ai_prompts").select("slug,updated_at").eq("status","published")
   ]);
 
   const dynamic: MetadataRoute.Sitemap = [
@@ -61,6 +62,12 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       lastModified: item.updated_at || undefined,
       changeFrequency: "monthly" as const,
       priority: 0.7
+    })),
+    ...(prompts.data || []).map(item => ({
+      url: `${base}/prompts/${item.slug}`,
+      lastModified: item.updated_at || undefined,
+      changeFrequency: "monthly" as const,
+      priority: 0.75
     }))
   ];
 

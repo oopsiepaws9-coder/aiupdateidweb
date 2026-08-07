@@ -63,7 +63,7 @@ export default function Home(){
     </div></section>
 
     <section className="section promptSection"><div className="container">
-      <div className="sectionHead"><div><small>PROMPT LIBRARY</small><h2>Prompt siap pakai untuk berbagai pekerjaan</h2></div><Link className="textLink" href="/prompt">Buka library <ArrowRight size={17}/></Link></div>
+      <div className="sectionHead"><div><small>PROMPT LIBRARY</small><h2>Prompt siap pakai untuk berbagai pekerjaan</h2></div><Link className="textLink" href="/prompts">Buka library <ArrowRight size={17}/></Link></div>
       <div className="promptGrid">{promptLibrary.slice(0,4).map(p=><article className="promptCard" key={p.slug}><small>{p.category}</small><h3>{p.title}</h3><p>{p.description}</p><button onClick={()=>copyPrompt(p.slug,p.prompt)}><Copy size={16}/>{copied===p.slug?"Tersalin":"Salin prompt"}</button></article>)}</div>
     </div></section>
 

@@ -31,7 +31,7 @@ export default function Header(){
         <Link href="/tools" onClick={()=>setOpen(false)}>Tools AI</Link><Link href="/models" onClick={()=>setOpen(false)}>Model</Link><Link href="/glossary" onClick={()=>setOpen(false)}>Glossary</Link><Link href="/compare" onClick={()=>setOpen(false)}>Compare</Link>
         <Link href="/kategori/tutorial" onClick={()=>setOpen(false)}>Tutorial</Link>
         <Link href="/kategori/review" onClick={()=>setOpen(false)}>Review</Link>
-        <Link href="/prompt" onClick={()=>setOpen(false)}>Prompt</Link><Link href="/tag" onClick={()=>setOpen(false)}>Tag</Link><Link href="/tentang" onClick={()=>setOpen(false)}>Tentang</Link>
+        <Link href="/prompts" onClick={()=>setOpen(false)}>Prompt</Link><Link href="/tag" onClick={()=>setOpen(false)}>Tag</Link><Link href="/tentang" onClick={()=>setOpen(false)}>Tentang</Link>
       </nav>
       <div className="actions">
         <Link className="iconLink" href="/search" aria-label="Cari"><Search size={20}/></Link>
