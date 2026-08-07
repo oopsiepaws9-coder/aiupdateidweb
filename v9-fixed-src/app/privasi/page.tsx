@@ -1,1 +1,0 @@
-export default function Page(){return <main className="page"><section className="container content"><small>LEGAL</small><h1>Kebijakan Privasi</h1><p>Rancangan awal. Tinjau kembali sebelum peluncuran resmi dan monetisasi.</p></section></main>}

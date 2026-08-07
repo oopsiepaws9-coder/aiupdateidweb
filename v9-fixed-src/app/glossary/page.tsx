@@ -1,1 +1,0 @@
-import V9Directory from "@/components/V9Directory";export default function Page(){return <V9Directory table="glossary_terms" title="Kamus Istilah AI" base="/glossary"/>}

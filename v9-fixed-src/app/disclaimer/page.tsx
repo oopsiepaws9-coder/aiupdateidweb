@@ -1,1 +1,0 @@
-export default function Page(){return <main className="page"><section className="container content"><small>LEGAL</small><h1>Disclaimer</h1><p>Konten ditujukan untuk informasi dan edukasi umum. Periksa kembali informasi penting melalui sumber resmi.</p></section></main>}
