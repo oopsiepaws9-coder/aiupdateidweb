@@ -22,7 +22,7 @@ export default function Header(){
     localStorage.setItem("theme",n?"dark":"light");
   };
   return <>
-    <div className="topbar"><span>Portal AI Indonesia • V9 RC</span><Link href="/admin">Admin</Link></div>
+    <div className="topbar"><span>Portal AI Indonesia</span></div>
     <header><div className="container nav">
       <Logo/>
       <nav className={open?"open":""}>
