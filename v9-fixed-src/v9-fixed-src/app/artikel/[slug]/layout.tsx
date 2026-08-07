@@ -35,8 +35,17 @@ export async function generateMetadata({
   const title = article.seo_title || cleanArticleTitle(article.title);
   const description =
     article.meta_description || article.excerpt || "Artikel AIUpdateId";
-  const canonical =
-    article.canonical_url || `${siteUrl}/artikel/${article.slug}`;
+  const fallbackCanonical = `${siteUrl}/artikel/${article.slug}`;
+  let canonical = fallbackCanonical;
+  if (article.canonical_url) {
+    try {
+      const stored = new URL(article.canonical_url);
+      const current = new URL(siteUrl);
+      if (stored.origin === current.origin) canonical = stored.toString();
+    } catch {
+      canonical = fallbackCanonical;
+    }
+  }
   const image = article.cover_image || `${siteUrl}/icon-512.png`;
 
   return {

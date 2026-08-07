@@ -1,6 +1,6 @@
 {
-  "name": "aiupdateid-v9-0-1-stable",
-  "version": "9.0.2",
+  "name": "aiupdateid-public",
+  "version": "9.1.0",
   "private": true,
   "scripts": {
     "dev": "next dev",
@@ -10,7 +10,7 @@
   "dependencies": {
     "@supabase/supabase-js": "^2.55.0",
     "lucide-react": "0.468.0",
-    "next": "14.2.31",
+    "next": "14.2.35",
     "react": "18.3.1",
     "react-dom": "18.3.1",
     "react-markdown": "^9.0.1",
