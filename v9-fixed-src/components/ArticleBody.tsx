@@ -60,6 +60,9 @@ function normalizeMarkdown(value: string) {
     // Markdown syntax may arrive with accidental indentation from copy/paste.
     .replace(/^[ \t]{1,3}(?=#{1,6}\s*\S)/gm, "")
     .replace(/^(#{1,6})(?=\S)/gm, "$1 ")
+    // Remove redundant heading hashes copied into the heading text.
+    // Examples: "## # Judul" -> "## Judul", "### ## Judul" -> "### Judul".
+    .replace(/^(#{1,6})\s+#+\s*/gm, "$1 ")
     // The page title already owns the document H1.
     .replace(/^#\s+/gm, "## ")
     .replace(/^[ \t]{1,3}(?=>\s*\S)/gm, "")
@@ -89,8 +92,15 @@ function childrenToText(children: React.ReactNode): string {
     .trim();
 }
 
-function headingId(value: string) {
+function cleanHeadingText(value: string) {
   return value
+    .replace(/^\s*#+\s*/, "")
+    .replace(/^\s*\\#+\s*/, "")
+    .trim();
+}
+
+function headingId(value: string) {
+  return cleanHeadingText(value)
     .toLowerCase()
     .normalize("NFKD")
     .replace(/[^\w\s-]/g, "")
@@ -116,16 +126,16 @@ export default function ArticleBody({ content }: { content: string }) {
         remarkPlugins={[remarkGfm]}
         components={{
           h1: ({ children }) => {
-            const text = childrenToText(children);
-            return <h2 id={headingId(text)}>{children}</h2>;
+            const text = cleanHeadingText(childrenToText(children));
+            return <h2 id={headingId(text)}>{text}</h2>;
           },
           h2: ({ children }) => {
-            const text = childrenToText(children);
-            return <h2 id={headingId(text)}>{children}</h2>;
+            const text = cleanHeadingText(childrenToText(children));
+            return <h2 id={headingId(text)}>{text}</h2>;
           },
           h3: ({ children }) => {
-            const text = childrenToText(children);
-            return <h3 id={headingId(text)}>{children}</h3>;
+            const text = cleanHeadingText(childrenToText(children));
+            return <h3 id={headingId(text)}>{text}</h3>;
           },
           blockquote: ({ children }) => {
             const text = childrenToText(children);

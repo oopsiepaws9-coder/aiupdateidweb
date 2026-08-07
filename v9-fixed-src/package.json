@@ -1,6 +1,6 @@
 {
   "name": "aiupdateid-v9-0-1-stable",
-  "version": "9.0.1",
+  "version": "9.0.3",
   "private": true,
   "scripts": {
     "dev": "next dev",
