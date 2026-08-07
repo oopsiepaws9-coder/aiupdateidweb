@@ -1,0 +1,1 @@
+import V9Detail from "@/components/V9Detail";export default function Page({params}:{params:{slug:string}}){return <V9Detail table="ai_tools" slug={params.slug} back="/tools"/>}

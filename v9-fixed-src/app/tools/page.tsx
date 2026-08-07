@@ -1,0 +1,1 @@
+import V9Directory from "@/components/V9Directory";export default function Page(){return <V9Directory table="ai_tools" title="Direktori Tools AI" base="/tools"/>}
