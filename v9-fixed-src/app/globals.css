@@ -847,3 +847,15 @@ body {
 .comparisonLinkGroup{padding:12px 0;border-top:1px solid var(--line)}.comparisonLinkGroup>span{display:block;margin-bottom:8px;color:var(--muted);font-size:10px;font-weight:850;text-transform:uppercase}
 .comparisonLinkGroup>div{display:flex;flex-wrap:wrap;gap:7px}.comparisonLinkGroup a{padding:6px 8px;border-radius:9px;background:var(--soft);color:var(--primary);font-size:10px;font-weight:800;text-transform:capitalize}
 @media(max-width:640px){.comparisonArticleLink{align-items:flex-start;flex-direction:column}.comparisonArticleLink b{text-align:left}}
+
+/* V9.3.8 — contextual internal links on article pages */
+.topicLinks{margin:40px 0;padding:24px;border:1px solid var(--line);border-radius:18px;background:var(--soft)}
+.topicLinksHead small{display:block;color:var(--primary);font-size:12px;font-weight:900;letter-spacing:1px;margin-bottom:5px}
+.topicLinksHead h2{font-size:25px;margin:0 0 16px;letter-spacing:-.4px}
+.topicLinksGrid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+.topicLinkCard{display:flex;flex-direction:column;gap:5px;padding:17px;border:1px solid var(--line);border-radius:14px;background:var(--surface);text-decoration:none;color:var(--text);transition:transform .18s ease,border-color .18s ease}
+.topicLinkCard:hover{transform:translateY(-2px);border-color:color-mix(in srgb,var(--primary) 55%,var(--line))}
+.topicLinkCard span{color:var(--primary);font-size:12px;font-weight:900;text-transform:uppercase;letter-spacing:.7px}
+.topicLinkCard strong{font-size:16px;line-height:1.35}
+.topicLinkCard small{color:var(--muted);font-size:13px}
+@media(max-width:640px){.topicLinks{padding:18px}.topicLinksGrid{grid-template-columns:1fr}.topicLinksHead h2{font-size:22px}}
