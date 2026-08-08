@@ -1,12 +1,10 @@
 "use client";
 
 import Link from "next/link";
-import { useEffect, useState } from "react";
-import { supabase } from "@/lib/supabase";
 import { ArrowLeft, CheckCircle2, ExternalLink, Link2, Tag } from "lucide-react";
 import BrandLogo from "@/components/BrandLogo";
 
-type Props = { table: string; slug: string; back?: string; backHref?: string; backLabel?: string };
+type Props = { table: string; slug: string; initialItem?: any; back?: string; backHref?: string; backLabel?: string };
 
 function formatDate(value?: string | null) {
   if (!value) return "";
@@ -19,29 +17,10 @@ function initials(value: string) {
   return value.split(/\s+/).filter(Boolean).map(v => v[0]).join("").slice(0, 2).toUpperCase();
 }
 
-export default function V9Detail({ table, slug, back, backHref, backLabel }: Props) {
+export default function V9Detail({ table, slug, initialItem, back, backHref, backLabel }: Props) {
   const resolvedBackHref = backHref || back || "/";
   const resolvedBackLabel = backLabel || (table === "glossary_terms" ? "Kembali ke Glossary" : table === "ai_models" ? "Kembali ke AI Models" : table === "comparisons" ? "Kembali ke Perbandingan" : "Kembali");
-  const [x, setX] = useState<any>(null);
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    let active = true;
-    async function load() {
-      setLoading(true);
-      const { data } = await supabase.from(table).select("*").eq("slug", slug).eq("status", "published").maybeSingle();
-      if (active) {
-        setX(data || null);
-        setLoading(false);
-      }
-    }
-    load();
-    return () => { active = false; };
-  }, [table, slug]);
-
-  if (loading) {
-    return <main className="page"><div className="container v9Detail"><div className="empty">Memuat...</div></div></main>;
-  }
+  const x = initialItem || null;
 
   if (!x) {
     return (
@@ -67,6 +46,8 @@ export default function V9Detail({ table, slug, back, backHref, backLabel }: Pro
   const comparisonRows = Array.isArray(x.comparison_rows) ? x.comparison_rows : [];
   const comparisonFaq = Array.isArray(x.faq) ? x.faq : [];
   const comparisonSources = Array.isArray(x.sources) ? x.sources : [];
+  const relatedGlossary = Array.isArray(x.related_glossary) ? x.related_glossary : [];
+  const relatedModels = Array.isArray(x.related_models) ? x.related_models : [];
 
   return (
     <main className="page">
@@ -175,6 +156,42 @@ export default function V9Detail({ table, slug, back, backHref, backLabel }: Pro
                     <small>PANDANGAN AIUPDATEID</small>
                     <h2>Jadi, pilih yang mana?</h2>
                     <p>{x.verdict}</p>
+                  </section>
+                )}
+
+                {(x.related_article_slug || relatedGlossary.length > 0 || relatedModels.length > 0) && (
+                  <section className="comparisonInternalLinks">
+                    <small>LANJUT BELAJAR</small>
+                    <h2>Pelajari lebih dalam</h2>
+
+                    {x.related_article_slug && (
+                      <Link className="comparisonArticleLink" href={`/artikel/${x.related_article_slug}`}>
+                        <span>Artikel terkait</span>
+                        <b>Baca analisis lengkap →</b>
+                      </Link>
+                    )}
+
+                    {relatedGlossary.length > 0 && (
+                      <div className="comparisonLinkGroup">
+                        <span>Istilah AI terkait</span>
+                        <div>
+                          {relatedGlossary.map((slug: string) => (
+                            <Link key={slug} href={`/glossary/${slug}`}>{slug.replace(/-/g, " ")}</Link>
+                          ))}
+                        </div>
+                      </div>
+                    )}
+
+                    {relatedModels.length > 0 && (
+                      <div className="comparisonLinkGroup">
+                        <span>Model AI terkait</span>
+                        <div>
+                          {relatedModels.map((slug: string) => (
+                            <Link key={slug} href={`/models/${slug}`}>{slug.replace(/-/g, " ")}</Link>
+                          ))}
+                        </div>
+                      </div>
+                    )}
                   </section>
                 )}
 

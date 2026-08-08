@@ -834,3 +834,16 @@ body {
   .comparisonRow>em{grid-column:auto}
   .comparisonIntro>p{font-size:16px;line-height:1.75}
 }
+
+
+/* =========================================================
+   V9.3.6 — COMPARISON SEO INTERNAL LINKING
+   ========================================================= */
+.comparisonInternalLinks{margin-bottom:18px;padding:20px;border:1px solid var(--line);border-radius:17px;background:var(--surface)}
+.comparisonInternalLinks>small{color:var(--primary);font-size:10px;font-weight:900;letter-spacing:.8px}
+.comparisonInternalLinks>h2{margin:4px 0 14px}
+.comparisonArticleLink{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:14px;border-radius:13px;background:linear-gradient(135deg,#071d3c,#0f4f94);color:#fff;margin-bottom:13px}
+.comparisonArticleLink span{color:#9dd0ff;font-size:10px;font-weight:850;text-transform:uppercase}.comparisonArticleLink b{font-size:13px;text-align:right}
+.comparisonLinkGroup{padding:12px 0;border-top:1px solid var(--line)}.comparisonLinkGroup>span{display:block;margin-bottom:8px;color:var(--muted);font-size:10px;font-weight:850;text-transform:uppercase}
+.comparisonLinkGroup>div{display:flex;flex-wrap:wrap;gap:7px}.comparisonLinkGroup a{padding:6px 8px;border-radius:9px;background:var(--soft);color:var(--primary);font-size:10px;font-weight:800;text-transform:capitalize}
+@media(max-width:640px){.comparisonArticleLink{align-items:flex-start;flex-direction:column}.comparisonArticleLink b{text-align:left}}

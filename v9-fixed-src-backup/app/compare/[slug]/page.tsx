@@ -1,0 +1,4 @@
+import V9Detail from "@/components/V9Detail";
+export default function Page({params}:{params:{slug:string}}){
+  return <V9Detail table="comparisons" slug={params.slug} backHref="/compare" backLabel="Kembali ke Perbandingan"/>;
+}

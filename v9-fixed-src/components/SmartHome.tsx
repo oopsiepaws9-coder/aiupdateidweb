@@ -5,8 +5,7 @@ import {
   ArrowRight, Bot, CheckCircle2, ChevronRight, Flame,
   Newspaper, Search, Sparkles, Star, TrendingUp, Wrench
 } from "lucide-react";
-import { useEffect, useMemo, useState } from "react";
-import { supabase, supabaseConfigured } from "@/lib/supabase";
+import { useMemo, useState } from "react";
 import type { Article } from "@/lib/types";
 import ArticleCard from "@/components/ArticleCard";
 import NewsletterForm from "@/components/NewsletterForm";
@@ -14,28 +13,24 @@ import { aiTools, portalCategories, promptLibrary } from "@/lib/portal-data";
 
 const filters=["Semua","Berita AI","Tools AI","Tutorial","Review","Prompt AI","Belajar AI"];
 
-export default function SmartHome(){
-  const[items,setItems]=useState<Article[]>([]);
-  const[loading,setLoading]=useState(true);
-  const[error,setError]=useState("");
+export default function SmartHome({initialItems}:{initialItems:Article[]}){
+  const items=initialItems;
   const[cat,setCat]=useState("Semua");
-  const[q,setQ]=useState("");
 
-  useEffect(()=>{
-    if(!supabaseConfigured){setError("Konfigurasi Supabase belum tersedia.");setLoading(false);return}
-    supabase.from("articles").select("*").eq("status","published")
-      .order("published_at",{ascending:false,nullsFirst:false})
-      .then(({data,error})=>{
-        if(error)setError(error.message);
-        else setItems(data||[]);
-        setLoading(false);
-      });
-  },[]);
+  const categoryMatch=(articleCategory:string|null, selected:string)=>{
+    if(selected==="Semua") return true;
+    const aliases:Record<string,string[]>={
+      "Berita AI":["Berita AI"],
+      "Tools AI":["Tools AI","AI Tools"],
+      "Tutorial":["Tutorial"],
+      "Review":["Review","Perbandingan AI"],
+      "Prompt AI":["Prompt AI","Prompt"],
+      "Belajar AI":["Belajar AI"],
+    };
+    return (aliases[selected]||[selected]).includes(articleCategory||"");
+  };
 
-  const filtered=useMemo(()=>items.filter(a=>
-    (cat==="Semua"||a.category===cat) &&
-    `${a.title} ${a.excerpt||""} ${(a.tags||[]).join(" ")}`.toLowerCase().includes(q.toLowerCase())
-  ),[items,cat,q]);
+  const filtered=useMemo(()=>items.filter(a=>categoryMatch(a.category,cat)),[items,cat]);
 
   const breaking=items.filter(a=>a.breaking).slice(0,4);
   const hero=items.find(a=>a.featured) || items[0];
@@ -103,10 +98,8 @@ export default function SmartHome(){
           <Link className="search smartSearchLink" href="/search"><Search size={18}/><span>Cari artikel, tools, atau prompt...</span></Link>
         </div>
         <div className="pills">{filters.map(x=><button key={x} className={cat===x?"active":""} onClick={()=>setCat(x)}>{x}</button>)}</div>
-        {loading&&<div className="empty">Mengambil artikel...</div>}
-        {error&&<div className="errorBox">{error}</div>}
-        {!loading&&!error&&<div className="grid">{latest.map(a=><ArticleCard key={a.id} a={a}/>)}</div>}
-        {!loading&&!error&&!latest.length&&<div className="empty">Belum ada artikel yang cocok.</div>}
+        <div className="grid">{latest.map(a=><ArticleCard key={a.id} a={a}/>)}</div>
+        {!latest.length&&<div className="empty">Belum ada artikel yang cocok.</div>}
       </div>
     </section>
 

@@ -1,6 +1,6 @@
 {
   "name": "aiupdateid-public",
-  "version": "9.3.5",
+  "version": "9.3.7",
   "private": true,
   "scripts": {
     "dev": "next dev",

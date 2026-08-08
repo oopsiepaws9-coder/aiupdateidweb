@@ -1,46 +1,56 @@
-"use client";
 import Link from "next/link";
 import { ArrowLeft, CalendarDays, Clock3, UserRound } from "lucide-react";
-import { useEffect, useState } from "react";
-import { supabase } from "@/lib/supabase";
+import { notFound } from "next/navigation";
+import { createServerSupabase } from "@/lib/supabase-server";
 import type { Article } from "@/lib/types";
 import { cleanArticleTitle, formatDate, readingMinutes } from "@/lib/utils";
 
 import ArticleCard from "@/components/ArticleCard";
+import ArticleViewTracker from "@/components/ArticleViewTracker";
 import ReadingProgress from "@/components/ReadingProgress";
 import ShareButtons from "@/components/ShareButtons";
 import ArticleBody from "@/components/ArticleBody";
 import TableOfContents from "@/components/TableOfContents";
 
-export default function Page({params}:{params:{slug:string}}){
-  const[a,setA]=useState<Article|null|undefined>(undefined);
-  const[related,setRelated]=useState<Article[]>([]);
+export const revalidate = 300;
 
-  useEffect(()=>{
-    supabase.from("articles").select("*").eq("slug",params.slug).eq("status","published").single()
-      .then(async({data})=>{
-        const article=data||null;
-        setA(article);
-        if(article){await supabase.from("articles").update({view_count:(article.view_count||0)+1}).eq("id",article.id)}
-        if(article){
-          const{data:more}=await supabase.from("articles").select("*")
-            .eq("status","published").eq("category",article.category)
-            .neq("id",article.id).limit(3);
-          setRelated(more||[]);
-        }
-      });
-  },[params.slug]);
+export default async function Page({params}:{params:{slug:string}}){
+  const supabase=createServerSupabase();
+  if(!supabase) notFound();
 
-  if(a===undefined)return <main className="page"><div className="empty">Memuat artikel...</div></main>;
-  if(!a)return <main className="page"><section className="container content center"><h1>Artikel tidak ditemukan</h1><Link className="primary" href="/">Kembali ke beranda</Link></section></main>;
+  const {data}=await supabase
+    .from("articles")
+    .select("*")
+    .eq("slug",params.slug)
+    .eq("status","published")
+    .maybeSingle();
+
+  if(!data) return notFound();
+  const a=data as Article;
+
+  let related:Article[]=[];
+  if(a.category){
+    const {data:more}=await supabase
+      .from("articles")
+      .select("*")
+      .eq("status","published")
+      .eq("category",a.category)
+      .neq("id",a.id)
+      .order("published_at",{ascending:false,nullsFirst:false})
+      .limit(3);
+    related=(more||[]) as Article[];
+  }
 
   const minutes=readingMinutes(a.content);
+  const categorySlug=(a.category||"artikel").toLowerCase().replace(/\s+/g,"-");
+
   return <main className="page">
+    <ArticleViewTracker id={a.id} current={a.view_count||0}/>
     <ReadingProgress/>
     <article className="container article">
       <nav className="breadcrumbs" aria-label="Breadcrumb">
         <Link href="/">Beranda</Link><span>/</span>
-        <Link href={`/kategori/${(a.category||"artikel").toLowerCase().replace(/\s+/g,"-")}`}>{a.category}</Link><span>/</span>
+        <Link href={`/kategori/${categorySlug}`}>{a.category}</Link><span>/</span>
         <span>{cleanArticleTitle(a.title)}</span>
       </nav>
       <Link className="back" href="/"><ArrowLeft size={17}/> Kembali ke beranda</Link>
@@ -74,7 +84,7 @@ export default function Page({params}:{params:{slug:string}}){
         </div>
         <aside className="articleSidebar">
           <div><small>RINGKASAN</small><p>{a.excerpt ? cleanArticleTitle(a.excerpt) : ""}</p></div>
-          <div><small>KATEGORI</small><Link href={`/kategori/${(a.category||"artikel").toLowerCase().replace(/\s+/g,"-")}`}>{a.category}</Link></div>
+          <div><small>KATEGORI</small><Link href={`/kategori/${categorySlug}`}>{a.category}</Link></div>
         </aside>
       </div>
     </article>
@@ -83,7 +93,7 @@ export default function Page({params}:{params:{slug:string}}){
       <div className="sectionHead"><div><small>LANJUT MEMBACA</small><h2>Artikel terkait</h2></div></div>
       <div className="grid">{related.map(item=><ArticleCard key={item.id} a={item}/>)}</div>
     </div></section>}
-  <script
+    <script
       type="application/ld+json"
       dangerouslySetInnerHTML={{
         __html: JSON.stringify({
@@ -106,5 +116,5 @@ export default function Page({params}:{params:{slug:string}}){
         })
       }}
     />
-  </main>
+  </main>;
 }

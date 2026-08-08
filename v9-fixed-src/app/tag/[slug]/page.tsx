@@ -1,26 +1,27 @@
-"use client";
-
 import ArticleCard from "@/components/ArticleCard";
-import { supabase } from "@/lib/supabase";
+import { createServerSupabase } from "@/lib/supabase-server";
 import type { Article } from "@/lib/types";
-import { useEffect, useState } from "react";
+
+export const revalidate=300;
 
 function humanize(slug:string){
   return decodeURIComponent(slug).replace(/-/g," ").replace(/\b\w/g,c=>c.toUpperCase());
 }
 
-export default function TagPage({params}:{params:{slug:string}}){
+export default async function TagPage({params}:{params:{slug:string}}){
   const label=humanize(params.slug);
-  const[items,setItems]=useState<Article[]>([]);
-  const[loading,setLoading]=useState(true);
+  const supabase=createServerSupabase();
+  let items:Article[]=[];
 
-  useEffect(()=>{
-    supabase.from("articles").select("*")
+  if(supabase){
+    const {data}=await supabase
+      .from("articles")
+      .select("*")
       .eq("status","published")
       .contains("tags",[label])
-      .order("published_at",{ascending:false})
-      .then(({data})=>{setItems(data||[]);setLoading(false)});
-  },[label]);
+      .order("published_at",{ascending:false,nullsFirst:false});
+    items=(data||[]) as Article[];
+  }
 
-  return <main className="page"><section className="container intro"><small>TAG</small><h1>{label}</h1><p>Kumpulan artikel AIUpdateId dengan tag {label}.</p></section><section className="container compact">{loading?<div className="empty">Memuat...</div>:<div className="grid">{items.map(a=><ArticleCard key={a.id} a={a}/>)}</div>}{!loading&&!items.length&&<div className="empty">Belum ada artikel dengan tag ini.</div>}</section></main>
+  return <main className="page"><section className="container intro"><small>TAG</small><h1>{label}</h1><p>Kumpulan artikel AIUpdateId dengan tag {label}.</p></section><section className="container compact"><div className="grid">{items.map(a=><ArticleCard key={a.id} a={a}/>)}</div>{!items.length&&<div className="empty">Belum ada artikel dengan tag ini.</div>}</section></main>;
 }
