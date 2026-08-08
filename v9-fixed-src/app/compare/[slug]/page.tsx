@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { notFound } from "next/navigation";
 import V9Detail from "@/components/V9Detail";
 import { createServerSupabase } from "@/lib/supabase-server";
 import { getSiteUrl } from "@/lib/site-url";
@@ -59,9 +60,11 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
 export default async function Page({ params }: Props) {
   const item = await getComparison(params.slug);
+  if (!item) notFound();
+
   const base = getSiteUrl();
 
-  const faq = Array.isArray(item?.faq) ? item!.faq : [];
+  const faq = Array.isArray(item.faq) ? item.faq : [];
 
   const webPageSchema = item ? {
     "@context": "https://schema.org",
