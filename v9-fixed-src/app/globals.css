@@ -586,3 +586,113 @@ body {
 @media(max-width:900px){.promptHeroGrid,.promptDetailLayout,.promptDetailHero{grid-template-columns:1fr}.featuredPromptGrid,.promptDirectoryGrid{grid-template-columns:repeat(2,1fr)}.promptDetailSidebar{position:static}.promptDetailHero>aside{max-width:350px}}
 @media(max-width:640px){.promptHero{padding:45px 0 30px}.promptHero h1{font-size:40px;letter-spacing:-1.7px}.promptHero p{font-size:16px}.promptFilters{grid-template-columns:1fr}.featuredPromptGrid,.promptDirectoryGrid{grid-template-columns:1fr}.promptSectionHead{align-items:start}.promptSectionHead h2{font-size:29px}.promptDetailWrap{padding-top:30px}.promptDetailHero h1{font-size:39px;letter-spacing:-1.3px}.promptDetailHero p{font-size:16px}.promptDetailCard{padding:18px}.promptCopyBox pre{padding:18px;font-size:13px}.promptCardFooter{align-items:stretch;flex-direction:column}.promptCardFooter button,.promptCardFooter a{justify-content:center}}
 
+
+
+/* =========================================================
+   V9.3.1 — MOBILE DETAIL RESPONSIVE FIX
+   Models / Glossary / Comparison generic V9 detail pages
+   ========================================================= */
+.v9Detail,
+.v9DetailHero,
+.v9DetailGrid,
+.v9DetailHero > div:last-child,
+.v9DetailGrid > article,
+.v9DetailGrid > aside{
+  min-width:0;
+  max-width:100%;
+}
+
+.v9DetailHero h1{
+  max-width:100%;
+  overflow-wrap:anywhere;
+  word-break:normal;
+  hyphens:auto;
+}
+
+.v9DetailHero p,
+.v9DetailGrid p,
+.v9DetailGrid li,
+.v9DetailGrid b,
+.v9DetailGrid a{
+  overflow-wrap:anywhere;
+  word-break:normal;
+}
+
+.v9DetailGrid article,
+.v9DetailGrid aside{
+  overflow:hidden;
+}
+
+@media(max-width:640px){
+  .v9Detail{
+    padding:30px 0 64px;
+  }
+
+  .v9Detail .back{
+    display:inline-flex;
+    align-items:center;
+    gap:7px;
+    margin-bottom:18px;
+  }
+
+  .v9DetailHero{
+    grid-template-columns:1fr;
+    gap:16px;
+    align-items:start;
+    padding:20px;
+    margin:0 0 18px;
+    border-radius:18px;
+  }
+
+  .v9DetailHero .toolLogo.large{
+    width:68px;
+    height:68px;
+    border-radius:18px;
+    font-size:20px;
+  }
+
+  .v9DetailHero h1{
+    font-size:clamp(32px,10.5vw,42px);
+    line-height:1.06;
+    letter-spacing:-1.4px;
+    margin:6px 0 12px;
+  }
+
+  .v9DetailHero p{
+    font-size:16px;
+    line-height:1.7;
+    margin-bottom:0;
+  }
+
+  .v9DetailGrid{
+    grid-template-columns:1fr;
+    gap:14px;
+  }
+
+  .v9DetailGrid article,
+  .v9DetailGrid aside{
+    padding:18px;
+    border-radius:16px;
+  }
+
+  .v9DetailGrid article > p{
+    font-size:16px;
+    line-height:1.75;
+    margin-top:0;
+  }
+
+  .v9DetailGrid h2{
+    font-size:24px;
+    line-height:1.2;
+  }
+
+  .v9DetailGrid li{
+    align-items:flex-start;
+    line-height:1.6;
+  }
+
+  .v9DetailGrid aside .primary{
+    width:100%;
+  }
+}
+

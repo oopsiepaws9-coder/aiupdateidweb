@@ -1,1 +1,0 @@
-export default function Page(){return <main className="page"><section className="container content"><small>KONTAK</small><h1>Hubungi AIUpdateId</h1><p>Fitur formulir kontak akan ditambahkan pada tahap selanjutnya.</p></section></main>}
