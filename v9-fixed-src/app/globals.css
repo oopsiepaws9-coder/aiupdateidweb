@@ -696,3 +696,64 @@ body {
   }
 }
 
+
+
+/* =========================================================
+   V9.3.2 — AI MODEL PROVIDER BRAND LOGOS
+   ========================================================= */
+.brandLogo{
+  width:54px;
+  height:54px;
+  flex:0 0 54px;
+  display:grid;
+  place-items:center;
+  overflow:hidden;
+  border-radius:15px;
+  background:linear-gradient(145deg,#092b58,#1883ee);
+  border:1px solid color-mix(in srgb,var(--primary) 32%,var(--line));
+  box-shadow:0 10px 25px rgba(4,31,66,.16);
+}
+.brandLogo.large{
+  width:88px;
+  height:88px;
+  flex-basis:88px;
+  border-radius:24px;
+}
+.brandLogo img{
+  display:block;
+  width:60%;
+  height:60%;
+  object-fit:contain;
+  filter:none;
+}
+.brandLogo.fallback span{
+  color:#fff;
+  font-size:17px;
+  font-weight:950;
+  letter-spacing:.5px;
+}
+.brandLogo.large.fallback span{
+  font-size:25px;
+}
+.v9DirectoryGrid>a{
+  min-width:0;
+}
+.v9DirectoryGrid .brandLogo{
+  margin-bottom:12px;
+}
+.v9DetailHero>.brandLogo{
+  align-self:center;
+}
+
+@media(max-width:640px){
+  .v9DetailHero>.brandLogo.large{
+    width:68px;
+    height:68px;
+    flex-basis:68px;
+    border-radius:18px;
+  }
+  .v9DetailHero>.brandLogo.large img{
+    width:58%;
+    height:58%;
+  }
+}
