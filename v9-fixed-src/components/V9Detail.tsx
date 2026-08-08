@@ -58,12 +58,15 @@ export default function V9Detail({ table, slug, back, backHref, backLabel }: Pro
   const isGlossary = table === "glossary_terms";
   const isComparison = table === "comparisons";
   const name = x.name || x.term || x.title || "Detail";
-  const short = x.short_description || x.short_definition || x.description || "";
+  const short = x.short_description || x.short_definition || x.summary || x.description || "";
   const description = x.description || x.definition || "";
   const related = Array.isArray(x.related_terms) ? x.related_terms : [];
   const tags = Array.isArray(x.tags) ? x.tags : [];
   const strengths = Array.isArray(x.strengths) ? x.strengths : [];
   const limitations = Array.isArray(x.limitations) ? x.limitations : [];
+  const comparisonRows = Array.isArray(x.comparison_rows) ? x.comparison_rows : [];
+  const comparisonFaq = Array.isArray(x.faq) ? x.faq : [];
+  const comparisonSources = Array.isArray(x.sources) ? x.sources : [];
 
   return (
     <main className="page">
@@ -118,6 +121,73 @@ export default function V9Detail({ table, slug, back, backHref, backLabel }: Pro
                         </Link>
                       ))}
                     </div>
+                  </section>
+                )}
+              </>
+            ) : isComparison ? (
+              <>
+                <section className="comparisonIntro">
+                  <small>RINGKASAN</small>
+                  <p>{x.summary}</p>
+                </section>
+
+                <section className="comparisonVsGrid">
+                  <div className="comparisonSideCard">
+                    <span>A</span>
+                    <h2>{x.item_a_name}</h2>
+                    {x.item_a_slug && <Link href={`/tools/${x.item_a_slug}`}>Lihat AI Tool →</Link>}
+                  </div>
+                  <div className="comparisonVsBadge">VS</div>
+                  <div className="comparisonSideCard">
+                    <span>B</span>
+                    <h2>{x.item_b_name}</h2>
+                    {x.item_b_slug && <Link href={`/tools/${x.item_b_slug}`}>Lihat AI Tool →</Link>}
+                  </div>
+                </section>
+
+                {comparisonRows.length > 0 && (
+                  <section className="comparisonSection">
+                    <small>PERBEDAAN UTAMA</small>
+                    <h2>Perbandingan {x.item_a_name} vs {x.item_b_name}</h2>
+                    <div className="comparisonRows">
+                      {comparisonRows.map((row: any, index: number) => (
+                        <div className="comparisonRow" key={`${row.aspect}-${index}`}>
+                          <h3>{row.aspect}</h3>
+                          <div className={`comparisonCell ${row.edge === "a" ? "edge" : ""}`}>
+                            <b>{x.item_a_name}</b>
+                            <p>{row.a}</p>
+                            {row.edge === "a" && <span>Unggul di aspek ini</span>}
+                          </div>
+                          <div className={`comparisonCell ${row.edge === "b" ? "edge" : ""}`}>
+                            <b>{x.item_b_name}</b>
+                            <p>{row.b}</p>
+                            {row.edge === "b" && <span>Unggul di aspek ini</span>}
+                          </div>
+                          {row.edge === "tie" && <em>Seimbang / tergantung kebutuhan</em>}
+                        </div>
+                      ))}
+                    </div>
+                  </section>
+                )}
+
+                {x.verdict && (
+                  <section className="comparisonVerdict">
+                    <small>PANDANGAN AIUPDATEID</small>
+                    <h2>Jadi, pilih yang mana?</h2>
+                    <p>{x.verdict}</p>
+                  </section>
+                )}
+
+                {comparisonFaq.length > 0 && (
+                  <section className="comparisonFaq">
+                    <small>FAQ</small>
+                    <h2>Pertanyaan yang sering ditanyakan</h2>
+                    {comparisonFaq.map((item: any, index: number) => (
+                      <details key={`${item.question}-${index}`}>
+                        <summary>{item.question}</summary>
+                        <p>{item.answer}</p>
+                      </details>
+                    ))}
                   </section>
                 )}
               </>
@@ -183,6 +253,26 @@ export default function V9Detail({ table, slug, back, backHref, backLabel }: Pro
                 )}
 
                 <Link className="secondary glossaryBackLink" href="/glossary">Lihat semua istilah</Link>
+              </>
+            ) : isComparison ? (
+              <>
+                {x.category && <p><b>Kategori:</b> {x.category}</p>}
+                {x.last_reviewed_at && <p><b>Ditinjau:</b> {formatDate(x.last_reviewed_at)}</p>}
+                {tags.length > 0 && (
+                  <div className="comparisonAsideTags">
+                    {tags.map((tag: string) => <span key={tag}>{tag}</span>)}
+                  </div>
+                )}
+                {comparisonSources.length > 0 && (
+                  <div className="comparisonSources">
+                    <h4>Sumber resmi</h4>
+                    {comparisonSources.map((source: any, index: number) => (
+                      <a key={`${source.url}-${index}`} href={source.url} target="_blank" rel="noopener noreferrer nofollow">
+                        {source.label || "Sumber"} <ExternalLink size={14}/>
+                      </a>
+                    ))}
+                  </div>
+                )}
               </>
             ) : (
               <>

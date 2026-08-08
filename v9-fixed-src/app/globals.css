@@ -788,3 +788,49 @@ body {
   .glossaryRelatedLinks{grid-template-columns:1fr}
   .glossaryDefinition p,.glossaryExample p{font-size:16px;line-height:1.75}
 }
+
+
+/* =========================================================
+   V9.3.5 — COMPARISON DETAIL V1
+   ========================================================= */
+.comparisonIntro,.comparisonSection,.comparisonFaq{margin-bottom:18px}
+.comparisonIntro>small,.comparisonSection>small,.comparisonVerdict>small,.comparisonFaq>small{color:var(--primary);font-size:10px;font-weight:900;letter-spacing:.8px}
+.comparisonIntro>p{font-size:17px;line-height:1.85;margin-bottom:0}
+.comparisonVsGrid{display:grid;grid-template-columns:minmax(0,1fr) auto minmax(0,1fr);gap:12px;align-items:stretch;margin:22px 0}
+.comparisonSideCard{min-width:0;padding:18px;border:1px solid var(--line);border-radius:16px;background:var(--soft)}
+.comparisonSideCard>span{display:grid;place-items:center;width:28px;height:28px;border-radius:9px;background:var(--primary);color:#fff;font-size:11px;font-weight:950}
+.comparisonSideCard h2{margin:10px 0 13px;font-size:25px;overflow-wrap:anywhere}
+.comparisonSideCard a{font-size:12px;font-weight:850;color:var(--primary)}
+.comparisonVsBadge{align-self:center;display:grid;place-items:center;width:42px;height:42px;border-radius:999px;background:#071d3c;color:#fff;font-size:11px;font-weight:950}
+.comparisonSection>h2,.comparisonFaq>h2{margin:4px 0 15px}
+.comparisonRows{display:grid;gap:11px}
+.comparisonRow{display:grid;grid-template-columns:150px minmax(0,1fr) minmax(0,1fr);gap:9px;align-items:stretch;padding:11px;border:1px solid var(--line);border-radius:15px;background:var(--surface)}
+.comparisonRow>h3{margin:0;padding:11px;font-size:14px;line-height:1.4}
+.comparisonCell{min-width:0;padding:12px;border-radius:11px;background:var(--soft)}
+.comparisonCell.edge{outline:2px solid color-mix(in srgb,var(--primary) 38%,transparent);background:color-mix(in srgb,var(--primary) 7%,var(--surface))}
+.comparisonCell>b{display:block;margin-bottom:6px;font-size:12px;color:var(--primary)}
+.comparisonCell>p{margin:0;color:var(--muted);font-size:12px;line-height:1.6}
+.comparisonCell>span{display:inline-flex;margin-top:9px;padding:4px 7px;border-radius:999px;background:var(--primary);color:#fff;font-size:9px;font-weight:900}
+.comparisonRow>em{grid-column:2/4;justify-self:center;color:var(--muted);font-size:10px;font-style:normal;font-weight:800}
+.comparisonVerdict{padding:23px;border-radius:18px;background:linear-gradient(135deg,#071a33,#0f4b8e);color:#fff;margin-bottom:18px}
+.comparisonVerdict>small{color:#83caff}
+.comparisonVerdict h2{margin:5px 0 10px;color:#fff}
+.comparisonVerdict p{margin:0;color:#d9e8f7;font-size:16px;line-height:1.8}
+.comparisonFaq details{padding:14px 0;border-top:1px solid var(--line)}
+.comparisonFaq details:first-of-type{border-top:0}
+.comparisonFaq summary{cursor:pointer;font-weight:850}
+.comparisonFaq details p{color:var(--muted);line-height:1.7}
+.comparisonAsideTags{display:flex;gap:6px;flex-wrap:wrap;margin:13px 0}
+.comparisonAsideTags span{padding:5px 7px;border-radius:8px;background:var(--soft);color:var(--primary);font-size:10px;font-weight:800}
+.comparisonSources{margin-top:17px;padding-top:15px;border-top:1px solid var(--line)}
+.comparisonSources h4{margin:0 0 8px;font-size:13px}
+.comparisonSources a{display:flex;align-items:flex-start;justify-content:space-between;gap:7px;padding:8px 0;border-bottom:1px solid var(--line);color:var(--primary);font-size:11px;font-weight:750}
+.comparisonSources a:last-child{border-bottom:0}
+@media(max-width:760px){
+  .comparisonVsGrid{grid-template-columns:1fr}
+  .comparisonVsBadge{justify-self:center;margin:-3px 0}
+  .comparisonRow{grid-template-columns:1fr}
+  .comparisonRow>h3{padding:3px 2px 8px;font-size:15px}
+  .comparisonRow>em{grid-column:auto}
+  .comparisonIntro>p{font-size:16px;line-height:1.75}
+}
