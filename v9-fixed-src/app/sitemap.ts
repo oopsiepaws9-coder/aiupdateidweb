@@ -2,6 +2,10 @@ import type { MetadataRoute } from "next";
 import { createServerSupabase } from "@/lib/supabase-server";
 import { getSiteUrl } from "@/lib/site-url";
 
+const RETIRED_ARTICLE_SLUGS = new Set([
+  "chatgpt-5-bukan-sekadar-chatbot-10-hal-penting-yang-harus-diketahui-semua-orang-kategori-ai"
+]);
+
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const base = getSiteUrl();
   const supabase = createServerSupabase();
@@ -33,7 +37,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   ]);
 
   const dynamic: MetadataRoute.Sitemap = [
-    ...(articles.data || []).map(item => ({
+    ...(articles.data || []).filter(item => !RETIRED_ARTICLE_SLUGS.has(item.slug)).map(item => ({
       url: `${base}/artikel/${item.slug}`,
       lastModified: item.updated_at || item.published_at || undefined,
       changeFrequency: "monthly" as const,

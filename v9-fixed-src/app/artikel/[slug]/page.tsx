@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { ArrowLeft, CalendarDays, Clock3, UserRound } from "lucide-react";
-import { notFound } from "next/navigation";
+import { notFound, permanentRedirect } from "next/navigation";
 import { createServerSupabase } from "@/lib/supabase-server";
 import type { Article } from "@/lib/types";
 import { cleanArticleTitle, formatDate, readingMinutes } from "@/lib/utils";
@@ -15,7 +15,13 @@ import TableOfContents from "@/components/TableOfContents";
 
 export const revalidate = 300;
 
+const LEGACY_ARTICLE_REDIRECTS: Record<string,string> = {
+  "chatgpt-5-bukan-sekadar-chatbot-10-hal-penting-yang-harus-diketahui-semua-orang-kategori-ai": "chatgpt-5-resmi-hadir"
+};
+
 export default async function Page({params}:{params:{slug:string}}){
+  const redirectTarget=LEGACY_ARTICLE_REDIRECTS[params.slug];
+  if(redirectTarget) permanentRedirect(`/artikel/${redirectTarget}`);
   const supabase=createServerSupabase();
   if(!supabase) notFound();
 
