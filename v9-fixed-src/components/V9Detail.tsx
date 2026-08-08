@@ -6,7 +6,7 @@ import { supabase } from "@/lib/supabase";
 import { ArrowLeft, CheckCircle2, ExternalLink, Link2, Tag } from "lucide-react";
 import BrandLogo from "@/components/BrandLogo";
 
-type Props = { table: string; slug: string; backHref: string; backLabel: string };
+type Props = { table: string; slug: string; back?: string; backHref?: string; backLabel?: string };
 
 function formatDate(value?: string | null) {
   if (!value) return "";
@@ -19,7 +19,9 @@ function initials(value: string) {
   return value.split(/\s+/).filter(Boolean).map(v => v[0]).join("").slice(0, 2).toUpperCase();
 }
 
-export default function V9Detail({ table, slug, backHref, backLabel }: Props) {
+export default function V9Detail({ table, slug, back, backHref, backLabel }: Props) {
+  const resolvedBackHref = backHref || back || "/";
+  const resolvedBackLabel = backLabel || (table === "glossary_terms" ? "Kembali ke Glossary" : table === "ai_models" ? "Kembali ke AI Models" : table === "comparisons" ? "Kembali ke Perbandingan" : "Kembali");
   const [x, setX] = useState<any>(null);
   const [loading, setLoading] = useState(true);
 
@@ -45,7 +47,7 @@ export default function V9Detail({ table, slug, backHref, backLabel }: Props) {
     return (
       <main className="page">
         <div className="container v9Detail">
-          <Link className="back" href={backHref}><ArrowLeft size={17}/> {backLabel}</Link>
+          <Link className="back" href={resolvedBackHref}><ArrowLeft size={17}/> {resolvedBackLabel}</Link>
           <div className="empty">Data tidak ditemukan atau belum dipublikasikan.</div>
         </div>
       </main>
@@ -66,7 +68,7 @@ export default function V9Detail({ table, slug, backHref, backLabel }: Props) {
   return (
     <main className="page">
       <div className="container v9Detail">
-        <Link className="back" href={backHref}><ArrowLeft size={17}/> {backLabel}</Link>
+        <Link className="back" href={resolvedBackHref}><ArrowLeft size={17}/> {resolvedBackLabel}</Link>
 
         <header className="v9DetailHero">
           {isModel
