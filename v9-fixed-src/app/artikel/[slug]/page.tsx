@@ -19,7 +19,8 @@ const LEGACY_ARTICLE_REDIRECTS: Record<string,string> = {
   "chatgpt-5-bukan-sekadar-chatbot-10-hal-penting-yang-harus-diketahui-semua-orang-kategori-ai": "chatgpt-5-resmi-hadir"
 };
 
-export default async function Page({params}:{params:{slug:string}}){
+export default async function Page(props:{params: Promise<{slug:string}>}) {
+  const params = await props.params;
   const redirectTarget=LEGACY_ARTICLE_REDIRECTS[params.slug];
   if(redirectTarget) permanentRedirect(`/artikel/${redirectTarget}`);
   const supabase=createServerSupabase();
@@ -139,75 +140,77 @@ export default async function Page({params}:{params:{slug:string}}){
     }))
   }:null;
 
-  return <main className="page">
-    <ArticleViewTracker id={a.id} current={a.view_count||0}/>
-    <ReadingProgress/>
-    <article className="container article">
-      <nav className="breadcrumbs" aria-label="Breadcrumb">
-        <Link href="/">Beranda</Link><span>/</span>
-        <Link href={`/kategori/${categorySlug}`}>{a.category}</Link><span>/</span>
-        <span>{cleanArticleTitle(a.title)}</span>
-      </nav>
-      <Link className="back" href="/"><ArrowLeft size={17}/> Kembali ke beranda</Link>
-      <div className="articleHead">
-        <span className="categoryBadge">{a.category}</span>
-        <h1>{cleanArticleTitle(a.title)}</h1>
-        <p>{a.excerpt ? cleanArticleTitle(a.excerpt) : ""}</p>
-        <div className="articleMeta">
-          <span><UserRound size={16}/> AIUpdateId</span>
-          <span><CalendarDays size={16}/> {formatDate(a.published_at||a.created_at)}</span>
-          <span><Clock3 size={16}/> {a.read_time||`${minutes} menit`}</span>
+  return (
+    <main className="page">
+      <ArticleViewTracker id={a.id} current={a.view_count||0}/>
+      <ReadingProgress/>
+      <article className="container article">
+        <nav className="breadcrumbs" aria-label="Breadcrumb">
+          <Link href="/">Beranda</Link><span>/</span>
+          <Link href={`/kategori/${categorySlug}`}>{a.category}</Link><span>/</span>
+          <span>{cleanArticleTitle(a.title)}</span>
+        </nav>
+        <Link className="back" href="/"><ArrowLeft size={17}/> Kembali ke beranda</Link>
+        <div className="articleHead">
+          <span className="categoryBadge">{a.category}</span>
+          <h1>{cleanArticleTitle(a.title)}</h1>
+          <p>{a.excerpt ? cleanArticleTitle(a.excerpt) : ""}</p>
+          <div className="articleMeta">
+            <span><UserRound size={16}/> AIUpdateId</span>
+            <span><CalendarDays size={16}/> {formatDate(a.published_at||a.created_at)}</span>
+            <span><Clock3 size={16}/> {a.read_time||`${minutes} menit`}</span>
+          </div>
         </div>
-      </div>
 
-      {a.cover_image
-        ? <><img className="coverImage" src={a.cover_image} alt={a.alt_text||cleanArticleTitle(a.title)}/>{a.image_caption&&<p className="imageCaption">{a.image_caption}{a.image_source?` — ${a.image_source}`:""}</p>}</>
-        : <div className="cover">AIUpdateId</div>}
+        {a.cover_image
+          ? <><img className="coverImage" src={a.cover_image} alt={a.alt_text||cleanArticleTitle(a.title)}/>{a.image_caption&&<p className="imageCaption">{a.image_caption}{a.image_source?` — ${a.image_source}`:""}</p>}</>
+          : <div className="cover">AIUpdateId</div>}
 
-      <div className="articleLayout">
-        <div className="articleMain">
-          <TableOfContents/>
-          <ArticleBody content={a.content||""}/>
-          {a.tags&&a.tags.length>0&&<div className="tagRow">{a.tags.map(tag=><Link href={`/tag/${encodeURIComponent(tag.toLowerCase().replace(/\s+/g,"-"))}`} key={tag}>{tag}</Link>)}</div>}
-          {a.faq&&a.faq.length>0&&<section className="faqSection"><h2>Pertanyaan yang Sering Diajukan</h2>{a.faq.map((item,index)=><details key={index}><summary>{item.question}</summary><p>{item.answer}</p></details>)}</section>}
-          {a.call_to_action&&<section className="ctaBox"><h3>Ikuti Perkembangan AI</h3><p>{a.call_to_action}</p></section>}
-          {(relatedComparison||relatedTools.length>0)&&<section className="topicLinks" aria-labelledby="jelajahi-topik-terkait">
-            <div className="topicLinksHead">
-              <small>JELAJAHI TOPIK TERKAIT</small>
-              <h2 id="jelajahi-topik-terkait">Lanjutkan dari artikel ini</h2>
-            </div>
-            <div className="topicLinksGrid">
-              {relatedComparison&&<Link href={`/compare/${relatedComparison.slug}`} className="topicLinkCard">
-                <span>Perbandingan</span>
-                <strong>{relatedComparison.title}</strong>
-                <small>Lihat tabel fitur dan verdict →</small>
-              </Link>}
-              {relatedTools.map(tool=><Link href={`/tools/${tool.slug}`} className="topicLinkCard" key={tool.slug}>
-                <span>Tool AI</span>
-                <strong>{tool.name}</strong>
-                <small>Lihat profil, fitur, dan kegunaan →</small>
-              </Link>)}
-            </div>
-          </section>}
-          <ShareButtons title={cleanArticleTitle(a.title)}/>
-          <section className="authorBox">
-            <div className="authorAvatar">AI</div>
-            <div><span>Ditulis oleh</span><h3>Tim AIUpdateId</h3><p>Menyajikan informasi AI dalam bahasa Indonesia secara praktis dan mudah dipahami.</p></div>
-          </section>
+        <div className="articleLayout">
+          <div className="articleMain">
+            <TableOfContents/>
+            <ArticleBody content={a.content||""}/>
+            {a.tags&&a.tags.length>0&&<div className="tagRow">{a.tags.map(tag=><Link href={`/tag/${encodeURIComponent(tag.toLowerCase().replace(/\s+/g,"-"))}`} key={tag}>{tag}</Link>)}</div>}
+            {a.faq&&a.faq.length>0&&<section className="faqSection"><h2>Pertanyaan yang Sering Diajukan</h2>{a.faq.map((item,index)=><details key={index}><summary>{item.question}</summary><p>{item.answer}</p></details>)}</section>}
+            {a.call_to_action&&<section className="ctaBox"><h3>Ikuti Perkembangan AI</h3><p>{a.call_to_action}</p></section>}
+            {(relatedComparison||relatedTools.length>0)&&<section className="topicLinks" aria-labelledby="jelajahi-topik-terkait">
+              <div className="topicLinksHead">
+                <small>JELAJAHI TOPIK TERKAIT</small>
+                <h2 id="jelajahi-topik-terkait">Lanjutkan dari artikel ini</h2>
+              </div>
+              <div className="topicLinksGrid">
+                {relatedComparison&&<Link href={`/compare/${relatedComparison.slug}`} className="topicLinkCard">
+                  <span>Perbandingan</span>
+                  <strong>{relatedComparison.title}</strong>
+                  <small>Lihat tabel fitur dan verdict →</small>
+                </Link>}
+                {relatedTools.map(tool=><Link href={`/tools/${tool.slug}`} className="topicLinkCard" key={tool.slug}>
+                  <span>Tool AI</span>
+                  <strong>{tool.name}</strong>
+                  <small>Lihat profil, fitur, dan kegunaan →</small>
+                </Link>)}
+              </div>
+            </section>}
+            <ShareButtons title={cleanArticleTitle(a.title)}/>
+            <section className="authorBox">
+              <div className="authorAvatar">AI</div>
+              <div><span>Ditulis oleh</span><h3>Tim AIUpdateId</h3><p>Menyajikan informasi AI dalam bahasa Indonesia secara praktis dan mudah dipahami.</p></div>
+            </section>
+          </div>
+          <aside className="articleSidebar">
+            <div><small>RINGKASAN</small><p>{a.excerpt ? cleanArticleTitle(a.excerpt) : ""}</p></div>
+            <div><small>KATEGORI</small><Link href={`/kategori/${categorySlug}`}>{a.category}</Link></div>
+          </aside>
         </div>
-        <aside className="articleSidebar">
-          <div><small>RINGKASAN</small><p>{a.excerpt ? cleanArticleTitle(a.excerpt) : ""}</p></div>
-          <div><small>KATEGORI</small><Link href={`/kategori/${categorySlug}`}>{a.category}</Link></div>
-        </aside>
-      </div>
-    </article>
+      </article>
 
-    {related.length>0&&<section className="relatedSection"><div className="container">
-      <div className="sectionHead"><div><small>LANJUT MEMBACA</small><h2>Artikel terkait</h2></div></div>
-      <div className="grid">{related.map(item=><ArticleCard key={item.id} a={item}/>)}</div>
-    </div></section>}
-    <script type="application/ld+json" dangerouslySetInnerHTML={{__html:JSON.stringify(articleSchema)}}/>
-    <script type="application/ld+json" dangerouslySetInnerHTML={{__html:JSON.stringify(breadcrumbSchema)}}/>
-    {faqSchema&&<script type="application/ld+json" dangerouslySetInnerHTML={{__html:JSON.stringify(faqSchema)}}/>}
-  </main>;
+      {related.length>0&&<section className="relatedSection"><div className="container">
+        <div className="sectionHead"><div><small>LANJUT MEMBACA</small><h2>Artikel terkait</h2></div></div>
+        <div className="grid">{related.map(item=><ArticleCard key={item.id} a={item}/>)}</div>
+      </div></section>}
+      <script type="application/ld+json" dangerouslySetInnerHTML={{__html:JSON.stringify(articleSchema)}}/>
+      <script type="application/ld+json" dangerouslySetInnerHTML={{__html:JSON.stringify(breadcrumbSchema)}}/>
+      {faqSchema&&<script type="application/ld+json" dangerouslySetInnerHTML={{__html:JSON.stringify(faqSchema)}}/>}
+    </main>
+  );
 }

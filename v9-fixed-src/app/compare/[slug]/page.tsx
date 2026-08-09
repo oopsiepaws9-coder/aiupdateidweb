@@ -4,7 +4,7 @@ import V9Detail from "@/components/V9Detail";
 import { createServerSupabase } from "@/lib/supabase-server";
 import { getSiteUrl } from "@/lib/site-url";
 
-type Props = { params: { slug: string } };
+type Props = { params: Promise<{ slug: string }> };
 
 // Comparison entries are edited/published from the CMS.
 // Do not keep a stale 404 from when an entry was still draft.
@@ -25,7 +25,8 @@ async function getComparison(slug: string) {
   return data;
 }
 
-export async function generateMetadata({ params }: Props): Promise<Metadata> {
+export async function generateMetadata(props: Props): Promise<Metadata> {
+  const params = await props.params;
   const item = await getComparison(params.slug);
   const base = getSiteUrl();
 
@@ -63,7 +64,8 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   };
 }
 
-export default async function Page({ params }: Props) {
+export default async function Page(props: Props) {
+  const params = await props.params;
   const item = await getComparison(params.slug);
   if (!item) notFound();
 

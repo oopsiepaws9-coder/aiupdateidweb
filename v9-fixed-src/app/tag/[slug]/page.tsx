@@ -8,7 +8,8 @@ function humanize(slug:string){
   return decodeURIComponent(slug).replace(/-/g," ").replace(/\b\w/g,c=>c.toUpperCase());
 }
 
-export default async function TagPage({params}:{params:{slug:string}}){
+export default async function TagPage(props:{params: Promise<{slug:string}>}) {
+  const params = await props.params;
   const label=humanize(params.slug);
   const supabase=createServerSupabase();
   let items:Article[]=[];

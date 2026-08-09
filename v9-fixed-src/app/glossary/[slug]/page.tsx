@@ -4,7 +4,8 @@ import { notFound } from "next/navigation";
 
 export const revalidate=300;
 
-export default async function Page({params}:{params:{slug:string}}){
+export default async function Page(props:{params: Promise<{slug:string}>}) {
+  const params = await props.params;
   const supabase=createServerSupabase();
   if(!supabase) return notFound();
   const {data}=await supabase.from("glossary_terms").select("*").eq("slug",params.slug).eq("status","published").maybeSingle();

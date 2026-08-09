@@ -15,15 +15,17 @@ async function getPrompt(slug:string):Promise<PromptItem|null>{
  return (data as PromptItem|null)||null;
 }
 
-export async function generateMetadata({params}:{params:{slug:string}}):Promise<Metadata>{
- const p=await getPrompt(params.slug); if(!p)return{title:"Prompt tidak ditemukan | AIUpdateId",robots:{index:false,follow:false}};
+export async function generateMetadata(props:{params: Promise<{slug:string}>}):Promise<Metadata> {
+ const params = await props.params;
+ const p=await getPrompt(params.slug);if(!p)return{title:"Prompt tidak ditemukan | AIUpdateId",robots:{index:false,follow:false}};
  const title=p.seo_title||`${p.title} — Prompt AI Siap Salin | AIUpdateId`;
  const description=p.meta_description||p.description||`Prompt AI ${p.title} siap digunakan dan disesuaikan.`;
  return{title,description,alternates:{canonical:`/prompts/${p.slug}`},openGraph:{title,description,type:"article"}};
 }
 
-export default async function PromptDetail({params}:{params:{slug:string}}){
- const p=await getPrompt(params.slug); if(!p)notFound();
+export default async function PromptDetail(props:{params: Promise<{slug:string}>}) {
+ const params = await props.params;
+ const p=await getPrompt(params.slug);if(!p)notFound();
  const base=getSiteUrl();
  const schema={"@context":"https://schema.org","@type":"HowTo",name:p.title,description:p.description,url:`${base}/prompts/${p.slug}`,step:[{"@type":"HowToStep",name:"Sesuaikan variabel",text:"Ganti bagian dalam tanda kurung siku dengan kebutuhan Anda."},{"@type":"HowToStep",name:"Salin prompt",text:"Salin prompt ke tool AI yang sesuai."},{"@type":"HowToStep",name:"Evaluasi hasil",text:"Periksa hasil, lalu beri konteks tambahan atau revisi bila diperlukan."}]};
  return <main className="page promptDetailPage"><script type="application/ld+json" dangerouslySetInnerHTML={{__html:JSON.stringify(schema)}}/><section className="container promptDetailWrap">
