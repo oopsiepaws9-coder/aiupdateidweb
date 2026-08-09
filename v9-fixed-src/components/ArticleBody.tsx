@@ -81,7 +81,7 @@ function childrenToText(children: React.ReactNode): string {
       if (typeof child === "string" || typeof child === "number") {
         return String(child);
       }
-      if (isValidElement(child)) {
+      if (isValidElement<{ children?: React.ReactNode }>(child)) {
         return childrenToText(child.props.children);
       }
       return "";
