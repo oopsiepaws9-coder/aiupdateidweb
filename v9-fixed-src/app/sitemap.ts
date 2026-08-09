@@ -2,6 +2,9 @@ import type { MetadataRoute } from "next";
 import { createServerSupabase } from "@/lib/supabase-server";
 import { getSiteUrl } from "@/lib/site-url";
 
+// Refresh dynamic CMS URLs reasonably quickly after publish/unpublish.
+export const revalidate = 60;
+
 const RETIRED_ARTICLE_SLUGS = new Set([
   "chatgpt-5-bukan-sekadar-chatbot-10-hal-penting-yang-harus-diketahui-semua-orang-kategori-ai"
 ]);

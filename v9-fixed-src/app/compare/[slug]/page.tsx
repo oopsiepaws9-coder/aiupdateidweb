@@ -6,6 +6,11 @@ import { getSiteUrl } from "@/lib/site-url";
 
 type Props = { params: { slug: string } };
 
+// Comparison entries are edited/published from the CMS.
+// Do not keep a stale 404 from when an entry was still draft.
+export const dynamic = "force-dynamic";
+export const revalidate = 0;
+
 async function getComparison(slug: string) {
   const supabase = createServerSupabase();
   if (!supabase) return null;
