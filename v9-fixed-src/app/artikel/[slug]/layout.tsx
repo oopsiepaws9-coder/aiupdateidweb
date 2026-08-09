@@ -6,22 +6,23 @@ import { cleanArticleTitle } from "@/lib/utils";
 export async function generateMetadata({
   params
 }: {
-  params: { slug: string };
+  params: Promise<{ slug: string }>;
 }): Promise<Metadata> {
+  const { slug } = await params;
   const supabase = createServerSupabase();
   const siteUrl = getSiteUrl();
 
   if (!supabase) {
     return {
       title: "Artikel",
-      alternates: { canonical: `/artikel/${params.slug}` }
+      alternates: { canonical: `/artikel/${slug}` }
     };
   }
 
   const { data: article } = await supabase
     .from("articles")
     .select("*")
-    .eq("slug", params.slug)
+    .eq("slug", slug)
     .eq("status", "published")
     .maybeSingle();
 
