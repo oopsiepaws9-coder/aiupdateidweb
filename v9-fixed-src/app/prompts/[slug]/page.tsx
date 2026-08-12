@@ -18,7 +18,7 @@ async function getPrompt(slug:string):Promise<PromptItem|null>{
 export async function generateMetadata(props:{params: Promise<{slug:string}>}):Promise<Metadata> {
  const params = await props.params;
  const p=await getPrompt(params.slug);if(!p)return{title:"Prompt tidak ditemukan",robots:{index:false,follow:false}};
- const title=p.seo_title||`${p.title} — Prompt AI Siap Salin`;
+ const title=(p.seo_title||`${p.title} - Prompt AI Siap Salin`).replace(/\u00e2\u20ac[\u201c\u201d]/g,"-").replace(/(?:\s*\|\s*AIUpdateId)+\s*$/i,"");
  const description=p.meta_description||p.description||`Prompt AI ${p.title} siap digunakan dan disesuaikan.`;
  return{title,description,alternates:{canonical:`/prompts/${p.slug}`},openGraph:{title,description,type:"article"}};
 }
