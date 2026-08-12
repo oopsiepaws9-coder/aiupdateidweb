@@ -31,7 +31,6 @@ export const metadata: Metadata = {
   publisher: "AIUpdateId",
   category: "technology",
   alternates: {
-    canonical: "/",
     types: {
       "application/rss+xml": [{ url: "/rss.xml", title: "RSS AIUpdateId" }]
     }

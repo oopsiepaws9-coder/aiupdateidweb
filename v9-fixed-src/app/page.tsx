@@ -2,6 +2,7 @@ import SmartHome from "@/components/SmartHome";
 import { createServerSupabase } from "@/lib/supabase-server";
 import type { Article } from "@/lib/types";
 
+export const metadata = { alternates: { canonical: "/" } };
 export const revalidate = 300;
 
 export default async function Page(){
