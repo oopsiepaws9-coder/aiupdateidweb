@@ -3,7 +3,7 @@ import { createServerSupabase } from "@/lib/supabase-server";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Glosarium AI: Kamus Istilah Artificial Intelligence | AIUpdateId",
+  title: "Glosarium AI: Kamus Istilah Artificial Intelligence",
   description:
     "Pelajari istilah penting AI, machine learning, LLM, prompt, dan teknologi artificial intelligence melalui glosarium AIUpdateId yang mudah dipahami.",
   alternates: {

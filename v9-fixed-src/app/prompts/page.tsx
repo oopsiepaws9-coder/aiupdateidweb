@@ -7,7 +7,7 @@ import type { PromptItem } from "@/lib/prompt-types";
 export const revalidate = 300;
 
 export const metadata: Metadata = {
-  title: "Prompt AI Siap Pakai untuk Belajar, Kerja & Bisnis | AIUpdateId",
+  title: "Prompt AI Siap Pakai untuk Belajar, Kerja & Bisnis",
   description: "Jelajahi Prompt Library AIUpdateId: prompt siap salin untuk belajar, menulis, mahasiswa, bisnis, marketing, coding, riset, dan produktivitas.",
   alternates:{ canonical:"/prompts" },
   openGraph:{ title:"Prompt Library AIUpdateId", description:"Prompt AI siap pakai dan mudah disesuaikan.", type:"website" }

@@ -4,7 +4,7 @@ async function getTool(slug:string):Promise<AITool|null>{const s=createServerSup
 function cleanUrl(v?:string|null){if(!v)return"";try{return new URL(v).toString()}catch{return""}}function score(v?:number|null){return Math.max(0,Math.min(10,Number(v||0)))}function initials(n:string){return n.split(/\s+/).map(v=>v[0]).join("").slice(0,2).toUpperCase();}
 export async function generateMetadata(props:{params: Promise<{slug:string}>}):Promise<Metadata> {
   const params = await props.params;
-  const t=await getTool(params.slug);if(!t)return{title:"AI Tool tidak ditemukan | AIUpdateId",robots:{index:false,follow:false}};const title=t.seo_title||`${t.name}: Fitur, Kelebihan, Kekurangan & Harga | AIUpdateId`;const description=t.meta_description||t.short_description||`Review dan informasi ${t.name}.`;return{title,description,alternates:{canonical:`/tools/${t.slug}`},openGraph:{title,description,type:"article",images:t.cover_image?[t.cover_image]:undefined},twitter:{card:"summary_large_image",title,description,images:t.cover_image?[t.cover_image]:undefined}}
+  const t=await getTool(params.slug);if(!t)return{title:"AI Tool tidak ditemukan",robots:{index:false,follow:false}};const title=t.seo_title||`${t.name}: Fitur, Kelebihan, Kekurangan & Harga`;const description=t.meta_description||t.short_description||`Review dan informasi ${t.name}.`;return{title,description,alternates:{canonical:`/tools/${t.slug}`},openGraph:{title,description,type:"article",images:t.cover_image?[t.cover_image]:undefined},twitter:{card:"summary_large_image",title,description,images:t.cover_image?[t.cover_image]:undefined}}
 }
 export default async function ToolDetailPage(props:{params: Promise<{slug:string}>}) {
   const params = await props.params;
