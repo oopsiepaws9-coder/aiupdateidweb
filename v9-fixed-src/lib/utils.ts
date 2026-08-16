@@ -7,7 +7,8 @@ export function slugify(value: string) {
 export function formatDate(value?: string | null) {
   if (!value) return "";
   return new Intl.DateTimeFormat("id-ID", {
-    day: "numeric", month: "long", year: "numeric"
+    day: "numeric", month: "long", year: "numeric",
+    timeZone: "Asia/Jakarta",
   }).format(new Date(value));
 }
 

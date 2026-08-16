@@ -10,7 +10,7 @@ function formatDate(value?: string | null) {
   if (!value) return "";
   const date = new Date(value);
   if (Number.isNaN(date.getTime())) return "";
-  return date.toLocaleDateString("id-ID", { day: "numeric", month: "long", year: "numeric" });
+  return date.toLocaleDateString("id-ID", { day: "numeric", month: "long", year: "numeric", timeZone: "Asia/Jakarta" });
 }
 
 function initials(value: string) {
