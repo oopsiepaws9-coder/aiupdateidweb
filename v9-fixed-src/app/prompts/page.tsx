@@ -10,7 +10,7 @@ export const metadata: Metadata = {
   title: "Prompt AI Siap Pakai untuk Belajar, Kerja & Bisnis",
   description: "Jelajahi Prompt Library AIUpdateId: prompt siap salin untuk belajar, menulis, mahasiswa, bisnis, marketing, coding, riset, dan produktivitas.",
   alternates:{ canonical:"/prompts" },
-  openGraph:{ title:"Prompt Library AIUpdateId", description:"Prompt AI siap pakai dan mudah disesuaikan.", type:"website" }
+  openGraph:{ title:"Prompt Library AIUpdateId", description:"Prompt AI siap pakai dan mudah disesuaikan.", type:"website",url:"/prompts" }
 };
 
 export default async function PromptsPage(){

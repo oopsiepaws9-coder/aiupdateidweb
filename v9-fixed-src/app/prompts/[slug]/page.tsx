@@ -20,7 +20,7 @@ export async function generateMetadata(props:{params: Promise<{slug:string}>}):P
  const p=await getPrompt(params.slug);if(!p)return{title:"Prompt tidak ditemukan",robots:{index:false,follow:false}};
  const title=(p.seo_title||`${p.title} - Prompt AI Siap Salin`).replace(/\u00e2\u20ac[\u201c\u201d]/g,"-").replace(/(?:\s*\|\s*AIUpdateId)+\s*$/i,"");
  const description=p.meta_description||p.description||`Prompt AI ${p.title} siap digunakan dan disesuaikan.`;
- return{title,description,alternates:{canonical:`/prompts/${p.slug}`},openGraph:{title,description,type:"article"}};
+ return{title,description,alternates:{canonical:`/prompts/${p.slug}`},openGraph:{title,description,type:"article",url:`/prompts/${p.slug}`}};
 }
 
 export default async function PromptDetail(props:{params: Promise<{slug:string}>}) {
