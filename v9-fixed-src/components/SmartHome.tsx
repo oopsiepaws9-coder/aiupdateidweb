@@ -9,11 +9,11 @@ import { useMemo, useState } from "react";
 import type { Article } from "@/lib/types";
 import ArticleCard from "@/components/ArticleCard";
 import NewsletterForm from "@/components/NewsletterForm";
-import { aiTools, portalCategories, promptLibrary } from "@/lib/portal-data";
+import { aiTools, portalCategories } from "@/lib/portal-data";
 
 const filters=["Semua","Berita AI","Tools AI","Tutorial","Review","Prompt AI","Belajar AI"];
 
-export default function SmartHome({initialItems}:{initialItems:Article[]}){
+export default function SmartHome({initialItems,toolCount,promptCount}:{initialItems:Article[];toolCount:number;promptCount:number}){
   const items=initialItems;
   const[cat,setCat]=useState("Semua");
 
@@ -85,8 +85,8 @@ export default function SmartHome({initialItems}:{initialItems:Article[]}){
     <section className="smartSummary">
       <div className="container summaryGrid">
         <div><Newspaper size={22}/><b>{items.length}</b><span>Artikel</span></div>
-        <div><Wrench size={22}/><b>{aiTools.length}</b><span>Tools AI</span></div>
-        <div><Sparkles size={22}/><b>{promptLibrary.length}</b><span>Prompt</span></div>
+        <div><Wrench size={22}/><b>{toolCount}</b><span>Tools AI</span></div>
+        <div><Sparkles size={22}/><b>{promptCount}</b><span>Prompt</span></div>
         <div><TrendingUp size={22}/><b>{portalCategories.length}</b><span>Kategori</span></div>
       </div>
     </section>
