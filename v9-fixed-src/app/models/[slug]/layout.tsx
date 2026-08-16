@@ -52,7 +52,7 @@ export async function generateMetadata({
       : rawDescription;
 
   return {
-    title,
+    title: { absolute: `${title} | AIUpdateId` },
     description,
     robots: { index: true, follow: true },
     alternates: { canonical },
