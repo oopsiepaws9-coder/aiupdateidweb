@@ -57,7 +57,7 @@ function normalizeMarkdown(value: string) {
     .replace(/\r\n?/g, "\n")
     // Markdown syntax may arrive with accidental indentation from copy/paste.
     .replace(/^[ \t]{1,3}(?=#{1,6}\s*\S)/gm, "")
-    .replace(/^(#{1,6})(?=\S)/gm, "$1 ")
+    .replace(/^(#{1,6})(?!#)(?=\S)/gm, "$1 ")
     // Remove redundant heading hashes copied into the heading text.
     // Examples: "## # Judul" -> "## Judul", "### ## Judul" -> "### Judul".
     .replace(/^(#{1,6})\s+#+\s*/gm, "$1 ")
