@@ -125,15 +125,15 @@ export default function ArticleBody({ content }: { content: string }) {
         components={{
           h1: ({ children }) => {
             const text = cleanHeadingText(childrenToText(children));
-            return <h2 id={headingId(text)}>{text}</h2>;
+            return <h2 id={headingId(text)} className="articleSectionHeading" data-markdown-level="2">{text}</h2>;
           },
           h2: ({ children }) => {
             const text = cleanHeadingText(childrenToText(children));
-            return <h2 id={headingId(text)}>{text}</h2>;
+            return <h2 id={headingId(text)} className="articleSectionHeading" data-markdown-level="2">{text}</h2>;
           },
           h3: ({ children }) => {
             const text = cleanHeadingText(childrenToText(children));
-            return <h3 id={headingId(text)}>{text}</h3>;
+            return <h3 id={headingId(text)} className="articleSubheading" data-markdown-level="3">{text}</h3>;
           },
           blockquote: ({ children }) => {
             const text = childrenToText(children);
