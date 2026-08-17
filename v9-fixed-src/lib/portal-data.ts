@@ -1,10 +1,4 @@
-export const portalCategories = [
-  { name: "Berita AI", slug: "berita-ai", description: "Perkembangan terbaru dari industri kecerdasan buatan." },
-  { name: "Tools AI", slug: "tools-ai", description: "Pilihan alat AI untuk berbagai kebutuhan." },
-  { name: "Tutorial", slug: "tutorial", description: "Panduan praktis menggunakan teknologi AI." },
-  { name: "Review", slug: "review", description: "Ulasan jujur layanan dan produk AI." },
-  { name: "Prompt AI", slug: "prompt-ai", description: "Kumpulan prompt siap pakai." }
-];
+export { articleCategories as portalCategories } from "./article-categories";
 
 export const aiTools = [
   { slug:"chatgpt", name:"ChatGPT", category:"Chatbot", pricing:"Gratis & Berbayar", rating:4.8, description:"Asisten AI serbaguna untuk menulis, belajar, riset, dan coding.", featured:true },
