@@ -2,6 +2,15 @@
 const nextConfig = {
   reactStrictMode: true,
   poweredByHeader: false,
+  async redirects() {
+    return [
+      { source: "/kategori/tools-ai", destination: "/kategori/ai-tools", permanent: true },
+      { source: "/kategori/review", destination: "/kategori/perbandingan-ai", permanent: true },
+      { source: "/kategori/prompt-ai", destination: "/kategori/prompt", permanent: true },
+      { source: "/prompt", destination: "/prompts", permanent: true }
+    ];
+  },
+
   async headers() {
     return [
       {
