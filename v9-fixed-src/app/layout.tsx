@@ -71,8 +71,13 @@ export const metadata: Metadata = {
       "max-video-preview": -1
     }
   },
-  verification: {
-    google: process.env.GOOGLE_SITE_VERIFICATION || undefined
+    verification: {
+    google: [
+      ...(process.env.GOOGLE_SITE_VERIFICATION
+        ? [process.env.GOOGLE_SITE_VERIFICATION]
+        : []),
+      "7OwR3XW--ifz2thEjkRxQkyVV1PQ9_cZYNaUv5O3g0A"
+    ]
   }
 };
 
