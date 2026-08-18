@@ -119,6 +119,10 @@ export default async function CategoryPage({
       })
       .range(from, to);
 
+    if (error?.code === "PGRST103") {
+      notFound();
+    }
+
     if (error) {
       throw new Error(
         `Gagal mengambil kategori ${category.name}: ${error.message}`
