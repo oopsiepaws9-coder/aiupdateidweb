@@ -3,7 +3,9 @@ import { ArrowRight, Bot } from "lucide-react";
 import type { Article } from "@/lib/types";
 import { formatDate } from "@/lib/utils";
 
-export default function ArticleCard({a}:{a:Article}){
+export type ArticleCardData = Pick<Article, "id" | "title" | "slug" | "excerpt" | "category" | "cover_image" | "read_time" | "created_at" | "published_at">;
+
+export default function ArticleCard({a}:{a:ArticleCardData}){
   return <article className="card">
     {a.cover_image
       ? <div className="thumb image" style={{backgroundImage:`url("${a.cover_image}")`}}><span>{a.category}</span></div>
