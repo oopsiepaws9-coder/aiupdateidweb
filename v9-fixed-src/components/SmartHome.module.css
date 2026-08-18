@@ -1,0 +1,324 @@
+.articleGrid {
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+}
+
+.articleCard {
+  overflow: hidden;
+  border: 1px solid var(--line);
+  border-radius: 18px;
+  background: var(--surface);
+  color: var(--text);
+  transition: transform .2s ease, border-color .2s ease;
+}
+
+.articleCard:hover {
+  transform: translateY(-3px);
+  border-color: var(--primary);
+}
+
+.articleMedia {
+  position: relative;
+  aspect-ratio: 16 / 9;
+  overflow: hidden;
+  background: linear-gradient(135deg, #0c2b54, #1a73ca);
+}
+
+.articleMedia img {
+  width: 100%;
+  height: 100%;
+  display: block;
+  object-fit: cover;
+}
+
+.articleMedia > span {
+  position: absolute;
+  top: 11px;
+  left: 11px;
+  padding: 5px 8px;
+  border-radius: 7px;
+  background: rgba(0, 0, 0, .62);
+  color: #fff;
+  font-size: 11px;
+  font-weight: 800;
+}
+
+.articleFallback {
+  width: 100%;
+  height: 100%;
+  display: grid;
+  place-items: center;
+  color: #fff;
+}
+
+.articleBody {
+  padding: 17px;
+}
+
+.articleBody h3 {
+  min-height: 3.8em;
+  margin: 0 0 15px;
+  font-size: 18px;
+  line-height: 1.3;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  -webkit-line-clamp: 3;
+}
+
+.articleBody b {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  color: var(--primary);
+  font-size: 13px;
+}
+
+.categorySection,
+.referenceSection,
+.promptSection {
+  background: color-mix(in srgb, var(--surface) 72%, var(--bg));
+}
+
+.categoryGrid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.categoryGrid a {
+  min-height: 64px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 15px 17px;
+  border: 1px solid var(--line);
+  border-radius: 15px;
+  background: var(--surface);
+  color: var(--text);
+  font-weight: 800;
+  transition: transform .2s ease, border-color .2s ease;
+}
+
+.categoryGrid a:hover {
+  transform: translateY(-2px);
+  border-color: var(--primary);
+}
+
+.toolGrid {
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+}
+
+.toolGrid :global(.toolCard p) {
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  -webkit-line-clamp: 3;
+}
+
+.referenceGrid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 30px;
+}
+
+.referenceGrid :global(.sectionHead) {
+  align-items: flex-start;
+}
+
+.referenceGrid :global(.sectionHead h2) {
+  font-size: 31px;
+}
+
+.featureList {
+  display: grid;
+  gap: 12px;
+}
+
+.featureList > a {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 13px;
+  padding: 16px;
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  background: var(--surface);
+  color: var(--text);
+}
+
+.featureList h3,
+.promptGrid h3 {
+  margin: 4px 0 6px;
+  font-size: 17px;
+  line-height: 1.3;
+}
+
+.featureList small,
+.promptGrid small {
+  color: var(--primary);
+  font-weight: 800;
+}
+
+.featureList p,
+.promptGrid p {
+  margin: 0;
+  color: var(--muted);
+  font-size: 13px;
+  line-height: 1.55;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  -webkit-line-clamp: 2;
+}
+
+.featureIcon {
+  width: 39px;
+  height: 39px;
+  display: grid;
+  place-items: center;
+  border-radius: 11px;
+  background: color-mix(in srgb, var(--primary) 12%, var(--surface));
+  color: var(--primary);
+}
+
+.promptGrid {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 16px;
+}
+
+.promptGrid > a {
+  min-height: 230px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  padding: 19px;
+  border: 1px solid var(--line);
+  border-radius: 18px;
+  background: var(--surface);
+  color: var(--text);
+}
+
+.promptGrid p {
+  margin-bottom: 18px;
+  -webkit-line-clamp: 4;
+}
+
+.promptGrid b {
+  margin-top: auto;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  color: var(--primary);
+  font-size: 13px;
+}
+
+@media (max-width: 1100px) {
+  .articleGrid,
+  .categoryGrid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .toolGrid,
+  .promptGrid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 900px) {
+  .referenceGrid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 640px) {
+  .home :global(.smartHero) {
+    padding: 34px 0 28px;
+  }
+
+  .home :global(.smartHeroIntro h1) {
+    font-size: 36px;
+    line-height: 1.06;
+    letter-spacing: -1.7px;
+  }
+
+  .home :global(.smartHeroIntro > p) {
+    font-size: 16px;
+    line-height: 1.65;
+  }
+
+  .home :global(.buttons) {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 9px;
+  }
+
+  .home :global(.buttons a) {
+    min-height: 52px;
+    padding: 11px 13px;
+    justify-content: center;
+    text-align: center;
+    font-size: 14px;
+  }
+
+  .home :global(.section) {
+    padding: 48px 0;
+  }
+
+  .home :global(.sectionHead) {
+    margin-bottom: 18px;
+  }
+
+  .home :global(.sectionHead h2) {
+    font-size: 28px;
+    letter-spacing: -1px;
+  }
+
+  .categoryGrid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 9px;
+  }
+
+  .categoryGrid a {
+    min-height: 56px;
+    padding: 11px 12px;
+    font-size: 13px;
+  }
+
+  .articleGrid,
+  .toolGrid,
+  .promptGrid {
+    display: flex;
+    gap: 14px;
+    overflow-x: auto;
+    padding-bottom: 8px;
+    scroll-snap-type: x mandatory;
+    scrollbar-width: none;
+  }
+
+  .articleGrid::-webkit-scrollbar,
+  .toolGrid::-webkit-scrollbar,
+  .promptGrid::-webkit-scrollbar {
+    display: none;
+  }
+
+  .articleGrid > *,
+  .toolGrid > *,
+  .promptGrid > * {
+    flex: 0 0 min(82vw, 310px);
+    scroll-snap-align: start;
+  }
+
+  .featureList > a {
+    padding: 13px;
+  }
+
+  .featureList p {
+    display: none;
+  }
+
+  .promptGrid > a {
+    min-height: 190px;
+  }
+}

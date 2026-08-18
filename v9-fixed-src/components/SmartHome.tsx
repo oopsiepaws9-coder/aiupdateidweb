@@ -1,75 +1,123 @@
-"use client";
-
 import Link from "next/link";
 import {
-  ArrowRight, Bot, CheckCircle2, ChevronRight, Flame,
-  Newspaper, Search, Sparkles, Star, TrendingUp, Wrench
+  ArrowRight,
+  Bot,
+  CheckCircle2,
+  GitCompareArrows,
+  Layers3,
+  Sparkles,
+  Star
 } from "lucide-react";
-import { useMemo, useState } from "react";
-import type { Article } from "@/lib/types";
-import ArticleCard from "@/components/ArticleCard";
 import NewsletterForm from "@/components/NewsletterForm";
-import { aiTools, portalCategories } from "@/lib/portal-data";
+import { portalCategories } from "@/lib/portal-data";
+import styles from "./SmartHome.module.css";
 
-const filters=["Semua","Berita AI","Tools AI","Tutorial","Review","Prompt AI","Belajar AI"];
+export type HomeArticle = {
+  id: string;
+  title: string;
+  slug: string;
+  excerpt: string | null;
+  category: string | null;
+  cover_image: string | null;
+  alt_text: string | null;
+};
 
-export default function SmartHome({initialItems,toolCount,promptCount}:{initialItems:Article[];toolCount:number;promptCount:number}){
-  const items=initialItems;
-  const[cat,setCat]=useState("Semua");
+export type HomeTool = {
+  id: string;
+  name: string;
+  slug: string;
+  category: string | null;
+  short_description: string | null;
+  pricing: string | null;
+  rating: number | null;
+};
 
-  const categoryMatch=(articleCategory:string|null, selected:string)=>{
-    if(selected==="Semua") return true;
-    const aliases:Record<string,string[]>={
-      "Berita AI":["Berita AI"],
-      "Tools AI":["Tools AI","AI Tools"],
-      "Tutorial":["Tutorial"],
-      "Review":["Review","Perbandingan AI"],
-      "Prompt AI":["Prompt AI","Prompt"],
-      "Belajar AI":["Belajar AI"],
-    };
-    return (aliases[selected]||[selected]).includes(articleCategory||"");
-  };
+export type HomeModel = {
+  id: string;
+  name: string;
+  slug: string;
+  provider: string | null;
+  model_type: string | null;
+  short_description: string | null;
+};
 
-  const filtered=useMemo(()=>items.filter(a=>categoryMatch(a.category,cat)),[items,cat]);
+export type HomeComparison = {
+  id: string;
+  title: string;
+  slug: string;
+  summary: string | null;
+  item_a_name: string | null;
+  item_b_name: string | null;
+  verdict: string | null;
+};
 
-  const breaking=items.filter(a=>a.breaking).slice(0,4);
-  const hero=items.find(a=>a.featured) || items[0];
-  const editorPicks=items.filter(a=>a.editor_pick).slice(0,6);
-  const trending=[...items]
-    .sort((a,b)=>(b.view_count||0)-(a.view_count||0))
-    .filter(a=>a.id!==hero?.id)
-    .slice(0,5);
-  const latest=filtered.filter(a=>a.id!==hero?.id).slice(0,9);
+export type HomePrompt = {
+  id: string;
+  title: string;
+  slug: string;
+  category: string | null;
+  description: string | null;
+  tool_name: string | null;
+};
 
-  return <main>
-    {breaking.length>0&&<section className="breakingStrip">
-      <div className="container breakingInner">
-        <span><Flame size={17}/> Breaking</span>
-        <div>{breaking.map(a=><Link href={`/artikel/${a.slug}`} key={a.id}>{a.title}</Link>)}</div>
-      </div>
-    </section>}
+type SmartHomeProps = {
+  articles: HomeArticle[];
+  tools: HomeTool[];
+  models: HomeModel[];
+  comparisons: HomeComparison[];
+  prompts: HomePrompt[];
+};
 
+type SectionHeadProps = {
+  eyebrow: string;
+  title: string;
+  href: string;
+  linkLabel: string;
+};
+
+function SectionHead({ eyebrow, title, href, linkLabel }: SectionHeadProps) {
+  return (
+    <div className="sectionHead">
+      <div><small>{eyebrow}</small><h2>{title}</h2></div>
+      <Link className="textLink" href={href}>
+        {linkLabel} <ArrowRight size={17}/>
+      </Link>
+    </div>
+  );
+}
+
+export default function SmartHome({
+  articles,
+  tools,
+  models,
+  comparisons,
+  prompts
+}: SmartHomeProps) {
+  const hero = articles[0] || null;
+  const supportingArticles = articles.slice(1, 5);
+
+  return <main className={styles.home}>
     <section className="smartHero">
       <div className="container smartHeroGrid">
         <div className="smartHeroIntro">
           <div className="eyebrow"><span className="liveDot"/> PORTAL AI INDONESIA</div>
           <h1>Informasi AI yang membantu kamu <em>belajar, bekerja, dan berkembang.</em></h1>
-          <p>Berita, tutorial, review, tools, dan prompt AI dalam satu portal berbahasa Indonesia.</p>
+          <p>Artikel dan referensi AI pilihan untuk belajar, bekerja, dan mengambil keputusan.</p>
           <div className="buttons">
-            <a className="primary" href="#terbaru">Lihat artikel terbaru <ArrowRight size={18}/></a>
-            <Link className="secondary" href="/tools">Jelajahi tools AI</Link>
+            <a className="primary" href="#pilihan">Konten pilihan <ArrowRight size={18}/></a>
+            <Link className="secondary" href="/artikel">Semua artikel</Link>
           </div>
           <div className="checks">
-            <span><CheckCircle2 size={17}/> Mudah dipahami</span>
+            <span><CheckCircle2 size={17}/> Ringkas</span>
             <span><CheckCircle2 size={17}/> Praktis</span>
-            <span><CheckCircle2 size={17}/> Terstruktur</span>
+            <span><CheckCircle2 size={17}/> Terpilih</span>
           </div>
         </div>
 
-        {hero?<Link href={`/artikel/${hero.slug}`} className="heroStory">
+        {hero ? <Link href={`/artikel/${hero.slug}`} className="heroStory">
           <div className="heroStoryMedia">
             {hero.cover_image
-              ? <img src={hero.cover_image} alt={hero.alt_text||hero.title}/>
+              ? <img src={hero.cover_image} alt={hero.alt_text||hero.title} width={1200} height={675} decoding="async" fetchPriority="high"/>
               : <div className="heroFallback"><Bot size={72}/></div>}
           </div>
           <div className="heroStoryContent">
@@ -78,89 +126,147 @@ export default function SmartHome({initialItems,toolCount,promptCount}:{initialI
             <p>{hero.excerpt}</p>
             <b>Baca artikel <ArrowRight size={17}/></b>
           </div>
-        </Link>:<div className="heroStory emptyHero"><Bot size={72}/><h2>Artikel unggulan akan tampil di sini.</h2></div>}
+        </Link> : <div className="heroStory emptyHero">
+          <Bot size={72}/><h2>Artikel unggulan akan tampil di sini.</h2>
+        </div>}
       </div>
     </section>
 
-    <section className="smartSummary">
-      <div className="container summaryGrid">
-        <div><Newspaper size={22}/><b>{items.length}</b><span>Artikel</span></div>
-        <div><Wrench size={22}/><b>{toolCount}</b><span>Tools AI</span></div>
-        <div><Sparkles size={22}/><b>{promptCount}</b><span>Prompt</span></div>
-        <div><TrendingUp size={22}/><b>{portalCategories.length}</b><span>Kategori</span></div>
-      </div>
-    </section>
-
-    <section className="section" id="terbaru">
+    {supportingArticles.length>0&&<section className="section">
       <div className="container">
-        <div className="sectionHead">
-          <div><small>ARTIKEL TERBARU</small><h2>Ikuti perkembangan AI tanpa merasa tertinggal</h2></div>
-          <Link className="search smartSearchLink" href="/search"><Search size={18}/><span>Cari artikel, tools, atau prompt...</span></Link>
-        </div>
-        <div className="pills">{filters.map(x=><button key={x} className={cat===x?"active":""} onClick={()=>setCat(x)}>{x}</button>)}</div>
-        <div className="grid">{latest.map(a=><ArticleCard key={a.id} a={a}/>)}</div>
-        {!latest.length&&<div className="empty">Belum ada artikel yang cocok.</div>}
-      </div>
-    </section>
-
-    {editorPicks.length>0&&<section className="section editorPickSection">
-      <div className="container">
-        <div className="sectionHead">
-          <div><small>PILIHAN EDITOR</small><h2>Konten terbaik pilihan AIUpdateId</h2></div>
-        </div>
-        <div className="editorPickGrid">
-          {editorPicks.map((a,index)=><Link href={`/artikel/${a.slug}`} className="editorPickCard" key={a.id}>
-            <span>{String(index+1).padStart(2,"0")}</span>
-            <div><small>{a.category}</small><h3>{a.title}</h3><p>{a.excerpt}</p></div>
-            <ChevronRight size={20}/>
+        <SectionHead
+          eyebrow="ARTIKEL UNGGULAN"
+          title="Pilihan utama dari AIUpdateId"
+          href="/artikel"
+          linkLabel="Lihat semua artikel"
+        />
+        <div className={`grid ${styles.articleGrid}`}>
+          {supportingArticles.map(article=><Link className={styles.articleCard} href={`/artikel/${article.slug}`} key={article.id}>
+            <div className={styles.articleMedia}>
+              {article.cover_image
+                ? <img src={article.cover_image} alt={article.alt_text||article.title} width={640} height={360} loading="lazy" decoding="async"/>
+                : <div className={styles.articleFallback}><Bot size={38}/></div>}
+              <span>{article.category||"Artikel"}</span>
+            </div>
+            <div className={styles.articleBody}>
+              <h3>{article.title}</h3>
+              <b>Baca artikel <ArrowRight size={16}/></b>
+            </div>
           </Link>)}
         </div>
       </div>
     </section>}
 
-    <section className="section portalSplit">
-      <div className="container splitGrid">
-        <div>
-          <div className="sectionHead"><div><small>TRENDING</small><h2>Paling banyak dibaca</h2></div></div>
-          <div className="trendingList">
-            {trending.length?trending.map((a,i)=><Link href={`/artikel/${a.slug}`} key={a.id}>
-              <span>{i+1}</span>
-              <div><small>{a.category}</small><h3>{a.title}</h3><p>{a.view_count||0} pembaca</p></div>
-            </Link>):<div className="empty">Data trending akan muncul setelah artikel dibaca.</div>}
-          </div>
-        </div>
-
-        <div>
-          <div className="sectionHead"><div><small>KATEGORI</small><h2>Jelajahi berdasarkan topik</h2></div></div>
-          <div className="smartCategoryGrid">
-            {portalCategories.map((c,i)=><Link href={`/kategori/${c.slug}`} key={c.slug}>
-              <span>{String(i+1).padStart(2,"0")}</span>
-              <div><h3>{c.name}</h3><p>{c.description}</p></div>
-              <ArrowRight size={18}/>
-            </Link>)}
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <section className="section toolsSection">
+    <section className={`section ${styles.categorySection}`} id="pilihan">
       <div className="container">
-        <div className="sectionHead">
-          <div><small>TOOLS AI</small><h2>Pilihan alat AI untuk berbagai kebutuhan</h2></div>
-          <Link className="textLink" href="/tools">Lihat semua <ArrowRight size={17}/></Link>
-        </div>
-        <div className="toolGrid">
-          {aiTools.slice(0,6).map(t=><Link href={`/tools/${t.slug}`} className="toolCard" key={t.slug}>
-            <div className="toolLogo">{t.name.slice(0,2)}</div>
-            <div><small>{t.category}</small><h3>{t.name}</h3><p>{t.description}</p><div className="toolMeta"><span><Star size={15}/> {t.rating}</span><span>{t.pricing}</span></div></div>
+        <SectionHead
+          eyebrow="KATEGORI ARTIKEL"
+          title="Temukan topik yang kamu butuhkan"
+          href="/artikel"
+          linkLabel="Buka arsip artikel"
+        />
+        <div className={styles.categoryGrid}>
+          {portalCategories.map(category=><Link href={`/kategori/${category.slug}`} key={category.slug}>
+            <span>{category.name}</span><ArrowRight size={17}/>
           </Link>)}
         </div>
       </div>
     </section>
 
+    {tools.length>0&&<section className="section toolsSection">
+      <div className="container">
+        <SectionHead
+          eyebrow="TOOLS AI UNGGULAN"
+          title="Alat pilihan untuk bekerja lebih efisien"
+          href="/tools"
+          linkLabel="Lihat semua tools"
+        />
+        <div className={`toolGrid ${styles.toolGrid}`}>
+          {tools.map(tool=><Link href={`/tools/${tool.slug}`} className="toolCard" key={tool.id}>
+            <div className="toolLogo">{tool.name.slice(0,2)}</div>
+            <div>
+              <small>{tool.category||"AI Tool"}</small>
+              <h3>{tool.name}</h3>
+              <p>{tool.short_description}</p>
+              <div className="toolMeta">
+                {tool.rating ? <span><Star size={15}/> {tool.rating}</span> : <span>Unggulan</span>}
+                <span>{tool.pricing||"Lihat detail"}</span>
+              </div>
+            </div>
+          </Link>)}
+        </div>
+      </div>
+    </section>}
+
+    {(models.length>0||comparisons.length>0)&&<section className={`section ${styles.referenceSection}`}>
+      <div className={`container ${styles.referenceGrid}`}>
+        {models.length>0&&<div>
+          <SectionHead
+            eyebrow="MODEL AI"
+            title="Model AI pilihan"
+            href="/models"
+            linkLabel="Semua model"
+          />
+          <div className={styles.featureList}>
+            {models.map(model=><Link href={`/models/${model.slug}`} key={model.id}>
+              <span className={styles.featureIcon}><Layers3 size={19}/></span>
+              <div>
+                <small>{model.provider||model.model_type||"Model AI"}</small>
+                <h3>{model.name}</h3>
+                <p>{model.short_description}</p>
+              </div>
+              <ArrowRight size={17}/>
+            </Link>)}
+          </div>
+        </div>}
+
+        {comparisons.length>0&&<div>
+          <SectionHead
+            eyebrow="PERBANDINGAN"
+            title="Bandingkan sebelum memilih"
+            href="/compare"
+            linkLabel="Semua perbandingan"
+          />
+          <div className={styles.featureList}>
+            {comparisons.map(comparison=><Link href={`/compare/${comparison.slug}`} key={comparison.id}>
+              <span className={styles.featureIcon}><GitCompareArrows size={19}/></span>
+              <div>
+                <small>{comparison.item_a_name&&comparison.item_b_name
+                  ? `${comparison.item_a_name} vs ${comparison.item_b_name}`
+                  : "Perbandingan AI"}</small>
+                <h3>{comparison.title}</h3>
+                <p>{comparison.summary||comparison.verdict}</p>
+              </div>
+              <ArrowRight size={17}/>
+            </Link>)}
+          </div>
+        </div>}
+      </div>
+    </section>}
+
+    {prompts.length>0&&<section className={`section ${styles.promptSection}`}>
+      <div className="container">
+        <SectionHead
+          eyebrow="PROMPT UNGGULAN"
+          title="Prompt praktis yang siap digunakan"
+          href="/prompts"
+          linkLabel="Lihat semua prompt"
+        />
+        <div className={styles.promptGrid}>
+          {prompts.map(prompt=><Link href={`/prompts/${prompt.slug}`} key={prompt.id}>
+            <span className={styles.featureIcon}><Sparkles size={19}/></span>
+            <small>{prompt.category||prompt.tool_name||"Prompt AI"}</small>
+            <h3>{prompt.title}</h3>
+            <p>{prompt.description}</p>
+            <b>Lihat prompt <ArrowRight size={16}/></b>
+          </Link>)}
+        </div>
+      </div>
+    </section>}
+
     <section className="newsletter">
       <div className="container newsletterBox">
-        <div><small>NEWSLETTER AIUPDATEID</small><h2>Ringkasan AI pilihan, langsung ke emailmu.</h2><p>Fitur pendaftaran akan diaktifkan pada sprint berikutnya.</p></div>
+        <div><small>NEWSLETTER AIUPDATEID</small><h2>Ringkasan AI pilihan, langsung ke emailmu.</h2><p>Dapatkan pilihan konten penting tanpa harus mencari satu per satu.</p></div>
         <NewsletterForm/>
       </div>
     </section>
