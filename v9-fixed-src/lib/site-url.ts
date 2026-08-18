@@ -5,5 +5,5 @@ export function getSiteUrl() {
   const vercel = process.env.VERCEL_PROJECT_PRODUCTION_URL?.trim();
   if (vercel) return `https://${vercel}`.replace(/\/+$/, "");
 
-  return "https://aiupdateid.vercel.app";
+  return "https://aiupdateid.com";
 }

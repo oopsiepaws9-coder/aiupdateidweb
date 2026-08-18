@@ -1,5 +1,5 @@
 import { cleanArticleTitle } from "@/lib/utils";
-
+import { getSiteUrl } from "@/lib/site-url";
 export function makeSeoTitle(title:string, keyword:string){
   const clean=cleanArticleTitle(title);
   if(keyword && !clean.toLowerCase().includes(keyword.toLowerCase())){
@@ -18,5 +18,5 @@ export function makeOgDescription(meta:string, excerpt:string){
 }
 
 export function makeCanonical(slug:string){
-  return slug?`https://aiupdateid.vercel.app/artikel/${slug}`:"";
+  return slug?`${getSiteUrl()}/artikel/${slug}` : "";
 }
