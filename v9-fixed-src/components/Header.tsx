@@ -4,7 +4,7 @@ import { Menu, Moon, Search, Sun, X } from "lucide-react";
 import { useEffect, useState } from "react";
 
 export function Logo(){
-  return <Link className="logo" href="/"><img src="/aiupdateid-mark.png" alt="Logo AIUpdateId" className="brandMark"/><span>AIUpdateId</span></Link>
+  return <Link className="logo" href="/" aria-label="AIUpdateId — Beranda"><img src="/aiupdateid-icon-v2-192.png" alt="" className="brandMark"/><span className="brandWord"><span className="brandAi">AI</span>Update<span className="brandId">ID</span></span></Link>
 }
 
 export default function Header(){
