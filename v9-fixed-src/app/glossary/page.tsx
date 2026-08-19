@@ -19,5 +19,5 @@ export default async function Page(){
     const {data}=await supabase.from("glossary_terms").select("*").eq("status","published").order("created_at",{ascending:false});
     items=data||[];
   }
-  return <V9Directory items={items} table="glossary_terms" title="Kamus Istilah AI" base="/glossary"/>;
+  return <V9Directory items={items} table="glossary_terms" title="Kamus Istilah AI" base="/glossary" eyebrow="GLOSARIUM AI"/>;
 }

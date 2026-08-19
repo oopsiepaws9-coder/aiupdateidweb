@@ -10,5 +10,5 @@ export default async function Page(){
     const {data}=await supabase.from("ai_models").select("*").eq("status","published").order("created_at",{ascending:false});
     items=data||[];
   }
-  return <V9Directory items={items} table="ai_models" title="Database Model AI" base="/models"/>;
+  return <V9Directory items={items} table="ai_models" title="Database Model AI" base="/models" eyebrow="MODEL AI"/>;
 }

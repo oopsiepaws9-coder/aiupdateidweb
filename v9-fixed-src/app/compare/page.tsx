@@ -10,5 +10,5 @@ export default async function Page(){
     const {data}=await supabase.from("comparisons").select("*").eq("status","published").order("created_at",{ascending:false});
     items=data||[];
   }
-  return <V9Directory items={items} table="comparisons" title="Perbandingan AI" base="/compare"/>;
+  return <V9Directory items={items} table="comparisons" title="Perbandingan AI" base="/compare" eyebrow="PERBANDINGAN AI"/>;
 }

@@ -4,8 +4,8 @@ import {useState} from "react";
 import {Search,Star} from "lucide-react";
 import BrandLogo from "@/components/BrandLogo";
 
-export default function V9Directory({items,table,title,base}:{items:any[];table:string;title:string;base:string}){
+export default function V9Directory({items,table,title,base,eyebrow}:{items:any[];table:string;title:string;base:string;eyebrow:string}){
   const[q,setQ]=useState("");
   const f=items.filter(x=>JSON.stringify(x).toLowerCase().includes(q.toLowerCase()));
-  return <main className="page"><section className="container intro"><small>V9 DIRECTORY</small><h1>{title}</h1><label className="globalSearchBox"><Search size={20}/><input value={q} onChange={e=>setQ(e.target.value)} placeholder="Cari..."/></label></section><section className="container compact"><div className="v9DirectoryGrid">{f.map(x=><Link href={`${base}/${x.slug}`} key={x.id}>{table==="ai_models"?<BrandLogo provider={x.provider} name={x.name} logoUrl={x.logo_url}/>:<div className="toolLogo">{(x.name||x.term||x.title).slice(0,2)}</div>}<small>{x.category||x.provider||"AIUpdateId"}</small><h2>{x.name||x.term||x.title}</h2><p>{x.short_description||x.short_definition||x.summary}</p>{x.rating!=null&&<b><Star size={15}/>{x.rating}/10</b>}</Link>)}</div>{!f.length&&<div className="empty">Belum ada data.</div>}</section></main>;
+  return <main className="page"><section className="container intro"><small>{eyebrow}</small><h1>{title}</h1><label className="globalSearchBox"><Search size={20}/><input value={q} onChange={e=>setQ(e.target.value)} placeholder="Cari..."/></label></section><section className="container compact"><div className="v9DirectoryGrid">{f.map(x=><Link href={`${base}/${x.slug}`} key={x.id}>{table==="ai_models"?<BrandLogo provider={x.provider} name={x.name} logoUrl={x.logo_url}/>:<div className="toolLogo">{(x.name||x.term||x.title).slice(0,2)}</div>}<small>{x.category||x.provider||"AIUpdateId"}</small><h2>{x.name||x.term||x.title}</h2><p>{x.short_description||x.short_definition||x.summary}</p>{x.rating!=null&&<b><Star size={15}/>{x.rating}/10</b>}</Link>)}</div>{!f.length&&<div className="empty">Belum ada data.</div>}</section></main>;
 }
