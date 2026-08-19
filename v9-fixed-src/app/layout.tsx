@@ -53,13 +53,13 @@ export const metadata: Metadata = {
     title: "AIUpdateId — Portal AI Indonesia",
     description:
       "Berita, tutorial, review, tools, model AI, glossary, perbandingan, dan prompt AI dalam bahasa Indonesia.",
-    images: [{ url: "/aiupdateid-icon-v2-512.png", width: 512, height: 512, alt: "AIUpdateId" }]
+    images: [{ url: "/aiupdateid-og-v1.png", width: 1731, height: 909, alt: "AIUpdateId — Portal AI Indonesia" }]
   },
   twitter: {
     card: "summary_large_image",
     title: "AIUpdateId — Portal AI Indonesia",
     description: "Portal referensi AI berbahasa Indonesia.",
-    images: ["/aiupdateid-icon-v2-512.png"]
+    images: ["/aiupdateid-og-v1.png"]
   },
   robots: {
     index: true,
