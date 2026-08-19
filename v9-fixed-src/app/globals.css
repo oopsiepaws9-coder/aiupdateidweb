@@ -963,3 +963,56 @@ body {
     justify-content: center;
   }
 }
+
+/* AIUpdateId 2026 — controlled purple accent refresh */
+:root{
+  --purple:#7c3aed;
+  --purpleGlow:rgba(124,58,237,.20);
+}
+
+html[data-theme=dark]{
+  --purple:#9b6cff;
+  --purpleGlow:rgba(155,108,255,.24);
+}
+
+/* Subtle site atmosphere — keep reading surfaces light */
+body{
+  background:
+    radial-gradient(circle at 85% -10%,rgba(34,199,255,.08),transparent 30%),
+    radial-gradient(circle at 12% 8%,rgba(124,58,237,.035),transparent 24%),
+    var(--bg);
+}
+
+/* Homepage / hero emphasis */
+.smartHeroIntro h1 em,
+.hero h1 em{
+  background:linear-gradient(135deg,var(--primary) 15%,#248dec 55%,var(--purple));
+  -webkit-background-clip:text;
+  background-clip:text;
+  color:transparent;
+}
+
+/* Primary action: blue remains dominant, purple only at the end */
+.primary{
+  background:linear-gradient(135deg,#0e5bc2 0%,#248dec 62%,var(--purple) 100%);
+}
+
+/* Small brand accents */
+.readingProgress span{
+  background:linear-gradient(90deg,#20a3ff 0%,#1267d8 65%,var(--purple) 100%);
+}
+
+.newsletterBox{
+  background:linear-gradient(135deg,#071f42 0%,#116fc9 68%,#5b21b6 100%);
+}
+
+.ctaBox{
+  background:linear-gradient(135deg,#062957 0%,#0f75d8 70%,#5b21b6 100%);
+}
+
+.orb{
+  background:linear-gradient(145deg,rgba(55,192,255,.92),rgba(18,103,216,.92) 60%,rgba(124,58,237,.90));
+  box-shadow:
+    0 0 65px rgba(34,199,255,.34),
+    0 0 95px var(--purpleGlow);
+}
