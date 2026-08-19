@@ -103,7 +103,7 @@ export default async function Page(props:{params: Promise<{slug:string}>}) {
     description:a.meta_description||a.excerpt||"",
     url:canonicalUrl,
     mainEntityOfPage:{"@type":"WebPage","@id":canonicalUrl},
-    image:a.cover_image?[a.cover_image]:[`${siteUrl}/icon-512.png`],
+    image:a.cover_image?[a.cover_image]:[`${siteUrl}/aiupdateid-icon-v2-512.png`],
     datePublished:a.published_at||a.created_at,
     dateModified:a.updated_at||a.published_at||a.created_at,
     inLanguage:"id-ID",
@@ -116,7 +116,7 @@ export default async function Page(props:{params: Promise<{slug:string}>}) {
       "@type":"Organization",
       name:"AIUpdateId",
       url:siteUrl,
-      logo:{"@type":"ImageObject",url:`${siteUrl}/icon-512.png`}
+      logo:{"@type":"ImageObject",url:`${siteUrl}/aiupdateid-icon-v2-512.png`}
     }
   };
 

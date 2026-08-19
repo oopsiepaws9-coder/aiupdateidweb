@@ -15,7 +15,7 @@ export const metadata: Metadata = {
     siteName: "AIUpdateId",
     images: [
       {
-        url: "/icon-512.png",
+        url: "/aiupdateid-icon-v2-512.png",
         width: 512,
         height: 512,
         alt: "AIUpdateId",
@@ -26,7 +26,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: "Disclaimer | AIUpdateId",
     description: "Baca batasan tanggung jawab, ketentuan informasi, penggunaan referensi, dan prinsip editorial yang diterapkan oleh AIUpdateId.",
-    images: ["/icon-512.png"],
+    images: ["/aiupdateid-icon-v2-512.png"],
   },
 };
 

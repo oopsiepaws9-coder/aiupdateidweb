@@ -53,13 +53,13 @@ export async function generateMetadata(props: Props): Promise<Metadata> {
       locale: "id_ID",
       title,
       description,
-      images: [{ url: "/icon-512.png", width: 512, height: 512, alt: `${item.item_a_name} vs ${item.item_b_name}` }]
+      images: [{ url: "/aiupdateid-icon-v2-512.png", width: 512, height: 512, alt: `${item.item_a_name} vs ${item.item_b_name}` }]
     },
     twitter: {
       card: "summary_large_image",
       title,
       description,
-      images: ["/icon-512.png"]
+      images: ["/aiupdateid-icon-v2-512.png"]
     }
   };
 }

@@ -15,7 +15,7 @@ export const metadata: Metadata = {
     siteName: "AIUpdateId",
     images: [
       {
-        url: "/icon-512.png",
+        url: "/aiupdateid-icon-v2-512.png",
         width: 512,
         height: 512,
         alt: "AIUpdateId",
@@ -26,7 +26,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: "Tag AI: Jelajahi Topik dan Panduan AI | AIUpdateId",
     description: "Jelajahi artikel, tutorial, berita, dan panduan AI berdasarkan tag agar Anda lebih mudah menemukan topik yang dibutuhkan.",
-    images: ["/icon-512.png"],
+    images: ["/aiupdateid-icon-v2-512.png"],
   },
 };
 

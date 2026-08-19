@@ -53,13 +53,13 @@ export const metadata: Metadata = {
     title: "AIUpdateId — Portal AI Indonesia",
     description:
       "Berita, tutorial, review, tools, model AI, glossary, perbandingan, dan prompt AI dalam bahasa Indonesia.",
-    images: [{ url: "/icon-512.png", width: 512, height: 512, alt: "AIUpdateId" }]
+    images: [{ url: "/aiupdateid-icon-v2-512.png", width: 512, height: 512, alt: "AIUpdateId" }]
   },
   twitter: {
     card: "summary_large_image",
     title: "AIUpdateId — Portal AI Indonesia",
     description: "Portal referensi AI berbahasa Indonesia.",
-    images: ["/icon-512.png"]
+    images: ["/aiupdateid-icon-v2-512.png"]
   },
   robots: {
     index: true,
@@ -97,7 +97,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     "@type": "Organization",
     name: "AIUpdateId",
     url: siteUrl,
-    logo: `${siteUrl}/icon-512.png`
+    logo: `${siteUrl}/aiupdateid-icon-v2-512.png`
   };
 
   const websiteSchema = {

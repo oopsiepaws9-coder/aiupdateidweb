@@ -47,7 +47,7 @@ export async function generateMetadata({
       canonical = fallbackCanonical;
     }
   }
-  const image = article.cover_image || `${siteUrl}/icon-512.png`;
+  const image = article.cover_image || `${siteUrl}/aiupdateid-icon-v2-512.png`;
 
   return {
     title,

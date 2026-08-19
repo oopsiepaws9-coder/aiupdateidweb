@@ -15,7 +15,7 @@ export const metadata: Metadata = {
     siteName: "AIUpdateId",
     images: [
       {
-        url: "/icon-512.png",
+        url: "/aiupdateid-icon-v2-512.png",
         width: 512,
         height: 512,
         alt: "AIUpdateId",
@@ -26,7 +26,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: "Perbandingan AI: Fitur, Harga, dan Kegunaan | AIUpdateId",
     description: "Bandingkan fitur, kemampuan, harga, kelebihan, dan kekurangan berbagai AI untuk memilih alat yang paling sesuai dengan kebutuhan Anda.",
-    images: ["/icon-512.png"],
+    images: ["/aiupdateid-icon-v2-512.png"],
   },
 };
 

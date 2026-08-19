@@ -15,14 +15,14 @@ export const metadata: Metadata = {
       "Pelajari istilah penting AI, machine learning, LLM, prompt, dan teknologi artificial intelligence melalui glosarium AIUpdateId yang mudah dipahami.",
     url: "/glossary",
     type: "website",
-    images: ["/icon-512.png"],
+    images: ["/aiupdateid-icon-v2-512.png"],
   },
   twitter: {
     card: "summary_large_image",
     title: "Glosarium AI: Kamus Istilah Artificial Intelligence | AIUpdateId",
     description:
       "Pelajari istilah penting AI, machine learning, LLM, prompt, dan teknologi artificial intelligence melalui glosarium AIUpdateId yang mudah dipahami.",
-    images: ["/icon-512.png"],
+    images: ["/aiupdateid-icon-v2-512.png"],
   },
 };
 export const revalidate=300;
