@@ -25,15 +25,17 @@ export default function Header(){
     <div className="topbar"><span>Portal AI Indonesia</span></div>
     <header><div className="container nav">
       <Logo/>
-      <nav className={open?"open":""}>
-        <Link href="/" onClick={()=>setOpen(false)}>Beranda</Link>
+        <nav className={open?"open":""}>
+          <Link href="/" onClick={()=>setOpen(false)}>Beranda</Link>
           <Link href="/artikel" onClick={()=>setOpen(false)}>Artikel</Link>
-        <Link href="/kategori/berita-ai" onClick={()=>setOpen(false)}>Berita AI</Link>
-        <Link href="/tools" onClick={()=>setOpen(false)}>Tools AI</Link><Link href="/models" onClick={()=>setOpen(false)}>Model</Link><Link href="/glossary" onClick={()=>setOpen(false)}>Glossary</Link><Link href="/compare" onClick={()=>setOpen(false)}>Compare</Link>
-        <Link href="/kategori/tutorial" onClick={()=>setOpen(false)}>Tutorial</Link>
-        <Link href="/kategori/perbandingan-ai" onClick={()=>setOpen(false)}>Perbandingan AI</Link>
-        <Link href="/prompts" onClick={()=>setOpen(false)}>Prompt</Link><Link href="/tag" onClick={()=>setOpen(false)}>Tag</Link><Link href="/tentang" onClick={()=>setOpen(false)}>Tentang</Link>
-      </nav>
+          <Link href="/kategori/berita-ai" onClick={()=>setOpen(false)}>Berita AI</Link>
+          <Link href="/tools" onClick={()=>setOpen(false)}>Tools AI</Link>
+          <Link href="/models" onClick={()=>setOpen(false)}>Model AI</Link>
+          <Link href="/glossary" onClick={()=>setOpen(false)}>Glosarium</Link>
+          <Link href="/compare" onClick={()=>setOpen(false)}>Perbandingan</Link>
+          <Link href="/prompts" onClick={()=>setOpen(false)}>Prompt AI</Link>
+          <Link href="/tentang" onClick={()=>setOpen(false)}>Tentang</Link>
+        </nav>
       <div className="actions">
         <Link className="iconLink" href="/search" aria-label="Cari"><Search size={20}/></Link>
         <button onClick={toggle} aria-label="Ganti tema">{dark?<Sun size={20}/>:<Moon size={20}/>}</button>
