@@ -66,7 +66,7 @@ function normalizeMarkdown(value: string) {
     .replace(/^[ \t]{1,3}(?=>\s*\S)/gm, "")
     .replace(/^>(?=\S)/gm, "> ")
     .replace(/^[ \t]{1,3}(?=[-*+]\s*\S)/gm, "")
-    .replace(/^[-*+](?=\S)/gm, "- ")
+    .replace(/^[-+](?=\S)/gm, "- ")
     .replace(/^[ \t]{1,3}(?=\d+\.\s*\S)/gm, "")
     .replace(/^(\d+\.)(?=\S)/gm, "$1 ")
     .replace(/\n{3,}/g, "\n\n")
