@@ -1073,3 +1073,94 @@ body{
   .brandMark{transition:none}
   .logo:hover .brandMark{transform:none}
 }
+
+.directoryIntro p{
+  max-width:760px;
+  color:var(--muted);
+  font-size:18px;
+  line-height:1.75;
+}
+.directoryStats{
+  display:grid;
+  grid-template-columns:repeat(3,minmax(0,1fr));
+  gap:12px;
+  margin:22px 0;
+  max-width:760px;
+}
+.directoryStats div,
+.directoryGuide article,
+.directoryLinksGrid a,
+.directoryFaq details{
+  background:var(--surface);
+  border:1px solid var(--line);
+  border-radius:16px;
+  padding:18px;
+}
+.directoryStats strong{
+  display:block;
+  font-size:28px;
+  color:var(--primary);
+}
+.directoryStats span,
+.directoryGuide p,
+.directoryLinksGrid p,
+.directoryFaq p,
+.directorySectionHead p{
+  color:var(--muted);
+}
+.directoryGuide{
+  display:grid;
+  grid-template-columns:0.85fr 1.15fr;
+  gap:18px;
+  align-items:start;
+  padding-bottom:28px;
+}
+.directoryGuide h2,
+.directoryLinks h2,
+.directoryFaq h2,
+.directorySectionHead h2{
+  margin:6px 0 8px;
+}
+.directoryGuideGrid,
+.directoryLinksGrid{
+  display:grid;
+  grid-template-columns:repeat(3,minmax(0,1fr));
+  gap:14px;
+}
+.directoryGuide article strong{
+  color:var(--primary);
+}
+.directorySectionHead{
+  margin-bottom:18px;
+}
+.directoryLinks,
+.directoryFaq{
+  padding:10px 0 36px;
+}
+.directoryLinksGrid a span{
+  font-weight:900;
+  color:var(--text);
+}
+.directoryLinksGrid a p{
+  margin:8px 0 0;
+}
+.directoryFaq div{
+  display:grid;
+  gap:12px;
+  max-width:900px;
+}
+.directoryFaq summary{
+  cursor:pointer;
+  font-weight:900;
+}
+.directoryFaq p{
+  margin-bottom:0;
+}
+@media(max-width:800px){
+  .directoryStats,
+  .directoryGuide,
+  .directoryGuideGrid,
+  .directoryLinksGrid{
+    grid-template-columns:1fr;
+  }
+}
