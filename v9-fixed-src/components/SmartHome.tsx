@@ -190,7 +190,7 @@ export default function SmartHome({
               <p>{tool.short_description}</p>
               <div className="toolMeta">
                 {tool.rating ? <span><Star size={15}/> {tool.rating}</span> : <span>Unggulan</span>}
-                <span>{tool.pricing||"Lihat detail"}</span>
+                <span>{getHomepagePricingLabel(tool)}</span>
               </div>
             </div>
           </Link>)}
