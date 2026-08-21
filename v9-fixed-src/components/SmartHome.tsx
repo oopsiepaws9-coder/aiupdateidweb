@@ -75,6 +75,11 @@ type SectionHeadProps = {
   linkLabel: string;
 };
 
+function getHomepagePricingLabel(tool: HomeTool) {
+  const pricing = tool.pricing?.trim();
+  return pricing || "Info harga";
+}
+
 function SectionHead({ eyebrow, title, href, linkLabel }: SectionHeadProps) {
   return (
     <div className="sectionHead">

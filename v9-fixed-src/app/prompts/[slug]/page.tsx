@@ -28,8 +28,11 @@ export default async function PromptDetail(props:{params: Promise<{slug:string}>
  const p=await getPrompt(params.slug);if(!p)notFound();
  const base=getSiteUrl();
  const schema={"@context":"https://schema.org","@type":"HowTo",name:p.title,description:p.description,url:`${base}/prompts/${p.slug}`,step:[{"@type":"HowToStep",name:"Sesuaikan variabel",text:"Ganti bagian dalam tanda kurung siku dengan kebutuhan Anda."},{"@type":"HowToStep",name:"Salin prompt",text:"Salin prompt ke tool AI yang sesuai."},{"@type":"HowToStep",name:"Evaluasi hasil",text:"Periksa hasil, lalu beri konteks tambahan atau revisi bila diperlukan."}]};
+ const isArticlePrompt=(p.category||"").toLowerCase()==="artikel";
+ const backHref=isArticlePrompt?"/prompt/artikel":"/prompts";
+ const backLabel=isArticlePrompt?"Kembali ke Prompt Artikel":"Kembali ke Prompt Library";
  return <main className="page promptDetailPage"><script type="application/ld+json" dangerouslySetInnerHTML={{__html:JSON.stringify(schema)}}/><section className="container promptDetailWrap">
-   <Link className="back" href="/prompts"><ArrowLeft size={17}/> Kembali ke Prompt Library</Link>
+   <Link className="back" href={backHref}><ArrowLeft size={17}/> {backLabel}</Link>
    <header className="promptDetailHero">
     <div><div className="promptDetailMeta"><span>{p.category||"Prompt AI"}</span>{p.level&&<span>{p.level}</span>}{p.featured&&<span className="promptFeaturedBadge"><Sparkles size={13}/> Pilihan Editor</span>}</div><h1>{p.title}</h1><p>{p.description}</p></div>
     <aside><small>DIREKOMENDASIKAN UNTUK</small><b>{p.tool_name||p.tool_slug||"AI Chatbot"}</b>{p.tool_slug&&<Link href={`/tools/${p.tool_slug}`}>Lihat tool <ArrowUpRight size={15}/></Link>}</aside>
