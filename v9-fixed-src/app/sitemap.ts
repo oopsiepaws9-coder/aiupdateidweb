@@ -15,6 +15,14 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
 
   const staticPages: MetadataRoute.Sitemap = [
     { url: base, changeFrequency: "daily", priority: 1 },
+    { url: `${base}/artikel`, changeFrequency: "daily", priority: 0.9 },
+    { url: `${base}/kategori/berita-ai`, changeFrequency: "weekly", priority: 0.8 },
+    { url: `${base}/kategori/belajar-ai`, changeFrequency: "weekly", priority: 0.8 },
+    { url: `${base}/kategori/tutorial`, changeFrequency: "weekly", priority: 0.8 },
+    { url: `${base}/kategori/ai-tools`, changeFrequency: "weekly", priority: 0.8 },
+    { url: `${base}/kategori/ai-models`, changeFrequency: "weekly", priority: 0.8 },
+    { url: `${base}/kategori/prompt`, changeFrequency: "weekly", priority: 0.8 },
+    { url: `${base}/kategori/perbandingan-ai`, changeFrequency: "weekly", priority: 0.8 },
     { url: `${base}/tools`, changeFrequency: "weekly", priority: 0.9 },
     { url: `${base}/models`, changeFrequency: "weekly", priority: 0.9 },
     { url: `${base}/glossary`, changeFrequency: "weekly", priority: 0.8 },
