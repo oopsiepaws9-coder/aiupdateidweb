@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 
-type Item = { id: string; text: string; level: number };
+type Item = { id: string; text: string };
 
 export default function TableOfContents() {
   const [items, setItems] = useState<Item[]>([]);
@@ -11,7 +11,7 @@ export default function TableOfContents() {
     // Wait a moment so headings rendered by ReactMarkdown are already in the DOM.
     const timer = window.setTimeout(() => {
       const headings = Array.from(
-        document.querySelectorAll<HTMLElement>(".editorialProse h2, .editorialProse h3")
+        document.querySelectorAll<HTMLElement>(".editorialProse h2")
       );
 
       const mapped = headings
@@ -20,8 +20,7 @@ export default function TableOfContents() {
           heading.id = id;
           return {
             id,
-            text: heading.textContent?.trim() || "",
-            level: heading.tagName === "H2" ? 2 : 3
+            text: heading.textContent?.trim() || ""
           };
         })
         .filter((item) => item.text);
@@ -36,14 +35,21 @@ export default function TableOfContents() {
 
   return (
     <nav className="tocBox" aria-label="Daftar isi">
-      <div className="tocTitle">Daftar Isi</div>
-      <ol>
-        {items.map((item) => (
-          <li key={item.id} className={item.level === 3 ? "tocSub" : ""}>
-            <a href={`#${item.id}`}>{item.text}</a>
-          </li>
-        ))}
-      </ol>
+      <details className="tocDetails">
+        <summary className="tocTitle">
+          <span>Daftar Isi</span>
+          <span className="tocMeta">
+            {items.length} bagian <span className="tocChevron" aria-hidden="true">⌄</span>
+          </span>
+        </summary>
+        <ol>
+          {items.map((item) => (
+            <li key={item.id}>
+              <a href={`#${item.id}`}>{item.text}</a>
+            </li>
+          ))}
+        </ol>
+      </details>
     </nav>
   );
 }
