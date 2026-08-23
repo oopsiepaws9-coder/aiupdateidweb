@@ -23,3 +23,18 @@ export type PromptItem = {
   created_at?: string | null;
   updated_at?: string | null;
 };
+
+export type PromptListItem = Pick<
+  PromptItem,
+  | "id"
+  | "title"
+  | "slug"
+  | "category"
+  | "description"
+  | "tool_slug"
+  | "tool_name"
+  | "level"
+  | "variables"
+  | "tags"
+  | "featured"
+>;

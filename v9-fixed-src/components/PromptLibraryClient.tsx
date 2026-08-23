@@ -2,15 +2,14 @@
 
 import Link from "next/link";
 import { useMemo, useState } from "react";
-import { Copy, Check, Search, Sparkles, SlidersHorizontal, ArrowUpRight } from "lucide-react";
-import type { PromptItem } from "@/lib/prompt-types";
+import { Search, Sparkles, SlidersHorizontal, ArrowUpRight } from "lucide-react";
+import type { PromptListItem } from "@/lib/prompt-types";
 
-export default function PromptLibraryClient({ prompts }: { prompts: PromptItem[] }) {
+export default function PromptLibraryClient({ prompts }: { prompts: PromptListItem[] }) {
   const [q,setQ]=useState("");
   const [category,setCategory]=useState("Semua");
   const [level,setLevel]=useState("Semua");
   const [tool,setTool]=useState("Semua");
-  const [copied,setCopied]=useState("");
 
   const categories=useMemo(()=>["Semua",...Array.from(new Set(prompts.map(p=>p.category).filter(Boolean) as string[])).sort()], [prompts]);
   const levels=useMemo(()=>["Semua",...Array.from(new Set(prompts.map(p=>p.level).filter(Boolean) as string[])).sort()], [prompts]);
@@ -24,12 +23,6 @@ export default function PromptLibraryClient({ prompts }: { prompts: PromptItem[]
       (level==="Semua" || p.level===level) &&
       (tool==="Semua" || p.tool_name===tool || p.tool_slug===tool);
   }),[prompts,q,category,level,tool]);
-
-  const copy=async(p:PromptItem)=>{
-    await navigator.clipboard.writeText(p.prompt_text);
-    setCopied(p.id);
-    setTimeout(()=>setCopied(""),1600);
-  };
 
   const featured=prompts.filter(p=>p.featured).slice(0,3);
 
@@ -57,7 +50,7 @@ export default function PromptLibraryClient({ prompts }: { prompts: PromptItem[]
       <div className="promptSectionHead"><div><small>PILIHAN EDITOR</small><h2>Prompt unggulan</h2></div></div>
       <div className="featuredPromptGrid">{featured.map(p=><article key={p.id} className="featuredPromptCard">
         <div><small>{p.category || "Prompt AI"}</small><h3><Link href={`/prompts/${p.slug}`}>{p.title}</Link></h3><p>{p.description}</p></div>
-        <button onClick={()=>copy(p)}>{copied===p.id?<Check size={17}/>:<Copy size={17}/>} {copied===p.id?"Tersalin":"Salin"}</button>
+        <div className="promptCardFooter"><Link href={`/prompts/${p.slug}`}>Buka prompt <ArrowUpRight size={15}/></Link></div>
       </article>)}</div>
     </section>}
 
@@ -74,10 +67,8 @@ export default function PromptLibraryClient({ prompts }: { prompts: PromptItem[]
         <div className="promptCardMeta"><span>{p.category || "Prompt AI"}</span>{p.level&&<span>{p.level}</span>}</div>
         <h2><Link href={`/prompts/${p.slug}`}>{p.title}</Link></h2>
         <p>{p.description}</p>
-        <div className="promptPreviewText">{p.prompt_text}</div>
         {p.variables?.length?<div className="promptVariables">{p.variables.slice(0,4).map(v=><span key={v}>[{v}]</span>)}</div>:null}
         <div className="promptCardFooter">
-          <button onClick={()=>copy(p)}>{copied===p.id?<Check size={16}/>:<Copy size={16}/>} {copied===p.id?"Tersalin":"Salin prompt"}</button>
           <Link href={`/prompts/${p.slug}`}>Lihat detail <ArrowUpRight size={15}/></Link>
         </div>
       </article>)}</div>:<div className="empty">Tidak ada prompt yang cocok dengan filter ini.</div>}
