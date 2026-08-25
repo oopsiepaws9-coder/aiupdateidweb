@@ -1278,3 +1278,121 @@ body{
   line-height: 1.6;
 }
 
+
+
+/* =========================================================
+   COMPARISON MARKDOWN + MOBILE READABILITY
+   ========================================================= */
+
+.comparisonMarkdown{
+  min-width:0;
+}
+
+.comparisonMarkdown> :first-child{
+  margin-top:0;
+}
+
+.comparisonMarkdown> :last-child{
+  margin-bottom:0;
+}
+
+.comparisonMarkdown p{
+  margin:0 0 12px;
+}
+
+.comparisonMarkdown strong{
+  font-weight:850;
+}
+
+.comparisonMarkdown ul,
+.comparisonMarkdown ol{
+  margin:10px 0 14px;
+  padding-left:1.3rem;
+}
+
+.comparisonMarkdown li{
+  margin:5px 0;
+}
+
+.comparisonMarkdown a{
+  color:var(--primary);
+  text-decoration:underline;
+  text-underline-offset:3px;
+}
+
+.comparisonIntroBody{
+  margin-top:12px;
+  font-size:17px;
+  line-height:1.75;
+}
+
+.comparisonCellBody{
+  color:var(--muted);
+  font-size:12px;
+  line-height:1.65;
+}
+
+.comparisonCellBody p{
+  color:inherit;
+  font-size:inherit;
+  line-height:inherit;
+}
+
+.comparisonCellBody ul,
+.comparisonCellBody ol{
+  margin:7px 0 4px;
+  padding-left:1.15rem;
+}
+
+.comparisonVerdictBody{
+  margin-top:4px;
+}
+
+.comparisonVerdict .comparisonVerdictBody p{
+  margin:0 0 14px;
+  color:#d9e8f7;
+  font-size:16px;
+  line-height:1.72;
+}
+
+.comparisonVerdict .comparisonVerdictBody strong{
+  color:#fff;
+}
+
+.comparisonVerdict .comparisonVerdictBody ul,
+.comparisonVerdict .comparisonVerdictBody ol{
+  color:#d9e8f7;
+}
+
+.comparisonVerdict .comparisonVerdictBody li{
+  margin:6px 0;
+  line-height:1.65;
+}
+
+@media(max-width:760px){
+  .comparisonIntroBody{
+    font-size:16px;
+    line-height:1.68;
+  }
+
+  .comparisonVerdict{
+    padding:19px;
+  }
+
+  .comparisonVerdict h2{
+    margin-bottom:14px;
+    font-size:24px;
+    line-height:1.25;
+  }
+
+  .comparisonVerdict .comparisonVerdictBody p{
+    margin-bottom:13px;
+    font-size:15px;
+    line-height:1.68;
+  }
+
+  .comparisonVerdict .comparisonVerdictBody li{
+    font-size:15px;
+    line-height:1.65;
+  }
+}

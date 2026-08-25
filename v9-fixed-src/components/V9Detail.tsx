@@ -3,6 +3,8 @@
 import Link from "next/link";
 import { ArrowLeft, CheckCircle2, ExternalLink, Link2, Tag } from "lucide-react";
 import BrandLogo from "@/components/BrandLogo";
+import ReactMarkdown from "react-markdown";
+import remarkGfm from "remark-gfm";
 
 type Props = { table: string; slug: string; initialItem?: any; back?: string; backHref?: string; backLabel?: string };
 
@@ -15,6 +17,24 @@ function formatDate(value?: string | null) {
 
 function initials(value: string) {
   return value.split(/\s+/).filter(Boolean).map(v => v[0]).join("").slice(0, 2).toUpperCase();
+}
+
+function ComparisonMarkdown({
+  value,
+  className = ""
+}: {
+  value?: string | null;
+  className?: string;
+}) {
+  if (!value) return null;
+
+  return (
+    <div className={`comparisonMarkdown ${className}`.trim()}>
+      <ReactMarkdown remarkPlugins={[remarkGfm]}>
+        {value}
+      </ReactMarkdown>
+    </div>
+  );
 }
 
 export default function V9Detail({ table, slug, initialItem, back, backHref, backLabel }: Props) {
@@ -37,7 +57,9 @@ export default function V9Detail({ table, slug, initialItem, back, backHref, bac
   const isGlossary = table === "glossary_terms";
   const isComparison = table === "comparisons";
   const name = x.name || x.term || x.title || "Detail";
-  const short = x.short_description || x.short_definition || x.summary || x.description || "";
+  const short = isComparison
+    ? ""
+    : x.short_description || x.short_definition || x.description || "";
   const description = x.description || x.definition || "";
   const related = Array.isArray(x.related_terms) ? x.related_terms : [];
   const tags = Array.isArray(x.tags) ? x.tags : [];
@@ -109,7 +131,7 @@ export default function V9Detail({ table, slug, initialItem, back, backHref, bac
               <>
                 <section className="comparisonIntro">
                   <small>RINGKASAN</small>
-                  <p>{x.summary}</p>
+                  <ComparisonMarkdown value={x.summary} className="comparisonIntroBody" />
                 </section>
 
                 <section className="comparisonVsGrid">
@@ -136,12 +158,12 @@ export default function V9Detail({ table, slug, initialItem, back, backHref, bac
                           <h3>{row.aspect}</h3>
                           <div className={`comparisonCell ${row.edge === "a" ? "edge" : ""}`}>
                             <b>{x.item_a_name}</b>
-                            <p>{row.a}</p>
+                            <ComparisonMarkdown value={row.a} className="comparisonCellBody" />
                             {row.edge === "a" && <span>Unggul di aspek ini</span>}
                           </div>
                           <div className={`comparisonCell ${row.edge === "b" ? "edge" : ""}`}>
                             <b>{x.item_b_name}</b>
-                            <p>{row.b}</p>
+                            <ComparisonMarkdown value={row.b} className="comparisonCellBody" />
                             {row.edge === "b" && <span>Unggul di aspek ini</span>}
                           </div>
                           {row.edge === "tie" && <em>Seimbang / tergantung kebutuhan</em>}
@@ -155,7 +177,7 @@ export default function V9Detail({ table, slug, initialItem, back, backHref, bac
                   <section className="comparisonVerdict">
                     <small>PANDANGAN AIUPDATEID</small>
                     <h2>Jadi, pilih yang mana?</h2>
-                    <p>{x.verdict}</p>
+                    <ComparisonMarkdown value={x.verdict} className="comparisonVerdictBody" />
                   </section>
                 )}
 
