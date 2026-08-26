@@ -70,6 +70,12 @@ export default function V9Detail({ table, slug, initialItem, back, backHref, bac
   const comparisonSources = Array.isArray(x.sources) ? x.sources : [];
   const relatedGlossary = Array.isArray(x.related_glossary) ? x.related_glossary : [];
   const relatedModels = Array.isArray(x.related_models) ? x.related_models : [];
+  const glossaryLessons = isGlossary ? [
+    { eyebrow: "CARA KERJA SEDERHANA", title: "Cara kerja sederhana", content: x.how_it_works },
+    { eyebrow: "KENAPA PENTING", title: "Kenapa Anda perlu memahaminya?", content: x.why_it_matters },
+    { eyebrow: "JANGAN TERTUKAR", title: "Kesalahpahaman yang umum", content: x.common_confusions },
+    { eyebrow: "BATASAN YANG PERLU DIKETAHUI", title: "Catatan penting sebelum menggunakannya", content: typeof x.limitations === "string" ? x.limitations : "" }
+  ].filter((lesson) => lesson.content) : [];
 
   return (
     <main className="page">
@@ -110,6 +116,14 @@ export default function V9Detail({ table, slug, initialItem, back, backHref, bac
                     <p>{x.example}</p>
                   </section>
                 )}
+
+                {glossaryLessons.map((lesson) => (
+                  <section className="glossaryExample" key={lesson.eyebrow}>
+                    <small>{lesson.eyebrow}</small>
+                    <h2>{lesson.title}</h2>
+                    <p>{lesson.content}</p>
+                  </section>
+                ))}
 
                 {related.length > 0 && (
                   <section className="glossaryRelatedSection">
