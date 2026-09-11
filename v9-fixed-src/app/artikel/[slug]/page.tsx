@@ -37,28 +37,37 @@ export default async function Page(props:{params: Promise<{slug:string}>}) {
   if(!data) return notFound();
   const a=data as Article;
 
-  let related:Article[]=[];
-  if(a.category){
-    const {data:more}=await supabase
+  const relatedRequest=a.category
+    ? supabase
       .from("articles")
       .select("*")
       .eq("status","published")
       .eq("category",a.category)
       .neq("id",a.id)
       .order("published_at",{ascending:false,nullsFirst:false})
-      .limit(3);
-    related=(more||[]) as Article[];
-  }
+      .limit(3)
+    : Promise.resolve({data:[]});
 
   // Contextual internal links are resolved on the server so crawlers receive
   // useful destination URLs in the initial HTML, without risking links to drafts.
+  const [relatedResult, sameSlugComparisonResult, publishedToolsResult]=await Promise.all([
+    relatedRequest,
+    supabase
+      .from("comparisons")
+      .select("slug,title")
+      .eq("status","published")
+      .eq("slug",a.slug)
+      .maybeSingle(),
+    supabase
+      .from("ai_tools")
+      .select("name,slug")
+      .eq("status","published")
+      .order("featured",{ascending:false})
+      .limit(50)
+  ]);
+  const related=(relatedResult.data||[]) as Article[];
+  const sameSlugComparison=sameSlugComparisonResult.data;
   let relatedComparison:{slug:string;title:string}|null=null;
-  const {data:sameSlugComparison}=await supabase
-    .from("comparisons")
-    .select("slug,title")
-    .eq("status","published")
-    .eq("slug",a.slug)
-    .maybeSingle();
   if(sameSlugComparison){
     relatedComparison=sameSlugComparison as {slug:string;title:string};
   }else{
@@ -72,14 +81,8 @@ export default async function Page(props:{params: Promise<{slug:string}>}) {
     if(mappedComparison) relatedComparison=mappedComparison as {slug:string;title:string};
   }
 
-  const {data:publishedTools}=await supabase
-    .from("ai_tools")
-    .select("name,slug")
-    .eq("status","published")
-    .order("featured",{ascending:false})
-    .limit(50);
   const topicHaystack=[cleanArticleTitle(a.title),...(a.tags||[])].join(" ").toLowerCase();
-  const relatedTools=((publishedTools||[]) as {name:string;slug:string}[])
+  const relatedTools=((publishedToolsResult.data||[]) as {name:string;slug:string}[])
     .filter(tool=>topicHaystack.includes(tool.name.toLowerCase()))
     .slice(0,4);
 
@@ -112,7 +115,12 @@ export default async function Page(props:{params: Promise<{slug:string}>}) {
     keywords:a.tags?.join(", ")||undefined,
     wordCount:(a.content||"").trim().split(/\s+/).filter(Boolean).length,
     isAccessibleForFree:true,
-    author:{"@type":"Organization",name:"AIUpdateId",url:siteUrl},
+    author:{
+      "@type":"Organization",
+      name:"AIUpdateId",
+      url:siteUrl,
+      logo:{"@type":"ImageObject",url:`${siteUrl}/aiupdateid-icon-v2-512.png`}
+    },
     publisher:{
       "@type":"Organization",
       name:"AIUpdateId",
@@ -164,7 +172,7 @@ export default async function Page(props:{params: Promise<{slug:string}>}) {
         </div>
 
         {a.cover_image
-          ? <><img className="coverImage" src={a.cover_image} alt={a.alt_text||cleanArticleTitle(a.title)}/>{a.image_caption&&<p className="imageCaption">{a.image_caption}{a.image_source?` — ${a.image_source}`:""}</p>}</>
+          ? <><img className="coverImage" src={a.cover_image} alt={a.alt_text||cleanArticleTitle(a.title)} fetchPriority="high" decoding="async"/>{a.image_caption&&<p className="imageCaption">{a.image_caption}{a.image_source?` — ${a.image_source}`:""}</p>}</>
           : <div className="cover">AIUpdateId</div>}
 
         <AdUnit
@@ -176,7 +184,10 @@ export default async function Page(props:{params: Promise<{slug:string}>}) {
         <div className="articleLayout">
           <div className="articleMain">
             <TableOfContents/>
-            <ArticleBody content={a.content||""}/>
+            <ArticleBody
+              content={a.content||""}
+              fallbackImageAlt={`Ilustrasi pendukung: ${cleanArticleTitle(a.title)}`}
+            />
             <AdUnit
               slot={process.env.NEXT_PUBLIC_ADSENSE_ARTICLE_BOTTOM_SLOT}
               placement="article-bottom"
