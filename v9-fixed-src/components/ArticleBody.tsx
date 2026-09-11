@@ -117,7 +117,13 @@ function calloutType(text: string) {
   return "quote";
 }
 
-export default function ArticleBody({ content }: { content: string }) {
+export default function ArticleBody({
+  content,
+  fallbackImageAlt
+}: {
+  content: string;
+  fallbackImageAlt: string;
+}) {
   return (
     <div className="prose editorialProse">
       <ReactMarkdown
@@ -170,6 +176,18 @@ export default function ArticleBody({ content }: { content: string }) {
               >
                 {children}
               </a>
+            );
+          },
+          img: ({ alt, src, ...props }) => {
+            if (!src) return null;
+            return (
+              <img
+                src={src}
+                alt={alt?.trim() || fallbackImageAlt}
+                loading="lazy"
+                decoding="async"
+                {...props}
+              />
             );
           },
           code: ({ children, className, ...props }) => {
