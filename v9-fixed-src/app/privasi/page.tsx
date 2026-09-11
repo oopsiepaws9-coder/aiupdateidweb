@@ -98,6 +98,12 @@ export default function Page() {
             <strong>Supabase</strong> untuk database, penyimpanan media, dan
             data layanan seperti langganan newsletter.
           </li>
+          <li>
+            <strong>Google AdSense</strong> apabila iklan diaktifkan, untuk
+            menayangkan iklan dan mengukur penyampaiannya. Google dan mitranya
+            dapat menggunakan cookie atau pengenal serupa sesuai pengaturan
+            privasi serta persetujuan yang berlaku.
+          </li>
         </ul>
 
         <p>
@@ -110,9 +116,9 @@ export default function Page() {
 
         <p>
           Situs dapat menggunakan cookie atau penyimpanan browser yang
-          diperlukan untuk fungsi dasar, preferensi tampilan, keamanan, serta
-          pengukuran performa. Pengaturan tertentu dapat dihapus atau dibatasi
-          melalui browser Anda.
+          diperlukan untuk fungsi dasar, preferensi tampilan, keamanan,
+          pengukuran performa, dan—apabila iklan diaktifkan—penayangan iklan.
+          Pengaturan tertentu dapat dihapus atau dibatasi melalui browser Anda.
         </p>
 
         <h2>7. Penyimpanan dan keamanan data</h2>

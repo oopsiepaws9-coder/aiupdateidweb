@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { ArrowLeft, CheckCircle2, ExternalLink, Link2, Tag } from "lucide-react";
 import BrandLogo from "@/components/BrandLogo";
+import AdUnit from "@/components/AdUnit";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 
@@ -99,6 +100,14 @@ export default function V9Detail({ table, slug, initialItem, back, backHref, bac
             {short && <p>{short}</p>}
           </div>
         </header>
+
+        {isComparison && (
+          <AdUnit
+            slot={process.env.NEXT_PUBLIC_ADSENSE_COMPARE_TOP_SLOT || process.env.NEXT_PUBLIC_ADSENSE_ARTICLE_TOP_SLOT}
+            placement="comparison-top"
+            format="horizontal"
+          />
+        )}
 
         <div className="v9DetailGrid">
           <article>
@@ -341,6 +350,13 @@ export default function V9Detail({ table, slug, initialItem, back, backHref, bac
                   </a>
                 )}
               </>
+            )}
+            {isComparison && (
+              <AdUnit
+                slot={process.env.NEXT_PUBLIC_ADSENSE_SIDEBAR_SLOT}
+                placement="sidebar"
+                format="vertical"
+              />
             )}
           </aside>
         </div>

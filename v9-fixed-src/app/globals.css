@@ -865,6 +865,15 @@ body {
 .topicLinkCard small{color:var(--muted);font-size:13px}
 @media(max-width:640px){.topicLinks{padding:18px}.topicLinksGrid{grid-template-columns:1fr}.topicLinksHead h2{font-size:22px}}
 
+/* Monetization: reserved only after a valid AdSense slot is configured. */
+.adUnit{position:relative;width:100%;min-width:0;margin:32px 0;padding-top:19px;border-top:1px solid var(--line);overflow:hidden}
+.adUnitLabel{position:absolute;top:0;left:0;color:var(--muted);font-size:10px;font-weight:800;letter-spacing:1.1px;line-height:1;text-transform:uppercase}
+.adUnit--article-top,.adUnit--tool-top,.adUnit--comparison-top{margin:30px auto 6px;max-width:970px}
+.articleSidebar .adUnit,.toolFacts .adUnit,.v9DetailGrid aside .adUnit{margin:6px 0 0;border:1px solid var(--line);border-radius:16px;background:var(--surface);padding:28px 12px 12px}
+.articleSidebar .adUnitLabel,.toolFacts .adUnitLabel,.v9DetailGrid aside .adUnitLabel{top:12px;left:12px}
+@media(max-width:900px){.articleSidebar .adUnit{display:none}}
+@media(max-width:640px){.adUnit{margin:26px 0}.adUnit--article-top,.adUnit--tool-top,.adUnit--comparison-top{margin-top:24px}}
+
 .articleArchiveIntro {
   padding-bottom: 48px;
 }

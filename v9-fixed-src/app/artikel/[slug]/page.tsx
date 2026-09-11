@@ -12,6 +12,7 @@ import ReadingProgress from "@/components/ReadingProgress";
 import ShareButtons from "@/components/ShareButtons";
 import ArticleBody from "@/components/ArticleBody";
 import TableOfContents from "@/components/TableOfContents";
+import AdUnit from "@/components/AdUnit";
 
 export const revalidate = 300;
 
@@ -166,10 +167,21 @@ export default async function Page(props:{params: Promise<{slug:string}>}) {
           ? <><img className="coverImage" src={a.cover_image} alt={a.alt_text||cleanArticleTitle(a.title)}/>{a.image_caption&&<p className="imageCaption">{a.image_caption}{a.image_source?` — ${a.image_source}`:""}</p>}</>
           : <div className="cover">AIUpdateId</div>}
 
+        <AdUnit
+          slot={process.env.NEXT_PUBLIC_ADSENSE_ARTICLE_TOP_SLOT}
+          placement="article-top"
+          format="horizontal"
+        />
+
         <div className="articleLayout">
           <div className="articleMain">
             <TableOfContents/>
             <ArticleBody content={a.content||""}/>
+            <AdUnit
+              slot={process.env.NEXT_PUBLIC_ADSENSE_ARTICLE_BOTTOM_SLOT}
+              placement="article-bottom"
+              format="horizontal"
+            />
             {a.tags&&a.tags.length>0&&<div className="tagRow">{a.tags.map(tag=><Link href={`/tag/${encodeURIComponent(tag.toLowerCase().replace(/\s+/g,"-"))}`} key={tag}>{tag}</Link>)}</div>}
             {a.faq&&a.faq.length>0&&<section className="faqSection"><h2>Pertanyaan yang Sering Diajukan</h2>{a.faq.map((item,index)=><details key={index}><summary>{item.question}</summary><p>{item.answer}</p></details>)}</section>}
             {a.call_to_action&&<section className="ctaBox"><h3>Ikuti Perkembangan AI</h3><p>{a.call_to_action}</p></section>}
@@ -200,6 +212,11 @@ export default async function Page(props:{params: Promise<{slug:string}>}) {
           <aside className="articleSidebar">
             <div><small>RINGKASAN</small><p>{a.excerpt ? cleanArticleTitle(a.excerpt) : ""}</p></div>
             <div><small>KATEGORI</small><Link href={`/kategori/${categorySlug}`}>{a.category}</Link></div>
+            <AdUnit
+              slot={process.env.NEXT_PUBLIC_ADSENSE_SIDEBAR_SLOT}
+              placement="sidebar"
+              format="vertical"
+            />
           </aside>
         </div>
       </article>
