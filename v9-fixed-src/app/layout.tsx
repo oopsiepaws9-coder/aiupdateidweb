@@ -100,7 +100,12 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     "@type": "Organization",
     name: "AIUpdateId",
     url: siteUrl,
-    logo: `${siteUrl}/aiupdateid-icon-v2-512.png`
+    logo: {
+      "@type": "ImageObject",
+      url: `${siteUrl}/aiupdateid-icon-v2-512.png`,
+      width: 512,
+      height: 512
+    }
   };
 
   const websiteSchema = {
