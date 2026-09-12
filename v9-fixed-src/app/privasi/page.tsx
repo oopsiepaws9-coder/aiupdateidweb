@@ -9,7 +9,7 @@ export default function Page() {
 
         <p>
           Terakhir diperbarui:{" "}
-          <time dateTime="2026-08-16">16 Agustus 2026</time>
+          <time dateTime="2026-09-12">12 September 2026</time>
         </p>
 
         <div
@@ -25,8 +25,9 @@ export default function Page() {
           <p style={{ marginBottom: 0 }}>
             AIUpdateId hanya menggunakan data yang diperlukan untuk
             menjalankan layanan, menanggapi pesan, mengirimkan newsletter
-            apabila diminta, menjaga keamanan, dan memperbaiki pengalaman
-            pengguna. AIUpdateId tidak menjual data pribadi pengguna.
+            apabila diminta, menjaga keamanan, mengukur apakah fitur benar-benar
+            membantu, dan memperbaiki pengalaman pengguna. AIUpdateId tidak
+            menjual data pribadi pengguna.
           </p>
         </div>
 
@@ -34,9 +35,9 @@ export default function Page() {
 
         <p>
           Kebijakan ini menjelaskan jenis data yang dapat diproses ketika Anda
-          mengunjungi AIUpdateId, berlangganan newsletter, atau menghubungi
-          redaksi. Kebijakan ini disusun dengan memperhatikan prinsip
-          pelindungan data yang berlaku di Indonesia.
+          mengunjungi AIUpdateId, menggunakan alat interaktif, berlangganan
+          newsletter, atau menghubungi redaksi. Kebijakan ini disusun dengan
+          memperhatikan prinsip pelindungan data yang berlaku di Indonesia.
         </p>
 
         <h2>2. Data yang dapat diproses</h2>
@@ -53,14 +54,25 @@ export default function Page() {
             dapat diproses otomatis oleh layanan hosting.
           </li>
           <li>
+            <strong>Data penggunaan produk:</strong> AIUpdateId dapat membuat
+            pengenal pengunjung dan sesi acak di penyimpanan browser, lalu
+            mencatat event seperti membuka halaman, memulai Advisor,
+            menyelesaikan diagnosis, menyalin workflow, atau meminta akses awal.
+            Event dapat menyertakan jalur halaman, host perujuk, parameter UTM,
+            dan atribut teknis terbatas yang diperlukan untuk mengukur funnel.
+          </li>
+          <li>
             <strong>Data performa:</strong> informasi teknis mengenai kecepatan
             dan kestabilan halaman apabila fitur pengukuran performa diaktifkan.
           </li>
         </ul>
 
         <p>
-          AIUpdateId tidak meminta pengguna mengirimkan kata sandi, kode OTP,
-          API key, data keuangan, atau dokumen identitas.
+          Isi brief pada Prompt Quality Check tidak disimpan dalam event
+          analytics. Alamat email newsletter juga tidak disalin ke tabel event
+          produk. AIUpdateId tidak meminta pengguna mengirimkan kata sandi, kode
+          OTP, API key, data keuangan, atau dokumen identitas melalui alat
+          tersebut.
         </p>
 
         <h2>3. Tujuan penggunaan data</h2>
@@ -69,6 +81,7 @@ export default function Page() {
           <li>Mengirimkan newsletter yang diminta pengguna.</li>
           <li>Menanggapi pertanyaan, koreksi, dan permintaan pengguna.</li>
           <li>Menjaga keamanan dan mencegah penyalahgunaan situs.</li>
+          <li>Mengukur penggunaan, penyelesaian masalah, dan kunjungan kembali agar kualitas produk dapat dievaluasi.</li>
           <li>Menganalisis serta meningkatkan performa dan kualitas layanan.</li>
           <li>Memenuhi kewajiban hukum yang berlaku.</li>
         </ul>
@@ -78,8 +91,8 @@ export default function Page() {
         <p>
           Data diproses berdasarkan persetujuan pengguna, kebutuhan untuk
           memberikan layanan yang diminta, kepentingan yang sah dan
-          proporsional dalam menjaga keamanan situs, atau dasar lain yang
-          diperbolehkan oleh peraturan yang berlaku.
+          proporsional dalam menjaga keamanan serta meningkatkan layanan, atau
+          dasar lain yang diperbolehkan oleh peraturan yang berlaku.
         </p>
 
         <h2>5. Layanan pihak ketiga</h2>
@@ -92,11 +105,16 @@ export default function Page() {
         <ul>
           <li>
             <strong>Vercel</strong> untuk hosting, jaringan pengiriman konten,
-            log teknis, dan pengukuran performa.
+            log teknis, analytics, dan pengukuran performa.
           </li>
           <li>
-            <strong>Supabase</strong> untuk database, penyimpanan media, dan
-            data layanan seperti langganan newsletter.
+            <strong>Supabase</strong> untuk database, penyimpanan media, data
+            layanan seperti langganan newsletter, dan event penggunaan produk
+            AIUpdateId.
+          </li>
+          <li>
+            <strong>Google Analytics</strong> apabila diaktifkan, untuk
+            memahami penggunaan situs sesuai konfigurasi yang diterapkan.
           </li>
           <li>
             <strong>Google AdSense</strong> apabila iklan diaktifkan, untuk
@@ -117,17 +135,22 @@ export default function Page() {
         <p>
           Situs dapat menggunakan cookie atau penyimpanan browser yang
           diperlukan untuk fungsi dasar, preferensi tampilan, keamanan,
-          pengukuran performa, dan—apabila iklan diaktifkan—penayangan iklan.
-          Pengaturan tertentu dapat dihapus atau dibatasi melalui browser Anda.
+          pengukuran performa, dan pengukuran penggunaan produk. Untuk
+          pengukuran funnel internal, AIUpdateId dapat menyimpan pengenal acak
+          pengunjung di localStorage dan pengenal sesi di sessionStorage. Anda
+          dapat menghapus keduanya melalui pengaturan browser. Apabila iklan
+          diaktifkan, teknologi tambahan dapat digunakan sesuai mekanisme
+          persetujuan yang berlaku.
         </p>
 
         <h2>7. Penyimpanan dan keamanan data</h2>
 
         <p>
           Data disimpan selama masih diperlukan untuk tujuan pengumpulannya,
-          keamanan, penyelesaian permintaan, atau kewajiban hukum. AIUpdateId
-          menerapkan langkah teknis dan administratif yang wajar, tetapi tidak
-          ada sistem internet yang dapat menjamin keamanan mutlak.
+          keamanan, penyelesaian permintaan, analisis penggunaan, atau
+          kewajiban hukum. AIUpdateId menerapkan langkah teknis dan administratif
+          yang wajar, tetapi tidak ada sistem internet yang dapat menjamin
+          keamanan mutlak.
         </p>
 
         <h2>8. Hak pengguna</h2>
