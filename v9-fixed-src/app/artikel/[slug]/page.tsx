@@ -1,3 +1,4 @@
+import Image from "next/image";
 import Link from "next/link";
 import { ArrowLeft, CalendarDays, Clock3, UserRound } from "lucide-react";
 import { notFound, permanentRedirect } from "next/navigation";
@@ -172,7 +173,16 @@ export default async function Page(props:{params: Promise<{slug:string}>}) {
         </div>
 
         {a.cover_image
-          ? <><img className="coverImage" src={a.cover_image} alt={a.alt_text||cleanArticleTitle(a.title)} fetchPriority="high" decoding="async"/>{a.image_caption&&<p className="imageCaption">{a.image_caption}{a.image_source?` — ${a.image_source}`:""}</p>}</>
+          ? <><Image
+              className="coverImage"
+              src={a.cover_image}
+              alt={a.alt_text||cleanArticleTitle(a.title)}
+              width={1200}
+              height={675}
+              sizes="(max-width: 640px) calc(100vw - 24px), (max-width: 1120px) calc(100vw - 36px), 1120px"
+              priority
+              quality={85}
+            />{a.image_caption&&<p className="imageCaption">{a.image_caption}{a.image_source?` — ${a.image_source}`:""}</p>}</>
           : <div className="cover">AIUpdateId</div>}
 
         <AdUnit
