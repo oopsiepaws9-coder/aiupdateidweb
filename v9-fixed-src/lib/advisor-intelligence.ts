@@ -1,5 +1,6 @@
 import type { AITool } from "@/lib/tool-types";
 import type { AdvisorInput, AdvisorTaskKey } from "@/lib/advisor-engine";
+import { applyOutcomeAdjustment, type OutcomeSignal } from "@/lib/advisor-learning";
 
 export type IntelligenceProfile = AdvisorInput & {
   mode: "balanced" | "quality" | "budget" | "simple";
@@ -15,6 +16,8 @@ export type IntelligenceScore = {
   freshness: number;
   risk: number;
   total: number;
+  baseTotal: number;
+  outcomeAdjustment: number;
   tradeoffs: string[];
 };
 
@@ -65,7 +68,7 @@ function taskFit(tool: AITool, task: AdvisorTaskKey) {
   return clamp(38 + hits * 15 + score(tool.feature_score) * .25);
 }
 
-export function intelligenceScore(tool: AITool, profile: IntelligenceProfile): IntelligenceScore {
+export function intelligenceScore(tool: AITool, profile: IntelligenceProfile, outcomeSignal?: OutcomeSignal): IntelligenceScore {
   const fit = taskFit(tool, profile.task);
   const value = score(tool.value_score);
   const ease = score(tool.ease_score);
@@ -84,22 +87,27 @@ export function intelligenceScore(tool: AITool, profile: IntelligenceProfile): I
     simple: { fit:.32, value:.12, ease:.28, indonesia:.10, evidence:.10, fresh:.08, free:0 },
   }[profile.mode];
 
-  let total = fit*modes.fit + value*modes.value + ease*modes.ease + indonesia*modes.indonesia + evidence*modes.evidence + fresh*modes.fresh + free*modes.free;
-  total -= risk * .07;
-  if (profile.priorities.freePlan && !tool.has_free_plan) total -= 8;
-  if (profile.priorities.indonesian) total += (indonesia - 50) * .05;
-  if (profile.priorities.easyToUse) total += (ease - 50) * .04;
+  let raw = fit*modes.fit + value*modes.value + ease*modes.ease + indonesia*modes.indonesia + evidence*modes.evidence + fresh*modes.fresh + free*modes.free;
+  raw -= risk * .07;
+  if (profile.priorities.freePlan && !tool.has_free_plan) raw -= 8;
+  if (profile.priorities.indonesian) raw += (indonesia - 50) * .05;
+  if (profile.priorities.easyToUse) raw += (ease - 50) * .04;
+
+  const baseTotal = clamp(raw);
+  const total = applyOutcomeAdjustment(baseTotal, outcomeSignal);
+  const outcomeAdjustment = outcomeSignal?.eligible ? Math.round((total - baseTotal) * 10) / 10 : 0;
 
   const tradeoffs: string[] = [];
   if (!tool.has_free_plan) tradeoffs.push("Tidak tercatat memiliki paket gratis.");
   if (fresh < 60) tradeoffs.push("Data perlu diverifikasi ulang karena review tidak lagi segar.");
   if (evidence < 65) tradeoffs.push("Confidence bukti masih terbatas.");
   if (risk >= 55) tradeoffs.push("Ada beberapa keterbatasan yang perlu diperiksa sebelum memilih.");
-  return { tool, fit, value, ease, indonesia, evidence, freshness:fresh, risk, total:clamp(total), tradeoffs:tradeoffs.slice(0,3) };
+  if (outcomeSignal?.eligible) tradeoffs.push(`Outcome pengguna teragregasi menyesuaikan skor ${outcomeAdjustment >= 0 ? "+" : ""}${outcomeAdjustment}.`);
+  return { tool, fit, value, ease, indonesia, evidence, freshness:fresh, risk, total, baseTotal, outcomeAdjustment, tradeoffs:tradeoffs.slice(0,4) };
 }
 
-export function rankIntelligence(tools: AITool[], profile: IntelligenceProfile, limit=5) {
-  return tools.map(t => intelligenceScore(t, profile)).sort((a,b)=>b.total-a.total || b.evidence-a.evidence).slice(0,limit);
+export function rankIntelligence(tools: AITool[], profile: IntelligenceProfile, limit=5, outcomeSignals?: Record<string, OutcomeSignal>) {
+  return tools.map(t => intelligenceScore(t, profile, outcomeSignals?.[t.id])).sort((a,b)=>b.total-a.total || b.evidence-a.evidence).slice(0,limit);
 }
 
 export function buildWorkflow(task: AdvisorTaskKey, ranked: IntelligenceScore[]) {
