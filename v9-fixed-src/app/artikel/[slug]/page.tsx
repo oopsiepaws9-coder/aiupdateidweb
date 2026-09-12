@@ -179,7 +179,7 @@ export default async function Page(props:{params: Promise<{slug:string}>}) {
               alt={a.alt_text||cleanArticleTitle(a.title)}
               width={1200}
               height={675}
-              sizes="(max-width: 768px) 100vw, 1200px"
+              sizes="(max-width: 640px) calc(100vw - 24px), (max-width: 1120px) calc(100vw - 36px), 1120px"
               priority
               quality={85}
             />{a.image_caption&&<p className="imageCaption">{a.image_caption}{a.image_source?` — ${a.image_source}`:""}</p>}</>
