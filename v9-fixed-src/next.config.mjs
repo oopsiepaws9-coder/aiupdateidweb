@@ -2,6 +2,16 @@
 const nextConfig = {
   reactStrictMode: true,
   poweredByHeader: false,
+  images: {
+    formats: ["image/avif", "image/webp"],
+    remotePatterns: [
+      {
+        protocol: "https",
+        hostname: "pjdfbcsmhsbnqrtqjduq.supabase.co",
+        pathname: "/storage/v1/object/public/article-images/**"
+      }
+    ]
+  },
   async redirects() {
     return [
       { source: "/kategori/tools-ai", destination: "/kategori/ai-tools", permanent: true },
