@@ -29,6 +29,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     { url: `${base}/compare`, changeFrequency: "weekly", priority: 0.8 },
     { url: `${base}/prompts`, changeFrequency: "weekly", priority: 0.9 },
     { url: `${base}/prompt/artikel`, changeFrequency: "weekly", priority: 0.85 },
+    { url: `${base}/workflow`, changeFrequency: "weekly", priority: 0.8 },
     { url: `${base}/tag`, changeFrequency: "weekly", priority: 0.7 },
     { url: `${base}/tentang`, changeFrequency: "monthly", priority: 0.5 },
     { url: `${base}/kontak`, changeFrequency: "monthly", priority: 0.4 },
