@@ -1,7 +1,8 @@
 "use client";
 
-import { useMemo, useState } from "react";
-import { CheckCircle2, Clipboard, Copy, FileCheck2, Sparkles, TriangleAlert } from "lucide-react";
+import { useEffect, useMemo, useRef, useState } from "react";
+import { CheckCircle2, Copy, FileCheck2, Sparkles, TriangleAlert } from "lucide-react";
+import { trackProductEvent } from "@/lib/product-analytics";
 
 type Goal = "Artikel edukatif" | "Skrip video pendek" | "Carousel media sosial" | "Rencana konten";
 
@@ -19,6 +20,14 @@ export default function WorkflowCheckClient() {
   const [format, setFormat] = useState("");
   const [boundaries, setBoundaries] = useState("");
   const [copied, setCopied] = useState(false);
+  const startedRef = useRef(false);
+  const readyRef = useRef(false);
+
+  const markStarted = (field: string) => {
+    if (startedRef.current) return;
+    startedRef.current = true;
+    trackProductEvent("workflow_started", "workflow", { field, goal });
+  };
 
   const checks = useMemo(() => [
     { label: "Tujuan", done: Boolean(goal) },
@@ -31,6 +40,12 @@ export default function WorkflowCheckClient() {
 
   const score = Math.round((checks.filter((item) => item.done).length / checks.length) * 100);
   const missing = checks.filter((item) => !item.done).map((item) => item.label);
+
+  useEffect(() => {
+    if (!startedRef.current || score < 84 || readyRef.current) return;
+    readyRef.current = true;
+    trackProductEvent("workflow_ready", "workflow", { goal, score, missing_count: missing.length });
+  }, [goal, score, missing.length]);
 
   const prompt = useMemo(() => {
     const task = clean(topic) || "[TOPIK]";
@@ -46,6 +61,7 @@ export default function WorkflowCheckClient() {
     try {
       await navigator.clipboard.writeText(prompt);
       setCopied(true);
+      trackProductEvent("workflow_copied", "workflow", { goal, score, missing_count: missing.length });
       window.setTimeout(() => setCopied(false), 1800);
     } catch {
       setCopied(false);
@@ -65,14 +81,14 @@ export default function WorkflowCheckClient() {
           </div>
         </div>
 
-        <label>Tujuan pekerjaan<select value={goal} onChange={(event) => setGoal(event.target.value as Goal)}>{goals.map((item) => <option key={item}>{item}</option>)}</select></label>
-        <label>Topik atau masalah yang ingin diselesaikan<textarea value={topic} onChange={(event) => setTopic(event.target.value)} placeholder="Contoh: menjelaskan kapan UMKM sebaiknya memakai AI untuk membuat konten" rows={3} /></label>
+        <label>Tujuan pekerjaan<select value={goal} onChange={(event) => { markStarted("goal"); setGoal(event.target.value as Goal); }}>{goals.map((item) => <option key={item}>{item}</option>)}</select></label>
+        <label>Topik atau masalah yang ingin diselesaikan<textarea value={topic} onChange={(event) => { markStarted("topic"); setTopic(event.target.value); }} placeholder="Contoh: menjelaskan kapan UMKM sebaiknya memakai AI untuk membuat konten" rows={3} /></label>
         <div className="workflowTwoCols">
-          <label>Audiens utama<input value={audience} onChange={(event) => setAudience(event.target.value)} placeholder="Contoh: pemilik UMKM pemula" /></label>
-          <label>Format hasil<input value={format} onChange={(event) => setFormat(event.target.value)} placeholder="Contoh: 5 carousel, 7 slide" /></label>
+          <label>Audiens utama<input value={audience} onChange={(event) => { markStarted("audience"); setAudience(event.target.value); }} placeholder="Contoh: pemilik UMKM pemula" /></label>
+          <label>Format hasil<input value={format} onChange={(event) => { markStarted("format"); setFormat(event.target.value); }} placeholder="Contoh: 5 carousel, 7 slide" /></label>
         </div>
-        <label>Konteks, bahan, atau bukti yang wajib dipakai<textarea value={context} onChange={(event) => setContext(event.target.value)} placeholder="Contoh: produk, pengalaman, link sumber, data, gaya merek, atau poin yang tidak boleh hilang" rows={3} /></label>
-        <label>Batasan dan hal yang harus dihindari<textarea value={boundaries} onChange={(event) => setBoundaries(event.target.value)} placeholder="Contoh: jangan menjanjikan hasil pasti, hindari jargon, gunakan nada profesional dan hangat" rows={3} /></label>
+        <label>Konteks, bahan, atau bukti yang wajib dipakai<textarea value={context} onChange={(event) => { markStarted("context"); setContext(event.target.value); }} placeholder="Contoh: produk, pengalaman, link sumber, data, gaya merek, atau poin yang tidak boleh hilang" rows={3} /></label>
+        <label>Batasan dan hal yang harus dihindari<textarea value={boundaries} onChange={(event) => { markStarted("boundaries"); setBoundaries(event.target.value); }} placeholder="Contoh: jangan menjanjikan hasil pasti, hindari jargon, gunakan nada profesional dan hangat" rows={3} /></label>
 
         <div className="workflowCheckList" aria-live="polite">
           {checks.map((item) => <span className={item.done ? "done" : ""} key={item.label}>{item.done ? <CheckCircle2 size={15} /> : <span className="workflowEmptyDot" />} {item.label}</span>)}
