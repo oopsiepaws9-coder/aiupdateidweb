@@ -2,9 +2,9 @@
 import Link from "next/link";
 import {useMemo,useState} from "react";
 import {ArrowUpRight,BadgeCheck,Search,Sparkles,Star,SlidersHorizontal} from "lucide-react";
+import BrandLogo from "@/components/BrandLogo";
 import type {AITool} from "@/lib/tool-types";
-function initials(n:string){return n.split(/\s+/).map(v=>v[0]).join("").slice(0,2).toUpperCase()}
-function logo(t:AITool){return t.logo_url?<img src={t.logo_url} alt="" loading="lazy"/>:<span>{initials(t.name)}</span>}
+function logo(t:AITool){return <BrandLogo provider={t.provider} name={t.name} logoUrl={t.logo_url}/>}
 export default function ToolsDirectoryClient({tools}:{tools:AITool[]}){
  const[q,setQ]=useState("");const[category,setCategory]=useState("Semua");const[freeOnly,setFreeOnly]=useState(false);const[sort,setSort]=useState("featured");
  const categories=useMemo(()=>["Semua",...Array.from(new Set(tools.map(x=>x.category).filter(Boolean) as string[])).sort()],[tools]);
