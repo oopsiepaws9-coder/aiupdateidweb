@@ -61,10 +61,10 @@ export default async function AdvisorPage() {
             </div>
           </div>
           <aside className="workflowHeroCard">
-            <small>AI FIT ENGINE V1</small>
-            <h2>Kebutuhan → kandidat → Fit Score → alasan → keterbatasan.</h2>
+            <small>AI DECISION ENGINE V4</small>
+            <h2>Kebutuhan → ranking multi-objective → workflow → outcome → pembelajaran terkontrol.</h2>
             <div className="workflowArrow">↓</div>
-            <p>Feedback “cocok/tidak cocok” menjadi data untuk memperbaiki bobot rekomendasi generasi berikutnya.</p>
+            <p>Outcome tidak langsung mengubah ranking. Sistem memakai minimum sampel, shrinkage, dan batas penyesuaian agar sinyal baru tidak mendominasi keputusan.</p>
           </aside>
         </div>
       </section>
