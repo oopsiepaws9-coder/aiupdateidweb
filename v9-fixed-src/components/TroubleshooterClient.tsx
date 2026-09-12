@@ -7,13 +7,43 @@ import type { AITool } from "@/lib/tool-types";
 import { buildCapabilityGraph, diagnoseFailure, FAILURE_OPTIONS, type FailureKey } from "@/lib/advisor-knowledge";
 import styles from "@/components/Troubleshooter.module.css";
 
+const TASK_BY_FAILURE: Record<FailureKey, "research" | "writing" | "documents" | "productivity"> = {
+  file_failure: "documents",
+  citation_failure: "research",
+  hallucination: "research",
+  context_loss: "research",
+  format_failure: "writing",
+  instruction_failure: "writing",
+  quality_failure: "writing",
+  feature_limit: "productivity",
+};
+
 export default function TroubleshooterClient({ tools }: { tools: AITool[] }) {
   const [toolId, setToolId] = useState(tools[0]?.id || "");
   const [failure, setFailure] = useState<FailureKey>("file_failure");
+  const [outcomeSent, setOutcomeSent] = useState(false);
 
   const tool = useMemo(() => tools.find((item) => item.id === toolId) || tools[0], [tools, toolId]);
   const capabilities = useMemo(() => tool ? buildCapabilityGraph(tool).slice(0, 6) : [], [tool]);
   const diagnosis = useMemo(() => tool ? diagnoseFailure(tool, failure) : null, [tool, failure]);
+
+  async function sendOutcome(outcome: "success" | "partial" | "failed") {
+    if (!tool || outcomeSent) return;
+    setOutcomeSent(true);
+    try {
+      await fetch("/api/advisor/outcome", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          taskKey: TASK_BY_FAILURE[failure],
+          toolId: tool.id,
+          outcome,
+          source: "troubleshooter",
+          context: { failure, confidence: diagnosis?.confidence || 0 },
+        }),
+      });
+    } catch {}
+  }
 
   if (!tool || !diagnosis) return <div className={styles.output}>Belum ada tool published untuk dianalisis.</div>;
 
@@ -25,14 +55,14 @@ export default function TroubleshooterClient({ tools }: { tools: AITool[] }) {
 
         <div className={styles.field}>
           <label htmlFor="tool">Tool AI</label>
-          <select id="tool" value={tool.id} onChange={(event) => setToolId(event.target.value)}>
+          <select id="tool" value={tool.id} onChange={(event) => { setToolId(event.target.value); setOutcomeSent(false); }}>
             {tools.map((item) => <option key={item.id} value={item.id}>{item.name}</option>)}
           </select>
         </div>
 
         <div className={styles.field}>
           <label htmlFor="failure">Jenis masalah</label>
-          <select id="failure" value={failure} onChange={(event) => setFailure(event.target.value as FailureKey)}>
+          <select id="failure" value={failure} onChange={(event) => { setFailure(event.target.value as FailureKey); setOutcomeSent(false); }}>
             {FAILURE_OPTIONS.map((item) => <option key={item.value} value={item.value}>{item.label}</option>)}
           </select>
         </div>
@@ -66,6 +96,10 @@ export default function TroubleshooterClient({ tools }: { tools: AITool[] }) {
           <article className={styles.box}><h3>Catatan khusus tool</h3><ul>{diagnosis.toolCautions.length ? diagnosis.toolCautions.map((item) => <li key={item}>{item}</li>) : <li>Belum ada limitation spesifik yang tercatat pada profil ini.</li>}</ul></article>
         </div>
 
+        <div className={styles.outcomeBox}>
+          <strong>{outcomeSent ? "Hasil tersimpan." : "Setelah dicoba, apakah langkah ini menyelesaikan masalah?"}</strong>
+          {!outcomeSent && <div><button onClick={() => sendOutcome("success")}>Berhasil</button><button onClick={() => sendOutcome("partial")}>Sebagian</button><button onClick={() => sendOutcome("failed")}>Belum berhasil</button></div>}
+        </div>
         <div className={styles.warning}>Confidence bukan jaminan diagnosis benar. Fitur AI berubah cepat; cek halaman resmi jika masalah menyangkut paket, limit, atau dukungan format terbaru.</div>
         <div className={styles.links}>
           <Link href={`/tools/${tool.slug}`}>Buka profil {tool.name} <ArrowRight size={14} /></Link>
