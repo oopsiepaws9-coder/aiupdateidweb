@@ -29,6 +29,7 @@ export default function Header(){
           <Link href="/" onClick={()=>setOpen(false)}>Beranda</Link>
           <Link href="/artikel" onClick={()=>setOpen(false)}>Artikel</Link>
           <Link href="/kategori/berita-ai" onClick={()=>setOpen(false)}>Berita AI</Link>
+          <Link href="/advisor" onClick={()=>setOpen(false)}>AI Advisor</Link>
           <Link href="/tools" onClick={()=>setOpen(false)}>Tools AI</Link>
           <Link href="/models" onClick={()=>setOpen(false)}>Model AI</Link>
           <Link href="/glossary" onClick={()=>setOpen(false)}>Glosarium</Link>
