@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { CheckCircle2, Mail } from "lucide-react";
 import { supabase } from "@/lib/supabase";
+import { trackProductEvent } from "@/lib/product-analytics";
 
 export default function NewsletterForm(){
   const[email,setEmail]=useState("");
@@ -20,6 +21,7 @@ export default function NewsletterForm(){
       if(error.code==="23505"){setOk(true);setMessage("Email ini sudah terdaftar.")}
       else {setOk(false);setMessage(error.message)}
     }else{
+      trackProductEvent("newsletter_signup","newsletter",{placement:"site_newsletter"});
       setOk(true);setMessage("Berhasil terdaftar ke newsletter AIUpdateId.");setEmail("");
     }
   };
