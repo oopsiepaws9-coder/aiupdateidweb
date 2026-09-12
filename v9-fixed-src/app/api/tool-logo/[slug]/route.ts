@@ -22,7 +22,7 @@ const LOGOS: Record<string, string> = {
   "notion-ai": "https://www.notion.so/images/favicon.ico",
   perplexity: "https://www.perplexity.ai/favicon.ico",
   replit: "https://replit.com/favicon.ico",
-  runway: "https://runwayml.com/favicon.ico",
+  runway: "https://runway-static-assets.s3.amazonaws.com/site/images/api-page/powered-by-runway-black.png",
   suno: "https://suno.com/favicon.ico",
 };
 
