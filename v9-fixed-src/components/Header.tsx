@@ -34,6 +34,7 @@ export default function Header(){
           <Link href="/glossary" onClick={()=>setOpen(false)}>Glosarium</Link>
           <Link href="/compare" onClick={()=>setOpen(false)}>Perbandingan</Link>
           <Link href="/prompts" onClick={()=>setOpen(false)}>Prompt AI</Link>
+          <Link href="/workflow" onClick={()=>setOpen(false)}>Workflow</Link>
           <Link href="/tentang" onClick={()=>setOpen(false)}>Tentang</Link>
         </nav>
       <div className="actions">
