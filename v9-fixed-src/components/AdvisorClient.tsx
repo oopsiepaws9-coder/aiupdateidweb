@@ -1,147 +1,40 @@
 "use client";
-
 import { useMemo, useState } from "react";
 import Link from "next/link";
-import { CheckCircle2, ChevronRight, ShieldCheck, Sparkles, ThumbsDown, ThumbsUp } from "lucide-react";
+import { ChevronRight, ShieldCheck, Sparkles, ThumbsDown, ThumbsUp } from "lucide-react";
 import type { AITool } from "@/lib/tool-types";
-import { rankTools, type AdvisorInput, type AdvisorTaskKey } from "@/lib/advisor-engine";
+import type { AdvisorInput, AdvisorTaskKey } from "@/lib/advisor-engine";
+import { buildWorkflow, rankIntelligence, type IntelligenceProfile } from "@/lib/advisor-intelligence";
 import styles from "@/components/Advisor.module.css";
 
-const TASKS: Array<{ value: AdvisorTaskKey; label: string; helper: string }> = [
-  { value: "research", label: "Riset & sumber", helper: "Cari informasi, referensi, dan jawaban yang perlu diverifikasi." },
-  { value: "documents", label: "Dokumen & PDF", helper: "Baca, rangkum, bandingkan, atau tanya jawab dari file." },
-  { value: "writing", label: "Menulis", helper: "Artikel, copy, editing, ide, dan drafting." },
-  { value: "coding", label: "Coding", helper: "Membuat, memahami, dan memperbaiki kode." },
-  { value: "study", label: "Belajar", helper: "Memahami materi, belajar dari sumber, dan latihan." },
-  { value: "image", label: "Gambar", helper: "Membuat atau mengolah visual dan desain." },
-  { value: "video", label: "Video", helper: "Video generatif, animasi, dan konten pendek." },
-  { value: "marketing", label: "Marketing", helper: "SEO, kampanye, ide konten, dan komunikasi bisnis." },
-  { value: "productivity", label: "Produktivitas", helper: "Workflow kerja, office, meeting, dan tugas harian." },
-];
+const TASKS:Array<{value:AdvisorTaskKey;label:string;helper:string}>=[
+{value:"research",label:"Riset & sumber",helper:"Cari, bandingkan, dan verifikasi informasi."},{value:"documents",label:"Dokumen & PDF",helper:"Analisis file dan sumber panjang."},{value:"writing",label:"Menulis",helper:"Artikel, copy, editing, dan drafting."},{value:"coding",label:"Coding",helper:"Implementasi, debugging, dan review."},{value:"study",label:"Belajar",helper:"Memahami materi dan sumber."},{value:"image",label:"Gambar",helper:"Visual, desain, dan image generation."},{value:"video",label:"Video",helper:"Video generatif dan konten pendek."},{value:"marketing",label:"Marketing",helper:"SEO, kampanye, brand, dan konten."},{value:"productivity",label:"Produktivitas",helper:"Workflow dan pekerjaan harian."}];
+const defaults:AdvisorInput={task:"research",priorities:{freePlan:true,easyToUse:true,indonesian:true,evidence:true,documentHeavy:false}};
+const MODES: Array<{value:IntelligenceProfile["mode"];label:string}>=[{value:"balanced",label:"Seimbang"},{value:"quality",label:"Kualitas"},{value:"budget",label:"Hemat"},{value:"simple",label:"Paling mudah"}];
 
-const defaultInput: AdvisorInput = {
-  task: "research",
-  priorities: { freePlan: true, easyToUse: true, indonesian: true, evidence: true, documentHeavy: false },
-};
-
-export default function AdvisorClient({ tools }: { tools: AITool[] }) {
-  const [input, setInput] = useState<AdvisorInput>(defaultInput);
-  const [feedbackSent, setFeedbackSent] = useState<Record<string, boolean>>({});
-  const results = useMemo(() => rankTools(tools, input, 5), [tools, input]);
-
-  const toggle = (key: keyof AdvisorInput["priorities"]) =>
-    setInput((current) => ({ ...current, priorities: { ...current.priorities, [key]: !current.priorities[key] } }));
-
-  async function sendFeedback(toolId: string, helpful: boolean) {
-    if (feedbackSent[toolId]) return;
-    setFeedbackSent((current) => ({ ...current, [toolId]: true }));
-    try {
-      await fetch("/api/advisor/feedback", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ taskKey: input.task, toolId, helpful, taskProfile: input.priorities }),
-      });
-    } catch {
-      // Feedback is optional; recommendations must remain usable if telemetry is unavailable.
-    }
-  }
-
-  const activeTask = TASKS.find((task) => task.value === input.task);
-
-  return (
-    <div className={styles.shell}>
-      <section className={styles.controls} aria-label="Preferensi rekomendasi AI">
-        <div className={styles.controlHeader}>
-          <div>
-            <span className={styles.eyebrow}>1. PILIH PEKERJAAN</span>
-            <h2>Apa yang ingin Anda selesaikan?</h2>
-          </div>
-          <Sparkles aria-hidden="true" />
-        </div>
-
-        <div className={styles.taskGrid}>
-          {TASKS.map((task) => (
-            <button
-              key={task.value}
-              type="button"
-              className={input.task === task.value ? styles.taskActive : styles.task}
-              onClick={() => setInput((current) => ({ ...current, task: task.value }))}
-            >
-              <strong>{task.label}</strong>
-              <span>{task.helper}</span>
-            </button>
-          ))}
-        </div>
-
-        <div className={styles.priorityBlock}>
-          <span className={styles.eyebrow}>2. PRIORITAS</span>
-          <div className={styles.pills}>
-            <button type="button" aria-pressed={input.priorities.freePlan} onClick={() => toggle("freePlan")}>Paket gratis</button>
-            <button type="button" aria-pressed={input.priorities.easyToUse} onClick={() => toggle("easyToUse")}>Mudah digunakan</button>
-            <button type="button" aria-pressed={input.priorities.indonesian} onClick={() => toggle("indonesian")}>Cocok untuk Indonesia</button>
-            <button type="button" aria-pressed={input.priorities.evidence} onClick={() => toggle("evidence")}>Butuh sumber/referensi</button>
-            <button type="button" aria-pressed={input.priorities.documentHeavy} onClick={() => toggle("documentHeavy")}>Banyak dokumen/file</button>
-          </div>
-        </div>
-
-        <div className={styles.localNote}>
-          <ShieldCheck size={18} aria-hidden="true" />
-          <p><strong>Tanpa API AI berbayar.</strong> Fit Score dihitung oleh engine AIUpdateId dari data tools yang sudah dikurasi di database.</p>
-        </div>
-      </section>
-
-      <section className={styles.results} aria-live="polite">
-        <div className={styles.resultsHead}>
-          <div><span className={styles.eyebrow}>HASIL AI FIT ENGINE</span><h2>Rekomendasi untuk {activeTask?.label.toLowerCase()}</h2></div>
-          <span className={styles.dataBadge}>{tools.length} tool dianalisis</span>
-        </div>
-
-        {results.length === 0 ? (
-          <div className={styles.empty}>Belum ada data AI tool yang bisa dihitung.</div>
-        ) : results.map((result, index) => (
-          <article className={index === 0 ? styles.bestCard : styles.card} key={result.tool.id}>
-            <div className={styles.rank}>{index + 1}</div>
-            <div className={styles.cardMain}>
-              <div className={styles.titleRow}>
-                <div>
-                  {index === 0 && <span className={styles.bestLabel}>REKOMENDASI UTAMA</span>}
-                  <h3>{result.tool.name}</h3>
-                  <p>{result.tool.short_description || result.tool.description || "Profil AI tool dari database AIUpdateId."}</p>
-                </div>
-                <div className={styles.scoreBox}><strong>{result.fitScore}</strong><span>/100 Fit</span></div>
-              </div>
-
-              <div className={styles.confidence}>
-                <span>Evidence Confidence</span>
-                <div><i style={{ width: `${result.confidence}%` }} /></div>
-                <b>{result.confidence}%</b>
-              </div>
-
-              <div className={styles.reasonGrid}>
-                <div>
-                  <h4>Kenapa cocok</h4>
-                  {result.reasons.map((reason) => <p key={reason}><CheckCircle2 size={15} /> {reason}</p>)}
-                </div>
-                <div>
-                  <h4>Perlu diperhatikan</h4>
-                  {result.cautions.length ? result.cautions.map((caution) => <p key={caution}>{caution}</p>) : <p>Belum ada catatan keterbatasan khusus di profil ini.</p>}
-                </div>
-              </div>
-
-              <div className={styles.actions}>
-                <Link href={`/tools/${result.tool.slug}`}>Lihat profil lengkap <ChevronRight size={16} /></Link>
-                <div className={styles.feedback} aria-label={`Nilai rekomendasi ${result.tool.name}`}>
-                  <span>{feedbackSent[result.tool.id] ? "Terima kasih" : "Cocok?"}</span>
-                  <button disabled={feedbackSent[result.tool.id]} onClick={() => sendFeedback(result.tool.id, true)} aria-label="Rekomendasi cocok"><ThumbsUp size={15} /></button>
-                  <button disabled={feedbackSent[result.tool.id]} onClick={() => sendFeedback(result.tool.id, false)} aria-label="Rekomendasi tidak cocok"><ThumbsDown size={15} /></button>
-                </div>
-              </div>
-            </div>
-          </article>
-        ))}
-
-        <p className={styles.disclaimer}>Fit Score adalah skor kecocokan untuk kebutuhan yang dipilih, bukan klaim bahwa satu AI selalu lebih baik. Fitur dan harga AI dapat berubah; periksa profil dan sumber terbaru sebelum membeli.</p>
-      </section>
-    </div>
-  );
+export default function AdvisorClient({tools}:{tools:AITool[]}){
+ const[input,setInput]=useState(defaults); const[mode,setMode]=useState<IntelligenceProfile["mode"]>("balanced"); const[sent,setSent]=useState<Record<string,boolean>>({});
+ const profile=useMemo(()=>({...input,mode}),[input,mode]); const results=useMemo(()=>rankIntelligence(tools,profile,5),[tools,profile]); const workflow=useMemo(()=>buildWorkflow(input.task,results),[input.task,results]);
+ const toggle=(key:keyof AdvisorInput["priorities"])=>setInput(c=>({...c,priorities:{...c.priorities,[key]:!c.priorities[key]}}));
+ async function feedback(toolId:string,helpful:boolean){if(sent[toolId])return;setSent(c=>({...c,[toolId]:true}));try{await fetch("/api/advisor/feedback",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({taskKey:input.task,toolId,helpful,taskProfile:{...input.priorities,mode}})})}catch{}}
+ return <div className={styles.shell}>
+  <section className={styles.controls}>
+   <div className={styles.controlHeader}><div><span className={styles.eyebrow}>AI DECISION ENGINE V2</span><h2>Apa yang ingin Anda selesaikan?</h2></div><Sparkles/></div>
+   <div className={styles.taskGrid}>{TASKS.map(t=><button key={t.value} className={input.task===t.value?styles.taskActive:styles.task} onClick={()=>setInput(c=>({...c,task:t.value}))}><strong>{t.label}</strong><span>{t.helper}</span></button>)}</div>
+   <div className={styles.priorityBlock}><span className={styles.eyebrow}>STRATEGI KEPUTUSAN</span><div className={styles.pills}>{MODES.map(m=><button key={m.value} aria-pressed={mode===m.value} onClick={()=>setMode(m.value)}>{m.label}</button>)}</div></div>
+   <div className={styles.priorityBlock}><span className={styles.eyebrow}>KONDISI ANDA</span><div className={styles.pills}><button aria-pressed={input.priorities.freePlan} onClick={()=>toggle("freePlan")}>Paket gratis</button><button aria-pressed={input.priorities.easyToUse} onClick={()=>toggle("easyToUse")}>Mudah</button><button aria-pressed={input.priorities.indonesian} onClick={()=>toggle("indonesian")}>Indonesia</button><button aria-pressed={input.priorities.evidence} onClick={()=>toggle("evidence")}>Butuh bukti</button><button aria-pressed={input.priorities.documentHeavy} onClick={()=>toggle("documentHeavy")}>Banyak file</button></div></div>
+   <div className={styles.localNote}><ShieldCheck size={18}/><p><strong>Tanpa API AI berbayar.</strong> Ranking dihitung lokal dari profil tool, freshness, evidence, value, ease, Indonesia fit, risiko, dan kebutuhan Anda.</p></div>
+  </section>
+  <section className={styles.results} aria-live="polite">
+   <div className={styles.resultsHead}><div><span className={styles.eyebrow}>MULTI-OBJECTIVE RANKING</span><h2>Keputusan yang berubah mengikuti kondisi Anda</h2></div><span className={styles.dataBadge}>{tools.length} tool dianalisis</span></div>
+   {results.map((r,i)=><article className={i===0?styles.bestCard:styles.card} key={r.tool.id}><div className={styles.rank}>{i+1}</div><div className={styles.cardMain}>
+    <div className={styles.titleRow}><div>{i===0&&<span className={styles.bestLabel}>REKOMENDASI UTAMA</span>}<h3>{r.tool.name}</h3><p>{r.tool.short_description||r.tool.description||"Profil AI dari AIUpdateId."}</p></div><div className={styles.scoreBox}><strong>{r.total}</strong><span>/100 Decision</span></div></div>
+    <div className={styles.metricGrid}><span>Fit <b>{r.fit}</b></span><span>Value <b>{r.value}</b></span><span>Ease <b>{r.ease}</b></span><span>Indonesia <b>{r.indonesia}</b></span><span>Evidence <b>{r.evidence}</b></span><span>Freshness <b>{r.freshness}</b></span><span>Risk <b>{r.risk}</b></span></div>
+    <div className={styles.reasonGrid}><div><h4>Trade-off keputusan</h4>{r.tradeoffs.length?r.tradeoffs.map(x=><p key={x}>{x}</p>):<p>Belum ada trade-off besar yang terdeteksi dari data saat ini.</p>}</div><div><h4>Kenapa skor dapat berubah?</h4><p>Ranking dihitung ulang saat task, budget, kemudahan, bahasa, bukti, atau strategi keputusan berubah.</p></div></div>
+    <div className={styles.actions}><Link href={`/tools/${r.tool.slug}`}>Periksa profil & keterbatasan <ChevronRight size={16}/></Link><div className={styles.feedback}><span>{sent[r.tool.id]?"Tersimpan":"Hasil ini cocok?"}</span><button disabled={sent[r.tool.id]} onClick={()=>feedback(r.tool.id,true)}><ThumbsUp size={15}/></button><button disabled={sent[r.tool.id]} onClick={()=>feedback(r.tool.id,false)}><ThumbsDown size={15}/></button></div></div>
+   </div></article>)}
+   {!!workflow.length&&<div className={styles.workflow}><span className={styles.eyebrow}>MULTI-AI WORKFLOW</span><h3>Rute kerja yang disarankan</h3><div>{workflow.map((w,i)=><span key={w.stage}><b>{i+1}</b><small>{w.stage}</small><strong>{w.tool}</strong></span>)}</div><p>Workflow adalah starting point berbasis ranking saat ini; gunakan profil tool untuk memeriksa fitur dan batas terbaru.</p></div>}
+   <p className={styles.disclaimer}>Decision Score bukan klaim AI terbaik secara universal. AIUpdateId memisahkan kecocokan, evidence, freshness, value, ease, Indonesia fit, dan risk agar keputusan dapat dijelaskan.</p>
+  </section>
+ </div>
 }
