@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { ArrowRight, CheckCircle2, CircleDollarSign, ClipboardCheck, RefreshCw, ShieldCheck, Sparkles } from "lucide-react";
 import WorkflowCheckClient from "@/components/WorkflowCheckClient";
+import PremiumIntentLink from "@/components/PremiumIntentLink";
 import { getSiteUrl } from "@/lib/site-url";
 
 export const metadata: Metadata = {
@@ -24,6 +25,7 @@ const benefits = [
 
 export default function WorkflowPage() {
   const base = getSiteUrl();
+  const earlyAccessHref = "mailto:aiupdateid99@gmail.com?subject=Minat%20AI%20Content%20Workflow%20Kit&body=Halo%20AIUpdateId%2C%20saya%20ingin%20mendapatkan%20informasi%20saat%20AI%20Content%20Workflow%20Kit%20dibuka.";
   const schema = {
     "@context": "https://schema.org",
     "@type": "WebApplication",
@@ -48,7 +50,7 @@ export default function WorkflowPage() {
             <a className="primary" href="#quality-check">Coba Prompt Quality Check <ArrowRight size={17} /></a>
             <Link className="secondary" href="/prompts">Jelajahi Prompt Library</Link>
           </div>
-          <div className="workflowTrust"><span><CheckCircle2 size={16} /> Gratis digunakan</span><span><CheckCircle2 size={16} /> Tanpa API berbayar</span><span><CheckCircle2 size={16} /> Data tetap di perangkat Anda</span></div>
+          <div className="workflowTrust"><span><CheckCircle2 size={16} /> Gratis digunakan</span><span><CheckCircle2 size={16} /> Tanpa API berbayar</span><span><CheckCircle2 size={16} /> Isi brief tetap di perangkat Anda</span></div>
         </div>
         <aside className="workflowHeroCard">
           <small>MASALAH YANG DISELESAIKAN</small>
@@ -60,7 +62,7 @@ export default function WorkflowPage() {
     </section>
 
     <section className="container workflowIntro" id="quality-check">
-      <div className="workflowSectionHead"><div><small>ALAT GRATIS</small><h2>Periksa brief, lalu ambil prompt yang lebih siap dipakai.</h2></div><p>Isi seperlunya. Tidak ada data yang dikirim oleh alat ini.</p></div>
+      <div className="workflowSectionHead"><div><small>ALAT GRATIS</small><h2>Periksa brief, lalu ambil prompt yang lebih siap dipakai.</h2></div><p>Isi brief tidak dikirim. Kami hanya mencatat event penggunaan anonim untuk mengukur apakah alat ini benar-benar membantu.</p></div>
       <WorkflowCheckClient />
     </section>
 
@@ -73,7 +75,7 @@ export default function WorkflowPage() {
 
     <section className="container workflowKit" id="kit">
       <div className="workflowKitCopy"><span><CircleDollarSign size={16} /> WORKFLOW KIT — BETA</span><h2>AI Content Workflow Kit Indonesia</h2><p>Sistem langkah demi langkah untuk mengubah ide menjadi artikel, skrip video pendek, dan rencana publikasi—dengan quality gate sebelum konten keluar.</p><ul><li>Brief Builder dan Idea Filter</li><li>Prompt berantai untuk outline, draf, kritik, dan revisi</li><li>Workflow artikel dan Shorts dalam bahasa Indonesia</li><li>Checklist klaim, sumber, pengulangan, dan CTA</li></ul></div>
-      <aside><small>HARGA BETA YANG DIRENCANAKAN</small><strong>Rp49.000</strong><p>Satu workflow lengkap, contoh penggunaan, dan pembaruan selama 90 hari.</p><a className="primary" href="mailto:aiupdateid99@gmail.com?subject=Minat%20AI%20Content%20Workflow%20Kit&body=Halo%20AIUpdateId%2C%20saya%20ingin%20mendapatkan%20informasi%20saat%20AI%20Content%20Workflow%20Kit%20dibuka.">Minta akses awal <ArrowRight size={16} /></a><small className="workflowFinePrint">Belum ada tagihan atau klaim hasil bisnis. Akses awal dipakai untuk memvalidasi kebutuhan pembaca.</small></aside>
+      <aside><small>HARGA BETA YANG DIRENCANAKAN</small><strong>Rp49.000</strong><p>Satu workflow lengkap, contoh penggunaan, dan pembaruan selama 90 hari.</p><PremiumIntentLink href={earlyAccessHref} /><small className="workflowFinePrint">Belum ada tagihan atau klaim hasil bisnis. Akses awal dipakai untuk memvalidasi kebutuhan pembaca.</small></aside>
     </section>
   </main>;
 }
