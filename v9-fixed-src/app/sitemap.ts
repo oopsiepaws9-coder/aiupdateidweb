@@ -23,6 +23,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     { url: `${base}/kategori/ai-models`, changeFrequency: "weekly", priority: 0.8 },
     { url: `${base}/kategori/prompt`, changeFrequency: "weekly", priority: 0.8 },
     { url: `${base}/kategori/perbandingan-ai`, changeFrequency: "weekly", priority: 0.8 },
+    { url: `${base}/advisor`, changeFrequency: "weekly", priority: 0.95 },
     { url: `${base}/tools`, changeFrequency: "weekly", priority: 0.9 },
     { url: `${base}/models`, changeFrequency: "weekly", priority: 0.9 },
     { url: `${base}/glossary`, changeFrequency: "weekly", priority: 0.8 },
