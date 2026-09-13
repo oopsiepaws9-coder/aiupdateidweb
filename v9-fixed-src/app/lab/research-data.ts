@@ -1,9 +1,10 @@
 export type ClaimStatus = "TERVERIFIKASI" | "DIDUKUNG SEBAGIAN" | "BERTENTANGAN" | "BELUM TERVERIFIKASI";
-export type SourceType = "Dokumentasi resmi" | "Situs/perusahaan resmi" | "Paper/riset" | "Pemerintah/regulator/universitas" | "Laporan riset" | "Media kredibel" | "Komunitas";
+export type SourceType = "Dokumentasi resmi" | "Situs/perusahaan resmi" | "Paper/riset" | "Pemerintah/regulator/universitas" | "Laporan riset" | "Media kredibel" | "Komunitas" | "Dokumentasi/sumber primer" | "Sumber web";
 
 export type SourceItem = {
   id: string;
   title: string;
+  url?: string;
   sourceType: SourceType;
   tier: number;
   freshness: string;
@@ -61,10 +62,10 @@ export function buildCustomReport(question: string, sourceText: string): Researc
   const cleanSource = sourceText.trim();
   return {
     question:cleanQuestion,
-    summary: cleanSource ? "Sumber manual telah ditambahkan, tetapi prototype deterministik ini tidak menganggap isi sumber sebagai fakta. Klaim tetap menunggu verifikasi manusia." : "Belum ada sumber yang dapat diperiksa. Tambahkan sumber sebelum menarik kesimpulan.",
+    summary: cleanSource ? "Sumber manual telah ditambahkan, tetapi mode lokal tidak menganggap isi sumber sebagai fakta. Klaim tetap menunggu verifikasi manusia." : "Belum ada sumber yang dapat diperiksa. Tambahkan sumber sebelum menarik kesimpulan.",
     demoOnly:true,
-    sources: cleanSource ? [{id:"custom-1",title:"Sumber manual pengguna",sourceType:"Dokumentasi resmi",tier:1,freshness:"Tanggal tidak tersedia",note:"Teks/URL dimasukkan manual. Jenis sumber perlu dikonfirmasi manusia."}] : [],
-    claims:[{id:"custom-claim",claim:cleanQuestion,status:"BELUM TERVERIFIKASI",evidence:cleanSource ? "Ada bahan sumber, tetapi belum dianalisis atau diverifikasi oleh sistem live." : "Tidak ada bukti yang tersedia.",sourceId:cleanSource?"custom-1":undefined,explanation:"Prototype tahap pertama sengaja tidak membuat klaim otomatis dari teks pengguna untuk menghindari ilusi verifikasi.",humanReview:true}],
+    sources: cleanSource ? [{id:"custom-1",title:"Sumber manual pengguna",sourceType:"Sumber web",tier:6,freshness:"Tanggal tidak tersedia",note:"Teks/URL dimasukkan manual. Identitas dan kualitas sumber perlu dikonfirmasi manusia."}] : [],
+    claims:[{id:"custom-claim",claim:cleanQuestion,status:"BELUM TERVERIFIKASI",evidence:cleanSource ? "Ada bahan sumber, tetapi belum dianalisis oleh mesin riset live." : "Tidak ada bukti yang tersedia.",sourceId:cleanSource?"custom-1":undefined,explanation:"Mode lokal sengaja tidak membuat klaim otomatis dari teks pengguna untuk menghindari ilusi verifikasi.",humanReview:true}],
     contradictions:[],
     unverified:[cleanQuestion],
     freshnessWarnings:["Tanggal publikasi, perubahan fitur, dan konteks sumber belum diverifikasi."],
