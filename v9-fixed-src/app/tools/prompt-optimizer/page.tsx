@@ -1,5 +1,6 @@
 import type {Metadata} from "next";
 import PromptOptimizerDemo from "./PromptOptimizerDemo";
+import "./prompt-optimizer.css";
 
 export const metadata:Metadata={
  title:"Prompt Optimizer Indonesia: Ubah Prompt Sederhana Jadi Lebih Terstruktur",
