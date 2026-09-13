@@ -3,6 +3,7 @@ export type ProductArea =
   | "advisor"
   | "troubleshooter"
   | "workflow"
+  | "prompt_optimizer"
   | "newsletter"
   | "monetization";
 
@@ -19,6 +20,9 @@ export type ProductEventName =
   | "workflow_started"
   | "workflow_ready"
   | "workflow_copied"
+  | "prompt_optimizer_started"
+  | "prompt_optimizer_compiled"
+  | "prompt_optimizer_copied"
   | "newsletter_signup"
   | "premium_intent";
 
