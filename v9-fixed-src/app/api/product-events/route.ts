@@ -14,11 +14,14 @@ const EVENTS = new Set([
   "workflow_started",
   "workflow_ready",
   "workflow_copied",
+  "prompt_optimizer_started",
+  "prompt_optimizer_compiled",
+  "prompt_optimizer_copied",
   "newsletter_signup",
   "premium_intent",
 ]);
 
-const PRODUCTS = new Set(["site", "advisor", "troubleshooter", "workflow", "newsletter", "monetization"]);
+const PRODUCTS = new Set(["site", "advisor", "troubleshooter", "workflow", "prompt_optimizer", "newsletter", "monetization"]);
 
 function text(value: unknown, max: number) {
   return typeof value === "string" ? value.trim().slice(0, max) || null : null;
