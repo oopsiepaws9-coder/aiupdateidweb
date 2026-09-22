@@ -17,7 +17,18 @@ const nextConfig = {
       { source: "/kategori/tools-ai", destination: "/kategori/ai-tools", permanent: true },
       { source: "/kategori/review", destination: "/kategori/perbandingan-ai", permanent: true },
       { source: "/kategori/prompt-ai", destination: "/kategori/prompt", permanent: true },
-      { source: "/prompt", destination: "/prompts", permanent: true }
+      { source: "/prompt", destination: "/prompts", permanent: true },
+      // Taxonomy Migration RC v1: semantic aliases with URL-changing slugs.
+      { source: "/tag/ai-generatif", destination: "/tag/generative-ai", permanent: true },
+      { source: "/tag/ai-untuk-bekerja", destination: "/tag/ai-untuk-kerja", permanent: true },
+      { source: "/tag/ai-untuk-content-creator", destination: "/tag/ai-untuk-kreator", permanent: true },
+      { source: "/tag/ai-untuk-produktivitas", destination: "/tag/produktivitas-ai", permanent: true },
+      { source: "/tag/gemini-notebook", destination: "/tag/notebooklm", permanent: true },
+      { source: "/tag/membuat-konten-dengan-ai", destination: "/tag/content-creator", permanent: true },
+      { source: "/tag/perplexity", destination: "/tag/perplexity-ai", permanent: true },
+      { source: "/tag/gemini", destination: "/tag/google-gemini", permanent: true },
+      { source: "/tag/gemini-ai", destination: "/tag/google-gemini", permanent: true },
+      { source: "/tag/suno-v6", destination: "/tag/suno", permanent: true }
     ];
   },
 
