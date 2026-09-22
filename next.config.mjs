@@ -2,6 +2,15 @@
 const nextConfig = {
   reactStrictMode: true,
   poweredByHeader: false,
+  async redirects() {
+    return [
+      {
+        source: "/artikel/masa-depan-artificial-intelligence",
+        destination: "/artikel/masa-depan-ai",
+        permanent: true
+      }
+    ];
+  },
   async headers() {
     return [
       {
