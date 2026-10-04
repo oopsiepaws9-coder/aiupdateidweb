@@ -5,7 +5,8 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
-    "start": "next start"
+    "start": "next start",
+    "audit:seo": "node scripts/audit-seo.mjs"
   },
   "dependencies": {
     "@next/third-parties": "^15.5.21",

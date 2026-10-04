@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { createServerSupabase } from "@/lib/supabase-server";
 import { getSiteUrl } from "@/lib/site-url";
 import { cleanArticleTitle } from "@/lib/utils";
+import { makeAbsoluteSeoTitle } from "@/lib/seo-helpers";
 
 export async function generateMetadata({
   params
@@ -34,6 +35,7 @@ export async function generateMetadata({
   }
 
   const title = article.seo_title || cleanArticleTitle(article.title);
+  const htmlTitle = makeAbsoluteSeoTitle(title);
   const description =
     article.meta_description || article.excerpt || "Artikel AIUpdateId";
   const fallbackCanonical = `${siteUrl}/artikel/${article.slug}`;
@@ -50,7 +52,7 @@ export async function generateMetadata({
   const image = article.cover_image || `${siteUrl}/aiupdateid-icon-v2-512.png`;
 
   return {
-    title,
+    title: { absolute: htmlTitle },
     description,
     keywords: article.tags || undefined,
     alternates: { canonical },

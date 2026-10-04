@@ -14,6 +14,7 @@ import ShareButtons from "@/components/ShareButtons";
 import ArticleBody from "@/components/ArticleBody";
 import TableOfContents from "@/components/TableOfContents";
 import AdUnit from "@/components/AdUnit";
+import JsonLd, { ArticleJsonLd } from "@/components/JsonLd";
 
 export const revalidate = 300;
 
@@ -101,35 +102,6 @@ export default async function Page(props:{params: Promise<{slug:string}>}) {
     }
   })();
 
-  const articleSchema={
-    "@context":"https://schema.org",
-    "@type":"Article",
-    headline:cleanArticleTitle(a.title),
-    description:a.meta_description||a.excerpt||"",
-    url:canonicalUrl,
-    mainEntityOfPage:{"@type":"WebPage","@id":canonicalUrl},
-    image:a.cover_image?[a.cover_image]:[`${siteUrl}/aiupdateid-icon-v2-512.png`],
-    datePublished:a.published_at||a.created_at,
-    dateModified:a.updated_at||a.published_at||a.created_at,
-    inLanguage:"id-ID",
-    articleSection:a.category||undefined,
-    keywords:a.tags?.join(", ")||undefined,
-    wordCount:(a.content||"").trim().split(/\s+/).filter(Boolean).length,
-    isAccessibleForFree:true,
-    author:{
-      "@type":"Organization",
-      name:"AIUpdateId",
-      url:siteUrl,
-      logo:{"@type":"ImageObject",url:`${siteUrl}/aiupdateid-icon-v2-512.png`}
-    },
-    publisher:{
-      "@type":"Organization",
-      name:"AIUpdateId",
-      url:siteUrl,
-      logo:{"@type":"ImageObject",url:`${siteUrl}/aiupdateid-icon-v2-512.png`}
-    }
-  };
-
   const breadcrumbSchema={
     "@context":"https://schema.org",
     "@type":"BreadcrumbList",
@@ -139,16 +111,6 @@ export default async function Page(props:{params: Promise<{slug:string}>}) {
       {"@type":"ListItem",position:3,name:cleanArticleTitle(a.title),item:canonicalUrl}
     ]
   };
-
-  const faqSchema=a.faq&&a.faq.length?{
-    "@context":"https://schema.org",
-    "@type":"FAQPage",
-    mainEntity:a.faq.map(item=>({
-      "@type":"Question",
-      name:item.question,
-      acceptedAnswer:{"@type":"Answer",text:item.answer}
-    }))
-  }:null;
 
   return (
     <main className="page">
@@ -246,9 +208,23 @@ export default async function Page(props:{params: Promise<{slug:string}>}) {
         <div className="sectionHead"><div><small>LANJUT MEMBACA</small><h2>Artikel terkait</h2></div></div>
         <div className="grid">{related.map(item=><ArticleCard key={item.id} a={item}/>)}</div>
       </div></section>}
-      <script type="application/ld+json" dangerouslySetInnerHTML={{__html:JSON.stringify(articleSchema)}}/>
-      <script type="application/ld+json" dangerouslySetInnerHTML={{__html:JSON.stringify(breadcrumbSchema)}}/>
-      {faqSchema&&<script type="application/ld+json" dangerouslySetInnerHTML={{__html:JSON.stringify(faqSchema)}}/>}
+      <ArticleJsonLd
+        title={cleanArticleTitle(a.title)}
+        description={a.meta_description||a.excerpt||""}
+        url={canonicalUrl}
+        author="AIUpdateId"
+        authorUrl={siteUrl}
+        publisherUrl={siteUrl}
+        publisherLogo={`${siteUrl}/aiupdateid-icon-v2-512.png`}
+        image={a.cover_image||`${siteUrl}/aiupdateid-icon-v2-512.png`}
+        datePublished={a.published_at||a.created_at}
+        dateModified={a.updated_at||a.published_at||a.created_at}
+        section={a.category}
+        keywords={a.tags}
+        wordCount={(a.content||"").trim().split(/\s+/).filter(Boolean).length}
+        faqArray={a.faq}
+      />
+      <JsonLd data={breadcrumbSchema}/>
     </main>
   );
 }

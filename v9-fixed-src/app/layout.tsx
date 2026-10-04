@@ -18,7 +18,9 @@ export const metadata: Metadata = {
   applicationName: "AIUpdateId",
   title: {
     default: "AIUpdateId — Portal AI Indonesia",
-    template: "%s | AIUpdateId"
+    // Page-level metadata decides whether the brand fits inside its title
+    // budget. Appending it here made CMS titles unexpectedly overflow.
+    template: "%s"
   },
   description:
     "Portal AI Indonesia untuk berita, tutorial, review, direktori tools, model AI, glossary, perbandingan, dan prompt yang mudah dipahami.",
