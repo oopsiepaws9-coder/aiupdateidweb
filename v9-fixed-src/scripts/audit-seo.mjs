@@ -26,21 +26,12 @@ function stripBrand(value = "") {
   return clean(value).replace(/(?:\s*[|—-]\s*AIUpdateId)+\s*$/i, "");
 }
 
-function trimAtWord(value, limit = TITLE_LIMIT) {
-  const normalized = clean(value);
-  if (normalized.length <= limit) return normalized;
-  const slice = normalized.slice(0, limit + 1);
-  const boundary = slice.lastIndexOf(" ");
-  return (boundary >= Math.floor(limit * 0.65)
-    ? slice.slice(0, boundary)
-    : normalized.slice(0, limit)
-  ).trim();
-}
-
 function renderedTitle(value) {
   const title = stripBrand(value);
   const branded = `${title}${BRAND}`;
-  return branded.length <= TITLE_LIMIT ? branded : trimAtWord(title);
+  // Runtime metadata never cuts a title mid-sentence. If the suffix does not
+  // fit, keep the complete editorial title and flag it for a human rewrite.
+  return branded.length <= TITLE_LIMIT ? branded : title;
 }
 
 // Approximation only. Google truncates by rendered width and device, not a
